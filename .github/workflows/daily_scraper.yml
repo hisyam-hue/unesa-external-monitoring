@@ -2,8 +2,8 @@ name: Automated External News Scraper
 
 on:
   schedule:
-    - cron: '0 1 * * *' # Runs daily at 08:00 WIB (01:00 UTC)
-  workflow_dispatch: # Tombol pemicu manual
+    - cron: '0 0 * * *' # Jalan otomatis setiap hari jam 00:00 UTC
+  workflow_dispatch: # Memungkinkan tombol 'Run workflow' manual
 
 jobs:
   build-and-update:
@@ -11,33 +11,30 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas feedparser requests
+          pip install pandas feedparser beautifulsoup4 requests
 
-      - name: Jalankan Scraper Berita Eksternal
-        run: python external_scraper.py
-
-      - name: Generate Dashboard HTML Terbaru
-        run: python generate_dashboard_eksternal.py
-
-      - name: Commit & Push Perubahan Data
+      - name: Run External Scraper
         run: |
-          git config --global user.name 'UNESA Monitoring Bot'
-          git config --global user.email 'bot@unesa.ac.id'
-          git add rekap_berita_eksternal.csv dashboard_eksternal.html index.html
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update data" && git push)
+          python external_scraper.py
 
-      - name: Send WhatsApp Notification
-        env:
-          FONNTE_TOKEN: ${{ secrets.FONNTE_TOKEN }}
+      - name: Generate Interactive Dashboard
         run: |
-          python send_wa.py
+          python generate_dashboard_eksternal.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Auto-update external news & dashboard [skip ci]"
+          git push
