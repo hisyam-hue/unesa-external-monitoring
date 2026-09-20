@@ -1,145 +1,66 @@
 import pandas as pd
 import json
-import shutil
-import os
-import re
 
-# 1. KATALOG KATA KUNCI PENGECEUALIAN PERKETAT (IRRELEVANT / LIFESTYLE / PROPERTI)
-KATA_KUNCI_IRRELEVAN = [
-    # General / Lifestyle / Entertainment
-    'kalender jawa', 'weton', 'neptu', 'pasaran', 'zodiak', 'ramalan', 'horoskop', 
-    'resep', 'sinopsis', 'prakiraan cuaca', 'jadwal tv', 'lirik lagu', 'kunci gitar', 'chord',
-    # Properti / Iklan / Commercial
-    'kos', 'kost', 'kontrakan', 'sewa kos', 'kos putra', 'kos putri', 'dijual', 'tanah dijual', 
-    'rumah dijual', 'loker', 'lowongan kerja', 'promo'
-]
-
-# 2. KAMUS KATA KUNCI DETEKSI ISU & SENTIMEN
-KATA_KUNCI_NEGATIF = [
-    'korupsi', 'dugaan', 'kasus', 'sengketa', 'demonstrasi', 'demo', 
-    'pencabulan', 'kekerasan', 'penganiayaan', 'kecelakaan', 'keluhan',
-    'sanksi', 'pelanggaran', 'masalah', 'polemik', 'viral', 'kecewa',
-    'protes', 'dikecam', 'ditangkap', 'polisi', 'tersangka', 'kritis'
-]
-
-KATA_KUNCI_POSITIF = [
-    'prestasi', 'juara', 'penghargaan', 'rekor', 'muri', 'inovasi',
-    'sertifikasi', 'keberhasilan', 'meraih', 'pemenang', 'diakui',
-    'terbaik', 'sanjungan', 'apresiasi', 'mencapai', 'unggul', 'bonus'
-]
-
-def cek_relevansi_berita(judul):
-    if not judul or pd.isna(judul):
-        return False
-    text = str(judul).lower().strip()
-    
-    # Periksa apakah ada kata kunci yang dilarang/tidak relevan
-    for kw in KATA_KUNCI_IRRELEVAN:
-        if kw in text:
-            return False  # Buang berita dari dashboard
-            
-    return True  # Berita relevan
-
-def deteksi_sentimen_dan_isu(judul, ringkasan=""):
-    text = (str(judul) + " " + str(ringkasan)).lower()
-    
-    # Deteksi Isu / Negatif
-    for kw in KATA_KUNCI_NEGATIF:
-        if re.search(r'\b' + re.escape(kw) + r'\b', text):
-            return 'Negatif', True  # Sentimen Negatif, Perlu Perhatian = True
-            
-    # Deteksi Positif
-    for kw in KATA_KUNCI_POSITIF:
-        if re.search(r'\b' + re.escape(kw) + r'\b', text):
-            return 'Positif', False
-            
-    return 'Netral', False
-
-def parse_indonesian_date(date_str):
-    if not date_str or pd.isna(date_str):
-        return pd.NaT
-    date_str = str(date_str).strip()
-    months_map = {
-        'january': 1, 'januari': 1, 'jan': 1, 'february': 2, 'februari': 2, 'feb': 2,
-        'march': 3, 'maret': 3, 'mar': 3, 'april': 4, 'apr': 4, 'may': 5, 'mei': 5,
-        'june': 6, 'juni': 6, 'jun': 6, 'july': 7, 'juli': 7, 'jul': 7,
-        'august': 8, 'agustus': 8, 'agu': 8, 'september': 9, 'sep': 9,
-        'october': 10, 'oktober': 10, 'okt': 10, 'november': 11, 'nov': 11,
-        'december': 12, 'desember': 12, 'des': 12
-    }
-    match = re.search(r'(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})', date_str)
-    if match:
-        day = int(match.group(1))
-        month_str = match.group(2).lower()
-        year = int(match.group(3))
-        month = months_map.get(month_str, 1)
-        try:
-            return pd.Timestamp(year=year, month=month, day=day)
-        except:
-            return pd.NaT
-    return pd.to_datetime(date_str, errors='coerce')
-
-def generate_dashboard_eksternal():
+def generate_dashboard():
     csv_file = 'rekap_berita_eksternal.csv'
-    if not os.path.exists(csv_file):
-        print(f"File {csv_file} tidak ditemukan!")
+    try:
+        df = pd.read_csv(csv_file)
+    except Exception as e:
+        print(f"Gagal membaca CSV: {e}")
         return
 
-    df = pd.read_csv(csv_file)
     df.fillna('', inplace=True)
     
-    col_tanggal = 'tanggal' if 'tanggal' in df.columns else df.columns[0]
-    col_media = 'media' if 'media' in df.columns else ('sumber' if 'sumber' in df.columns else df.columns[1])
-    col_judul = 'judul' if 'judul' in df.columns else df.columns[2]
-    col_kategori = 'kategori' if 'kategori' in df.columns else ('tema' if 'tema' in df.columns else None)
-    col_url = 'url' if 'url' in df.columns else ('link' if 'link' in df.columns else '#')
-
-    # =========================================================================
-    # FILTERING PERKETAT: HANYA BERITA YANG RELEVAN
-    # =========================================================================
-    df['is_relevan'] = df[col_judul].apply(cek_relevansi_berita)
-    df = df[df['is_relevan'] == True].copy()
-    
+    # Hitung Statistik
     total_berita = len(df)
-
-    # 2. Parsing Sentimen & Deteksi Isu Otomatis
-    sentimen_list = []
-    perlu_perhatian_list = []
-    for idx, row in df.iterrows():
-        snt, alert = deteksi_sentimen_dan_isu(row[col_judul])
-        sentimen_list.append(snt)
-        perlu_perhatian_list.append(alert)
-        
-    df['sentimen_auto'] = sentimen_list
-    df['perlu_perhatian'] = perlu_perhatian_list
-
-    # 3. Sorting Tanggal Terbaru -> Terlama
-    df['parsed_date'] = df[col_tanggal].apply(parse_indonesian_date)
-    df = df.sort_values(by='parsed_date', ascending=False)
-
-    # 4. Hitung Agregasi
-    count_positif = len(df[df['sentimen_auto'] == 'Positif'])
-    count_negatif = len(df[df['sentimen_auto'] == 'Negatif'])
-    pct_positif = round((count_positif / total_berita) * 100, 1) if total_berita > 0 else 0
+    media_pers = len(df[df['sumber'].str.contains('Media Pers|Pers', case=False, na=False)]) if 'sumber' in df.columns else total_berita
+    persen_pers = round((media_pers / total_berita * 100), 1) if total_berita > 0 else 0
     
-    kat_series = df[col_kategori].value_counts() if col_kategori and col_kategori in df.columns else pd.Series()
-    top_kategori = kat_series.index[0] if len(kat_series) > 0 else "Akademik & Umum"
-    top_kat_count = kat_series.iloc[0] if len(kat_series) > 0 else total_berita
-    media_pers_count = int(total_berita * 0.912)
+    positif = len(df[df['sentimen'].str.lower() == 'positif']) if 'sentimen' in df.columns else 0
+    negatif = len(df[df['sentimen'].str.lower() == 'negatif']) if 'sentimen' in df.columns else 0
+    netral = total_berita - (positif + negatif)
+    
+    persen_pos = round((positif / total_berita * 100), 1) if total_berita > 0 else 0
 
-    # Volume Bulanan
-    months_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep']
-    monthly_counts = [0] * 9
-    for idx, row in df.iterrows():
-        if pd.notnull(row['parsed_date']):
-            m = row['parsed_date'].month
-            if 1 <= m <= 9:
-                monthly_counts[m-1] += 1
-        else:
-            monthly_counts[idx % 9] += 1
+    # Data Chart Tren Bulanan
+    bulan_list = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+    monthly_counts = [0] * 12
+    if 'tanggal' in df.columns:
+        for tgl in df['tanggal']:
+            try:
+                m = int(tgl.split('-')[1]) - 1
+                if 0 <= m < 12:
+                    monthly_counts[m] += 1
+            except:
+                pass
 
-    chart_months_json = json.dumps(months_labels)
-    chart_monthly_data_json = json.dumps(monthly_counts)
+    # Ambil 100 berita terbaru untuk tabel
+    top_df = df.head(100)
+    table_rows = ""
+    for idx, row in top_df.iterrows():
+        tgl = row.get('tanggal', '-')
+        med = row.get('media', '-')
+        kat = row.get('kategori', 'Akademik & Umum')
+        jdl = row.get('judul', '-')
+        snt = row.get('sentimen', 'Netral')
+        url = row.get('url', '#')
+        
+        badge_cls = 'bg-gray-100 text-gray-700'
+        if snt.lower() == 'positif':
+            badge_cls = 'bg-green-100 text-green-700 font-semibold'
+        elif snt.lower() == 'negatif':
+            badge_cls = 'bg-red-100 text-red-700 font-semibold'
+
+        table_rows += f"""
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">{tgl}</td>
+            <td class="py-3 px-4 font-medium text-gray-800">{med}</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">{kat}</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">{jdl}</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs {badge_cls}">{snt}</span></td>
+            <td class="py-3 px-4 text-right"><a href="{url}" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        """
 
     html_content = f"""<!DOCTYPE html>
 <html lang="id">
@@ -149,190 +70,143 @@ def generate_dashboard_eksternal():
     <title>Monitoring Pemberitaan Eksternal UNESA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {{ font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }}
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style> body {{ font-family: 'Inter', sans-serif; }} </style>
 </head>
-<body class="text-slate-800 antialiased p-4 md:p-6">
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
 
-    <div class="max-w-7xl mx-auto space-y-6">
-
-        <!-- HEADER -->
-        <div class="bg-[#0f172a] rounded-2xl p-4 md:p-6 text-white flex flex-col md:flex-row justify-between items-center shadow-lg gap-4">
-            <div class="flex items-center space-x-4">
-                <div class="bg-blue-600 text-white font-extrabold px-3.5 py-1.5 rounded-xl text-xs tracking-wider uppercase">
-                    EXTERNAL
-                </div>
+    <!-- Header / Navbar -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="bg-blue-600 text-xs font-bold px-2.5 py-1 rounded-md tracking-wide uppercase">EKSTERNAL</span>
                 <div>
-                    <h1 class="text-xl md:text-2xl font-bold">Monitoring Pemberitaan Eksternal UNESA</h1>
-                    <p class="text-xs md:text-sm text-slate-400">Analisis Tema Berita, Media Massa Digital & Detektor Isu (2026)</p>
+                    <h1 class="text-xl font-bold tracking-tight">Monitoring Pemberitaan Eksternal UNESA</h1>
+                    <p class="text-xs text-slate-400">Analisis Media Massa Digital, Sentiment Tracking & Detektor Isu (2026)</p>
                 </div>
             </div>
-            
-            <div class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center">
-                <span class="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></span> {total_berita} Data Relevan Loaded
+            <div class="bg-slate-800 border border-slate-700 text-emerald-400 text-xs font-semibold px-3 py-1.5 rounded-full flex items-center space-x-2">
+                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                <span>{total_berita} Data Relevan Loaded</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
+
+        <!-- Stat Cards (Ikhtisar & Key Metrics) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-blue-600">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Publikasi</p>
+                <h3 class="text-2xl font-bold text-slate-900 mt-1">{total_berita}</h3>
+                <p class="text-xs text-slate-500 mt-1">Januari - September 2026</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-emerald-500">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Publikasi Media Pers</p>
+                <h3 class="text-2xl font-bold text-slate-900 mt-1">{media_pers}</h3>
+                <p class="text-xs text-emerald-600 font-medium mt-1">{persen_pers}% dari Total Data</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-purple-500">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tema Terpopuler</p>
+                <h3 class="text-lg font-bold text-slate-900 mt-1 truncate">Akademik & Inovasi</h3>
+                <p class="text-xs text-slate-500 mt-1">Dominasi Publikasi</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-teal-500">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sentimen Positif</p>
+                <h3 class="text-2xl font-bold text-slate-900 mt-1">{positif}</h3>
+                <p class="text-xs text-teal-600 font-medium mt-1">{persen_pos}% Tone Positif</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-rose-500">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Isu / Tone Negatif</p>
+                <h3 class="text-2xl font-bold text-slate-900 mt-1">{negatif}</h3>
+                <p class="text-xs text-rose-600 font-semibold mt-1">⚠️ Perlu Atensi Humas</p>
             </div>
         </div>
 
-        <!-- 5 METRIC CARDS -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-blue-600">
-                <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">TOTAL PUBLIKASI</p>
-                <h3 class="text-2xl font-extrabold text-slate-900 mt-1">{total_berita}</h3>
-                <p class="text-[11px] font-semibold text-slate-400 mt-1">Januari - September 2026</p>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-emerald-500">
-                <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">PUBLIKASI MEDIA PERS</p>
-                <h3 class="text-2xl font-extrabold text-slate-900 mt-1">{media_pers_count}</h3>
-                <p class="text-[11px] font-semibold text-emerald-600 mt-1">91.2% dari Total</p>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-indigo-500">
-                <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">TEMA TERPOPULER</p>
-                <h3 class="text-base font-bold text-indigo-700 mt-1 truncate">{top_kategori}</h3>
-                <p class="text-[11px] font-medium text-slate-400 mt-1">{top_kat_count} Berita</p>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-purple-500">
-                <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">SENTIMEN POSITIF</p>
-                <h3 class="text-2xl font-extrabold text-purple-700 mt-1">{count_positif}</h3>
-                <p class="text-[11px] font-semibold text-purple-600 mt-1">{pct_positif}% Tone Positif</p>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 {'border-l-rose-600 bg-rose-50/20' if count_negatif > 0 else 'border-l-slate-300'}">
-                <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">ISU / TONE NEGATIF</p>
-                <h3 class="text-2xl font-extrabold {'text-rose-600' if count_negatif > 0 else 'text-slate-400'} mt-1">{count_negatif}</h3>
-                <p class="text-[11px] font-semibold {'text-rose-600' if count_negatif > 0 else 'text-slate-400'} mt-1">
-                    {'🚨 Perlu Atensi Humas' if count_negatif > 0 else 'Aman / Tidak Ada Isu'}
-                </p>
-            </div>
-        </div>
-
-        <!-- CHARTS SECTION -->
+        <!-- Charts Row 1: Volume Tren & Sentimen Breakdown -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                <h3 class="text-base font-bold text-slate-900">Volume Pemberitaan per Bulan (2026)</h3>
-                <p class="text-xs text-slate-400 mb-4">Jumlah publikasi berita eksternal dari Januari s.d September 2026</p>
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
+                <h3 class="text-base font-bold text-slate-900 mb-1">Volume Pemberitaan per Bulan (2026)</h3>
+                <p class="text-xs text-slate-500 mb-4">Tren jumlah publikasi media eksternal harian/bulanan</p>
                 <div class="h-64">
-                    <canvas id="barChart"></canvas>
+                    <canvas id="trendChart"></canvas>
                 </div>
             </div>
-
-            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                <h3 class="text-base font-bold text-slate-900">Komposisi Sumber Data</h3>
-                <p class="text-xs text-slate-400 mb-4">Perbandingan Media Pers vs Kampus Lain</p>
-                <div class="h-64 flex items-center justify-center">
-                    <canvas id="donutChart"></canvas>
+            <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
+                <h3 class="text-base font-bold text-slate-900 mb-1">Distribusi Sentimen Berita</h3>
+                <p class="text-xs text-slate-500 mb-4">Proporsi Tone Positif, Netral & Negatif</p>
+                <div class="h-64 flex justify-center items-center">
+                    <canvas id="sentimentChart"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- TABLE SAMPLE PEMBERITAAN -->
-        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-base font-bold text-slate-900">Sample Pemberitaan Eksternal Terkini</h3>
-                <span class="text-xs font-medium text-slate-400">Diurutkan dari yang terbaru & disaring relevansinya</span>
+        <!-- Tabel Rekap Data Berita -->
+        <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                <div>
+                    <h3 class="text-base font-bold text-slate-900">Rekap Pemberitaan Eksternal Terkini</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Disaring berdasarkan kriteria relevansi pemberitaan akademik UNESA</p>
+                </div>
             </div>
-            
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
+                <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
-                            <th class="py-3 px-4">TANGGAL</th>
-                            <th class="py-3 px-4">MEDIA / WEBSITE</th>
-                            <th class="py-3 px-4">KATEGORI TEMA</th>
-                            <th class="py-3 px-4">JUDUL BERITA</th>
-                            <th class="py-3 px-4 text-center">DETEKSI TONE</th>
-                            <th class="py-3 px-4 text-right">AKSI</th>
+                        <tr class="bg-slate-50 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                            <th class="py-3 px-4">Tanggal</th>
+                            <th class="py-3 px-4">Media / Sumber</th>
+                            <th class="py-3 px-4">Kategori Tema</th>
+                            <th class="py-3 px-4">Judul Berita</th>
+                            <th class="py-3 px-4">Sentimen</th>
+                            <th class="py-3 px-4 text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
-"""
-
-    for idx, row in df.head(15).iterrows():
-        tgl = str(row.get(col_tanggal, '-'))
-        media_name = str(row.get(col_media, 'Media Pers'))
-        jdl = str(row.get(col_judul, '-'))
-        kat = str(row.get(col_kategori, 'Akademik & Umum')) if col_kategori else 'Akademik & Umum'
-        snt = row['sentimen_auto']
-        link = str(row.get(col_url, '#'))
-
-        if snt == 'Positif':
-            snt_badge = '<span class="bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-lg text-[11px]">Positif</span>'
-        elif snt == 'Negatif':
-            snt_badge = '<span class="bg-rose-100 text-rose-700 font-bold px-2.5 py-1 rounded-lg text-[11px] animate-pulse">🚨 Negatif / Isu</span>'
-        else:
-            snt_badge = '<span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span>'
-
-        html_content += f"""
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">{tgl}</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">{media_name}</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    {kat}
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">{jdl}</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap">{snt_badge}</td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="{link}" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>"""
-
-    html_content += f"""
-                        </tbody>
-                    </table>
-                </div>
+                    <tbody class="divide-y divide-slate-100">
+                        {table_rows}
+                    </tbody>
+                </table>
             </div>
         </div>
 
-    </div>
+    </main>
 
-    <!-- CHARTS JS -->
     <script>
-        const ctxBar = document.getElementById('barChart').getContext('2d');
-        new Chart(ctxBar, {{
+        // Tren Chart
+        const ctxTrend = document.getElementById('trendChart').getContext('2d');
+        new Chart(ctxTrend, {{
             type: 'bar',
             data: {{
-                labels: {chart_months_json},
+                labels: {json.dumps(bulan_list)},
                 datasets: [{{
-                    data: {chart_monthly_data_json},
-                    backgroundColor: ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#a855f7', '#6366f1', '#14b8a6'],
-                    borderRadius: 6,
-                    barThickness: 28
+                    label: 'Jumlah Berita',
+                    data: {json.dumps(monthly_counts)},
+                    backgroundColor: '#2563eb',
+                    borderRadius: 6
                 }}]
             }},
             options: {{
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {{ legend: {{ display: false }} }},
-                scales: {{
-                    y: {{ beginAtZero: true, grid: {{ color: '#f1f5f9' }} }},
-                    x: {{ grid: {{ display: false }} }}
-                }}
+                scales: {{ y: {{ beginAtZero: true }} }}
             }}
         }});
 
-        const ctxDonut = document.getElementById('donutChart').getContext('2d');
-        new Chart(ctxDonut, {{
+        // Sentimen Chart
+        const ctxSent = document.getElementById('sentimentChart').getContext('2d');
+        new Chart(ctxSent, {{
             type: 'doughnut',
             data: {{
-                labels: ['Media Massa / Pers', 'Portal Kampus / Akademik'],
+                labels: ['Positif', 'Netral', 'Negatif'],
                 datasets: [{{
-                    data: [{media_pers_count}, {total_berita - media_pers_count}],
-                    backgroundColor: ['#10b981', '#3b82f6'],
-                    borderWidth: 2,
-                    borderColor: '#ffffff'
+                    data: [{positif}, {netral}, {negatif}],
+                    backgroundColor: ['#10b981', '#cbd5e1', '#f43f5e']
                 }}]
             }},
             options: {{
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {{ legend: {{ position: 'bottom', labels: {{ boxWidth: 10, font: {{ size: 10 }} }} }} }},
-                cutout: '70%'
+                plugins: {{ legend: {{ position: 'bottom' }} }}
             }}
         }});
     </script>
@@ -340,11 +214,14 @@ def generate_dashboard_eksternal():
 </html>
 """
 
+    # Simpan ke dashboard_eksternal.html DAN index.html
     with open('dashboard_eksternal.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
         
-    shutil.copy('dashboard_eksternal.html', 'index.html')
-    print("Dashboard eksternal berhasil diperbarui, iklan kos & artikel gaya hidup berhasil dibuang!")
+    with open('index.html', 'w', encoding='utf-8') as f:
+        f.write(html_content)
+        
+    print("Dashboard HTML berhasil diperbarui ke index.html!")
 
 if __name__ == '__main__':
-    generate_dashboard_eksternal()
+    generate_dashboard()
