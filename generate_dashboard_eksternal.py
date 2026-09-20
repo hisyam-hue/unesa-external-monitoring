@@ -4,79 +4,99 @@ import shutil
 import os
 import re
 
+# KAMUS KATA KUNCI DETEKSI ISU & SENTIMEN
+KATA_KUNCI_NEGATIF = [
+    'korupsi', 'dugaan', 'kasus', 'sengketa', 'demonstrasi', 'demo', 
+    'pencabulan', 'kekerasan', 'penganiayaan', 'kecelakaan', 'keluhan',
+    'sanksi', 'pelanggaran', 'masalah', 'polemik', 'viral', 'kecewa',
+    'protes', 'dikecam', 'ditangkap', 'polisi', 'tersangka', 'kritis', 'kecewa'
+]
+
+KATA_KUNCI_POSITIF = [
+    'prestasi', 'juara', 'penghargaan', 'rekor', 'muri', 'inovasi',
+    'sertifikasi', 'keberhasilan', 'meraih', 'pemenang', 'diakui',
+    'terbaik', 'sanjungan', 'apresiasi', 'mencapai', 'unggul', 'bonus'
+]
+
+def deteksi_sentimen_dan_isu(judul, ringkasan=""):
+    text = (str(judul) + " " + str(ringkasan)).lower()
+    
+    # Deteksi Isu / Negatif
+    for kw in KATA_KUNCI_NEGATIF:
+        if re.search(r'\b' + re.escape(kw) + r'\b', text):
+            return 'Negatif', True  # Sentimen Negatif, Perlu Perhatian = True
+            
+    # Deteksi Positif
+    for kw in KATA_KUNCI_POSITIF:
+        if re.search(r'\b' + re.escape(kw) + r'\b', text):
+            return 'Positif', False
+            
+    return 'Netral', False
+
 def parse_indonesian_date(date_str):
     if not date_str or pd.isna(date_str):
         return pd.NaT
-    
     date_str = str(date_str).strip()
-    
-    # Pemetaan Nama Bulan Indonesia/Inggris ke Angka
     months_map = {
-        'january': 1, 'januari': 1, 'jan': 1,
-        'february': 2, 'februari': 2, 'feb': 2,
-        'march': 3, 'maret': 3, 'mar': 3,
-        'april': 4, 'apr': 4,
-        'may': 5, 'mei': 5,
-        'june': 6, 'juni': 6, 'jun': 6,
-        'july': 7, 'juli': 7, 'jul': 7,
-        'august': 8, 'agustus': 8, 'agu': 8, 'agst': 8,
-        'september': 9, 'sep': 9,
-        'october': 10, 'oktober': 10, 'okt': 10,
-        'november': 11, 'nov': 11,
+        'january': 1, 'januari': 1, 'jan': 1, 'february': 2, 'februari': 2, 'feb': 2,
+        'march': 3, 'maret': 3, 'mar': 3, 'april': 4, 'apr': 4, 'may': 5, 'mei': 5,
+        'june': 6, 'juni': 6, 'jun': 6, 'july': 7, 'juli': 7, 'jul': 7,
+        'august': 8, 'agustus': 8, 'agu': 8, 'september': 9, 'sep': 9,
+        'october': 10, 'oktober': 10, 'okt': 10, 'november': 11, 'nov': 11,
         'december': 12, 'desember': 12, 'des': 12
     }
-    
-    # Cari pola Tanggal Bulan Tahun (misal: 19 September 2026 atau 03 January 2026)
     match = re.search(r'(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})', date_str)
     if match:
         day = int(match.group(1))
         month_str = match.group(2).lower()
         year = int(match.group(3))
-        
         month = months_map.get(month_str, 1)
         try:
             return pd.Timestamp(year=year, month=month, day=day)
         except:
             return pd.NaT
-            
-    # Fallback jika standar ISO (YYYY-MM-DD)
     return pd.to_datetime(date_str, errors='coerce')
 
 def generate_dashboard_eksternal():
     csv_file = 'rekap_berita_eksternal.csv'
-    
     if not os.path.exists(csv_file):
         print(f"File {csv_file} tidak ditemukan!")
         return
 
-    # 1. Load Data
     df = pd.read_csv(csv_file)
     df.fillna('', inplace=True)
-
     total_berita = len(df)
 
     col_tanggal = 'tanggal' if 'tanggal' in df.columns else df.columns[0]
     col_media = 'media' if 'media' in df.columns else ('sumber' if 'sumber' in df.columns else df.columns[1])
     col_judul = 'judul' if 'judul' in df.columns else df.columns[2]
     col_kategori = 'kategori' if 'kategori' in df.columns else ('tema' if 'tema' in df.columns else None)
-    col_sentimen = 'sentimen' if 'sentimen' in df.columns else None
     col_url = 'url' if 'url' in df.columns else ('link' if 'link' in df.columns else '#')
 
-    # =========================================================================
-    # PARSING TANGGAL DAN SORTING TERBARU -> TERLAMA (DESCENDING)
-    # =========================================================================
-    df['parsed_date'] = df[col_tanggal].apply(parse_indonesian_date)
-    
-    # Urutkan berdasarkan parsed_date descending
-    df = df.sort_values(by='parsed_date', ascending=False)
-    # =========================================================================
+    # 1. Parsing Sentimen & Deteksi Isu Otomatis
+    sentimen_list = []
+    perlu_perhatian_list = []
+    for idx, row in df.iterrows():
+        snt, alert = deteksi_sentimen_dan_isu(row[col_judul])
+        sentimen_list.append(snt)
+        perlu_perhatian_list.append(alert)
+        
+    df['sentimen_auto'] = sentimen_list
+    df['perlu_perhatian'] = perlu_perhatian_list
 
+    # 2. Sorting Tanggal Terbaru -> Terlama
+    df['parsed_date'] = df[col_tanggal].apply(parse_indonesian_date)
+    df = df.sort_values(by='parsed_date', ascending=False)
+
+    # 3. Hitung Agregasi
+    count_positif = len(df[df['sentimen_auto'] == 'Positif'])
+    count_negatif = len(df[df['sentimen_auto'] == 'Negatif'])
+    pct_positif = round((count_positif / total_berita) * 100, 1) if total_berita > 0 else 0
+    
     kat_series = df[col_kategori].value_counts() if col_kategori and col_kategori in df.columns else pd.Series()
     top_kategori = kat_series.index[0] if len(kat_series) > 0 else "Akademik & Umum"
     top_kat_count = kat_series.iloc[0] if len(kat_series) > 0 else total_berita
-
     media_pers_count = int(total_berita * 0.912)
-    positif_count = int(total_berita * 0.206)
 
     # Volume Bulanan
     months_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep']
@@ -103,14 +123,13 @@ def generate_dashboard_eksternal():
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {{ font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }}
-        .tab-btn.active {{ background-color: #3b82f6; color: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }}
     </style>
 </head>
 <body class="text-slate-800 antialiased p-4 md:p-6">
 
     <div class="max-w-7xl mx-auto space-y-6">
 
-        <!-- HEADER SECTION -->
+        <!-- HEADER -->
         <div class="bg-[#0f172a] rounded-2xl p-4 md:p-6 text-white flex flex-col md:flex-row justify-between items-center shadow-lg gap-4">
             <div class="flex items-center space-x-4">
                 <div class="bg-blue-600 text-white font-extrabold px-3.5 py-1.5 rounded-xl text-xs tracking-wider uppercase">
@@ -118,25 +137,16 @@ def generate_dashboard_eksternal():
                 </div>
                 <div>
                     <h1 class="text-xl md:text-2xl font-bold">Monitoring Pemberitaan Eksternal UNESA</h1>
-                    <p class="text-xs md:text-sm text-slate-400">Analisis Tema Berita, Media Massa Digital & Portal Kampus Mitra (2026)</p>
+                    <p class="text-xs md:text-sm text-slate-400">Analisis Tema Berita, Media Massa Digital & Detektor Isu (2026)</p>
                 </div>
             </div>
             
-            <div class="flex flex-wrap items-center gap-3">
-                <div class="bg-slate-800 border border-slate-700 rounded-xl p-1 flex text-xs font-semibold">
-                    <button class="tab-btn active px-3 py-1.5 rounded-lg transition-all">Ikhtisar</button>
-                    <button class="text-slate-400 px-3 py-1.5 hover:text-white">Analisis Tema & Kategori</button>
-                    <button class="text-slate-400 px-3 py-1.5 hover:text-white">Rekap Data</button>
-                    <button class="text-slate-400 px-3 py-1.5 hover:text-white">Tier & Sentimen</button>
-                </div>
-                
-                <div class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center">
-                    <span class="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></span> {total_berita} Data Eksternal
-                </div>
+            <div class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center">
+                <span class="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></span> {total_berita} Data Terintegrasi
             </div>
         </div>
 
-        <!-- METRIC CARDS -->
+        <!-- 5 METRIC CARDS -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-blue-600">
                 <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">TOTAL PUBLIKASI</p>
@@ -153,19 +163,22 @@ def generate_dashboard_eksternal():
             <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-indigo-500">
                 <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">TEMA TERPOPULER</p>
                 <h3 class="text-base font-bold text-indigo-700 mt-1 truncate">{top_kategori}</h3>
-                <p class="text-[11px] font-medium text-slate-400 mt-1">{top_kat_count} Berita Diliput</p>
+                <p class="text-[11px] font-medium text-slate-400 mt-1">{top_kat_count} Berita</p>
             </div>
 
             <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-purple-500">
                 <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">SENTIMEN POSITIF</p>
-                <h3 class="text-2xl font-extrabold text-purple-700 mt-1">{positif_count}</h3>
-                <p class="text-[11px] font-semibold text-purple-600 mt-1">20.6% Tone Positif</p>
+                <h3 class="text-2xl font-extrabold text-purple-700 mt-1">{count_positif}</h3>
+                <p class="text-[11px] font-semibold text-purple-600 mt-1">{pct_positif}% Tone Positif</p>
             </div>
 
-            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-rose-500">
+            <!-- CARD ISU NEGATIF DENGAN KONDISI WARNA -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 {'border-l-rose-600 bg-rose-50/20' if count_negatif > 0 else 'border-l-slate-300'}">
                 <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">ISU / TONE NEGATIF</p>
-                <h3 class="text-2xl font-extrabold text-slate-300 mt-1">-</h3>
-                <p class="text-[11px] font-semibold text-slate-400 mt-1">-</p>
+                <h3 class="text-2xl font-extrabold {'text-rose-600' if count_negatif > 0 else 'text-slate-400'} mt-1">{count_negatif}</h3>
+                <p class="text-[11px] font-semibold {'text-rose-600' if count_negatif > 0 else 'text-slate-400'} mt-1">
+                    {'🚨 Perlu Atensi Humas' if count_negatif > 0 else 'Aman / Tidak Ada Isu'}
+                </p>
             </div>
         </div>
 
@@ -188,11 +201,11 @@ def generate_dashboard_eksternal():
             </div>
         </div>
 
-        <!-- SAMPLE PEMBERITAAN (MURNI SENSITIVE TANGGAL TERBARU) -->
+        <!-- TABLE SAMPLE PEMBERITAAN -->
         <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-base font-bold text-slate-900">Sample Pemberitaan Eksternal Terkini</h3>
-                <a href="#" class="text-xs font-semibold text-blue-600 hover:underline">Lihat Semua Data ↗</a>
+                <span class="text-xs font-medium text-slate-400">Diurutkan dari yang terbaru</span>
             </div>
             
             <div class="overflow-x-auto">
@@ -203,28 +216,27 @@ def generate_dashboard_eksternal():
                             <th class="py-3 px-4">MEDIA / WEBSITE</th>
                             <th class="py-3 px-4">KATEGORI TEMA</th>
                             <th class="py-3 px-4">JUDUL BERITA</th>
-                            <th class="py-3 px-4 text-center">SENTIMEN</th>
+                            <th class="py-3 px-4 text-center">DETEKSI TONE</th>
                             <th class="py-3 px-4 text-right">AKSI</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
 """
 
-    # POPULATE BARIS TABEL (10 HASIL SORTING TANGGAL TERBARU)
-    for idx, row in df.head(10).iterrows():
+    for idx, row in df.head(15).iterrows():
         tgl = str(row.get(col_tanggal, '-'))
         media_name = str(row.get(col_media, 'Media Pers'))
         jdl = str(row.get(col_judul, '-'))
         kat = str(row.get(col_kategori, 'Akademik & Umum')) if col_kategori else 'Akademik & Umum'
-        snt = str(row.get(col_sentimen, 'Netral')) if col_sentimen else 'Netral'
+        snt = row['sentimen_auto']
         link = str(row.get(col_url, '#'))
 
-        if 'Positif' in snt:
-            snt_badge = '<span class="bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded text-[10px]">Positif</span>'
-        elif 'Negatif' in snt:
-            snt_badge = '<span class="bg-rose-100 text-rose-700 font-bold px-2 py-0.5 rounded text-[10px]">Negatif</span>'
+        if snt == 'Positif':
+            snt_badge = '<span class="bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-lg text-[11px]">Positif</span>'
+        elif snt == 'Negatif':
+            snt_badge = '<span class="bg-rose-100 text-rose-700 font-bold px-2.5 py-1 rounded-lg text-[11px] animate-pulse">🚨 Negatif / Isu</span>'
         else:
-            snt_badge = '<span class="bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded text-[10px]">Netral</span>'
+            snt_badge = '<span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span>'
 
         html_content += f"""
                         <tr class="hover:bg-slate-50/80 transition-colors">
@@ -259,10 +271,7 @@ def generate_dashboard_eksternal():
                 labels: {chart_months_json},
                 datasets: [{{
                     data: {chart_monthly_data_json},
-                    backgroundColor: [
-                        '#3b82f6', '#06b6d4', '#10b981', '#f59e0b', 
-                        '#ec4899', '#8b5cf6', '#a855f7', '#6366f1', '#14b8a6'
-                    ],
+                    backgroundColor: ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#a855f7', '#6366f1', '#14b8a6'],
                     borderRadius: 6,
                     barThickness: 28
                 }}]
@@ -293,9 +302,7 @@ def generate_dashboard_eksternal():
             options: {{
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {{
-                    legend: {{ position: 'bottom', labels: {{ boxWidth: 10, font: {{ size: 10 }} }} }}
-                }},
+                plugins: {{ legend: {{ position: 'bottom', labels: {{ boxWidth: 10, font: {{ size: 10 }} }} }} }},
                 cutout: '70%'
             }}
         }});
@@ -308,7 +315,7 @@ def generate_dashboard_eksternal():
         f.write(html_content)
         
     shutil.copy('dashboard_eksternal.html', 'index.html')
-    print("Dashboard eksternal berhasil diurutkan berdasarkan tanggal terbaru!")
+    print("Dashboard eksternal berhasil diperbarui dengan Detektor Isu & Tone!")
 
 if __name__ == '__main__':
     generate_dashboard_eksternal()
