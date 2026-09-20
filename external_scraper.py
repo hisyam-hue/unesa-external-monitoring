@@ -14,25 +14,17 @@ RSS_URLS = [
 
 CSV_FILE = "rekap_berita_eksternal.csv"
 
-# Kata kunci iklan / marketplace / sistem internal yang wajib diblokir
+# Blocklist Kata Kunci Iklan & Sistem
 BLOCKLIST_KEYWORDS = [
     "disewakan", "dijual", "siap huni", "kost", "kontrakan", 
     "tanah dijual", "rumah dijual", "over kredit", "shm",
     "login", "reset password", "email reset", "portal mahasiswa"
 ]
 
-# Domain non-media & iklan properti yang diblokir
+# Blocklist Domain Non-Media
 BLOCKLIST_DOMAINS = [
     "rumah123.com", "olx.co.id", "lamudi.co.id", "propertyguru", "mitula",
     "sibiti.co.id", "unesa.ac.id"
-]
-
-# Daftar berita negatif palsu / noise dari data lama yang wajib dibuang
-INVALID_TITLES = [
-    "Kapolrestabes Surabaya Minta Maaf",
-    "Polisi di Bulukumba Ditangkap",
-    "Diduga Lecehkan 7 Anak Laki-laki",
-    "Siap Huni 45jt/th Disewakan"
 ]
 
 HEADERS = {
@@ -63,15 +55,12 @@ def fetch_article_body_text(url):
         
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # 1. Hapus elemen tag umum
         for element in soup(["aside", "footer", "nav", "script", "style", "form"]):
             element.extract()
             
-        # 2. Hapus spesifik box "Pilihan Redaksi", "Baca Juga", "Berita Terkait", Iklan
         for div in soup.find_all(["div", "section", "article", "blockquote"], class_=re.compile(r'(sidebar|related|baca-juga|ad-|recommendation|widget|pilihan-redaksi|detail-tag|insert|multi-link)', re.I)):
             div.extract()
 
-        # 3. Hapus paragraf yang berawalan "Lihat Juga:", "Baca juga:", "Pilihan Redaksi:"
         for p in soup.find_all('p'):
             p_text = p.get_text().strip().lower()
             if p_text.startswith(('baca juga', 'lihat juga', 'pilihan redaksi', 'simak juga', 'baca selengkapnya')):
@@ -84,10 +73,9 @@ def fetch_article_body_text(url):
         return ""
 
 def classify_news(title, body_text=""):
-    """Menentukan kategori dan sentimen secara akurat."""
     text_to_check = (title + " " + body_text).lower()
     
-    # Kategori Pakar
+    # 1. Kategori Pakar
     if any(k in text_to_check for k in ['pakar', 'akademisi', 'dosen', 'pengamat', 'peneliti', 'tanggapan', 'dorong', 'soroti', 'pakar unesa']):
         kategori = "Pikiran Pakar"
     elif any(k in text_to_check for k in ['prestasi', 'juara', 'medali', 'penghargaan', 'beasiswa']):
@@ -100,15 +88,15 @@ def classify_news(title, body_text=""):
         kategori = "Pengabdian Masyarakat"
     elif any(k in text_to_check for k in ['kerjasama', 'mou', 'kunjungan', 'mitra']):
         kategori = "Kerjasama & Internasional"
-    elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa']):
+    elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa', 'pelecehan seksual']):
         kategori = "Isu Hukum & PPKS"
     else:
         kategori = "Akademik & Umum"
 
-    # Sentimen
+    # 2. Sentimen
     if kategori == "Pikiran Pakar":
         sentimen = "Positif" if any(k in text_to_check for k in ['solusi', 'dorong', 'inovasi', 'bantu', 'mekanisme']) else "Netral"
-    elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa']):
+    elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa', 'pelecehan seksual di unesa']):
         sentimen = "Negatif"
     elif any(k in text_to_check for k in ['juara', 'unggul', 'sukses', 'bangga', 'resmi', 'apresiasi']):
         sentimen = "Positif"
@@ -118,47 +106,52 @@ def classify_news(title, body_text=""):
     return kategori, sentimen
 
 def filter_and_clean_existing_csv():
-    """Membersihkan file CSV lama dari berita sampah/noise secara instan."""
+    """Membersihkan CSV secara radikal dari noise kriminal luar daerah & iklan."""
     try:
         df = pd.read_csv(CSV_FILE)
         initial_len = len(df)
         
-        # 1. Hapus domain & kata kunci terlarang
+        # 1. Hapus domain & kata kunci iklan
         pattern_domains = '|'.join([re.escape(d) for d in BLOCKLIST_DOMAINS])
         pattern_keywords = '|'.join([re.escape(k) for k in BLOCKLIST_KEYWORDS])
         
         df = df[~df['link'].astype(str).str.contains(pattern_domains, case=False, na=False)]
         df = df[~df['judul'].astype(str).str.contains(pattern_keywords, case=False, na=False)]
         
-        # 2. Hapus judul sampah spesifik (Bulukumba, Rumah123, Pungli Sidoarjo, Bogor)
-        pattern_invalid = '|'.join([re.escape(t) for t in INVALID_TITLES])
-        df = df[~df['judul'].astype(str).str.contains(pattern_invalid, case=False, na=False)]
+        # 2. FILTER RADIKAL: Hapus berita kriminal luar daerah (Bulukumba, Bogor, Sidoarjo) jika TIDAK menyebutkan UNESA pada judulnya
+        noise_locations = ['bulukumba', 'bogor', 'sidoarjo', 'kapolrestabes surabaya']
+        pattern_noise = '|'.join(noise_locations)
         
-        # 3. Hapus judul terlalu pendek
-        df = df[df['judul'].astype(str).str.len() > 15]
-        
-        # 4. Perbaiki berita Pakar (seperti Sita Aset Suara.com) agar tidak Negatif
+        rows_to_keep = []
         for idx, row in df.iterrows():
-            title = str(row['judul'])
-            kat, sen = classify_news(title, "")
-            df.at[idx, 'kategori'] = kat
-            if kat == "Pikiran Pakar" or "akademisi unesa" in title.lower() or "pakar" in title.lower():
-                df.at[idx, 'kategori'] = "Pikiran Pakar"
-                df.at[idx, 'sentimen'] = "Positif" if "dorong" in title.lower() else "Netral"
-
-        print(f"[CLEANUP] Berhasil membersihkan CSV lama: dari {initial_len} menjadi {len(df)} berita.")
-        return df
+            title = str(row['judul']).lower()
+            sentimen = str(row['sentimen'])
+            
+            # Jika mengandung lokasi noise dan tidak ada kata unesa di judul, buang!
+            if re.search(pattern_noise, title) and not re.search(r'\b(unesa|universitas negeri surabaya)\b', title):
+                continue
+                
+            # Jika berita Pakar, pastikan tidak negatif
+            kat, sen = classify_news(row['judul'], "")
+            row_dict = row.to_dict()
+            row_dict['kategori'] = kat
+            if kat == "Pikiran Pakar":
+                row_dict['sentimen'] = "Positif" if "dorong" in title else "Netral"
+                
+            rows_to_keep.append(row_dict)
+            
+        df_clean = pd.DataFrame(rows_to_keep)
+        print(f"[CLEANUP] Berhasil membersihkan CSV lama: dari {initial_len} menjadi {len(df_clean)} berita.")
+        return df_clean
     except Exception as e:
         print(f"[WARN] Gagal membersihkan CSV lama: {e}")
         return pd.DataFrame()
 
 def fetch_external_news():
-    print("=== MENGAMBIL BERITA EKSTERNAL UNESA (ENHANCED NOISE FILTER) ===")
+    print("=== MENGAMBIL BERITA EKSTERNAL UNESA & PURGING NOISE ===")
     
-    # Clean CSV lama
     df_old_clean = filter_and_clean_existing_csv()
 
-    # Fetch RSS Baru
     news_list = []
     for url in RSS_URLS:
         feed = feedparser.parse(url)
