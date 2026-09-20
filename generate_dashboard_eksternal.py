@@ -2,6 +2,45 @@ import pandas as pd
 import json
 import shutil
 import os
+import re
+
+def parse_indonesian_date(date_str):
+    if not date_str or pd.isna(date_str):
+        return pd.NaT
+    
+    date_str = str(date_str).strip()
+    
+    # Pemetaan Nama Bulan Indonesia/Inggris ke Angka
+    months_map = {
+        'january': 1, 'januari': 1, 'jan': 1,
+        'february': 2, 'februari': 2, 'feb': 2,
+        'march': 3, 'maret': 3, 'mar': 3,
+        'april': 4, 'apr': 4,
+        'may': 5, 'mei': 5,
+        'june': 6, 'juni': 6, 'jun': 6,
+        'july': 7, 'juli': 7, 'jul': 7,
+        'august': 8, 'agustus': 8, 'agu': 8, 'agst': 8,
+        'september': 9, 'sep': 9,
+        'october': 10, 'oktober': 10, 'okt': 10,
+        'november': 11, 'nov': 11,
+        'december': 12, 'desember': 12, 'des': 12
+    }
+    
+    # Cari pola Tanggal Bulan Tahun (misal: 19 September 2026 atau 03 January 2026)
+    match = re.search(r'(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})', date_str)
+    if match:
+        day = int(match.group(1))
+        month_str = match.group(2).lower()
+        year = int(match.group(3))
+        
+        month = months_map.get(month_str, 1)
+        try:
+            return pd.Timestamp(year=year, month=month, day=day)
+        except:
+            return pd.NaT
+            
+    # Fallback jika standar ISO (YYYY-MM-DD)
+    return pd.to_datetime(date_str, errors='coerce')
 
 def generate_dashboard_eksternal():
     csv_file = 'rekap_berita_eksternal.csv'
@@ -16,7 +55,6 @@ def generate_dashboard_eksternal():
 
     total_berita = len(df)
 
-    # Deteksi Kolom
     col_tanggal = 'tanggal' if 'tanggal' in df.columns else df.columns[0]
     col_media = 'media' if 'media' in df.columns else ('sumber' if 'sumber' in df.columns else df.columns[1])
     col_judul = 'judul' if 'judul' in df.columns else df.columns[2]
@@ -25,24 +63,22 @@ def generate_dashboard_eksternal():
     col_url = 'url' if 'url' in df.columns else ('link' if 'link' in df.columns else '#')
 
     # =========================================================================
-    # PERBAIKAN: URUTKAN BERITA DARI TERBARU KE TERLAMA (DESCENDING)
+    # PARSING TANGGAL DAN SORTING TERBARU -> TERLAMA (DESCENDING)
     # =========================================================================
-    df['parsed_date'] = pd.to_datetime(df[col_tanggal], errors='coerce')
+    df['parsed_date'] = df[col_tanggal].apply(parse_indonesian_date)
     
-    # Sortir berdasarkan tanggal dari yang paling baru ke lama
-    # Data tanpa tanggal valid ditaruh di paling bawah (na_position='last')
-    df = df.sort_values(by='parsed_date', ascending=False, na_position='last')
+    # Urutkan berdasarkan parsed_date descending
+    df = df.sort_values(by='parsed_date', ascending=False)
     # =========================================================================
 
-    # Hitung Statistik Kategori & Sentimen
     kat_series = df[col_kategori].value_counts() if col_kategori and col_kategori in df.columns else pd.Series()
     top_kategori = kat_series.index[0] if len(kat_series) > 0 else "Akademik & Umum"
     top_kat_count = kat_series.iloc[0] if len(kat_series) > 0 else total_berita
 
-    media_pers_count = int(total_berita * 0.912) # Estimasi/Kalkulasi Media Pers
-    positif_count = int(total_berita * 0.206)   # Sentimen Positif
+    media_pers_count = int(total_berita * 0.912)
+    positif_count = int(total_berita * 0.206)
 
-    # Data Volume Bulanan (Jan - Sep)
+    # Volume Bulanan
     months_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep']
     monthly_counts = [0] * 9
     for idx, row in df.iterrows():
@@ -56,7 +92,6 @@ def generate_dashboard_eksternal():
     chart_months_json = json.dumps(months_labels)
     chart_monthly_data_json = json.dumps(monthly_counts)
 
-    # 2. Template HTML Dashboard Eksternal
     html_content = f"""<!DOCTYPE html>
 <html lang="id">
 <head>
@@ -101,7 +136,7 @@ def generate_dashboard_eksternal():
             </div>
         </div>
 
-        <!-- 5 METRIC CARDS -->
+        <!-- METRIC CARDS -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-blue-600">
                 <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">TOTAL PUBLIKASI</p>
@@ -153,7 +188,7 @@ def generate_dashboard_eksternal():
             </div>
         </div>
 
-        <!-- TABLE SAMPLE PEMBERITAAN (URUT TERBARU) -->
+        <!-- SAMPLE PEMBERITAAN (MURNI SENSITIVE TANGGAL TERBARU) -->
         <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-base font-bold text-slate-900">Sample Pemberitaan Eksternal Terkini</h3>
@@ -175,7 +210,7 @@ def generate_dashboard_eksternal():
                     <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
 """
 
-    # POPULATE BARIS TABEL (MENGAMBIL 10 BERITA TERBARU HASIL SORTING)
+    # POPULATE BARIS TABEL (10 HASIL SORTING TANGGAL TERBARU)
     for idx, row in df.head(10).iterrows():
         tgl = str(row.get(col_tanggal, '-'))
         media_name = str(row.get(col_media, 'Media Pers'))
@@ -184,7 +219,6 @@ def generate_dashboard_eksternal():
         snt = str(row.get(col_sentimen, 'Netral')) if col_sentimen else 'Netral'
         link = str(row.get(col_url, '#'))
 
-        # Color Badge Sentimen
         if 'Positif' in snt:
             snt_badge = '<span class="bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded text-[10px]">Positif</span>'
         elif 'Negatif' in snt:
@@ -270,12 +304,11 @@ def generate_dashboard_eksternal():
 </html>
 """
 
-    # Simpan Output HTML
     with open('dashboard_eksternal.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
         
     shutil.copy('dashboard_eksternal.html', 'index.html')
-    print("Dashboard eksternal berhasil diperbarui dengan urutan tanggal terbaru di paling atas!")
+    print("Dashboard eksternal berhasil diurutkan berdasarkan tanggal terbaru!")
 
 if __name__ == '__main__':
     generate_dashboard_eksternal()
