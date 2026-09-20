@@ -23,179 +23,103 @@
             </div>
             <div class="bg-slate-800 border border-slate-700 text-emerald-400 text-xs font-semibold px-3 py-1.5 rounded-full flex items-center space-x-2">
                 <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-                <span>1742 Data Relevan Loaded</span>
+                <span>1733 Data Relevan Loaded</span>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-10">
 
-        <!-- Stat Cards (Ikhtisar & Key Metrics) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-blue-600">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Publikasi</p>
-                <h3 class="text-2xl font-bold text-slate-900 mt-1">1742</h3>
-                <p class="text-xs text-slate-500 mt-1">Januari - September 2026</p>
+        <!-- SECTION 1: IKHTISAR & KEY METRICS -->
+        <section>
+            <div class="flex items-center space-x-2 mb-4">
+                <div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
+                <h2 class="text-lg font-bold text-slate-900 uppercase tracking-wide">Ikhtisar & Key Metrics</h2>
             </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-emerald-500">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Publikasi Media Pers</p>
-                <h3 class="text-2xl font-bold text-slate-900 mt-1">427</h3>
-                <p class="text-xs text-emerald-600 font-medium mt-1">24.5% dari Total Data</p>
-            </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-purple-500">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tema Terpopuler</p>
-                <h3 class="text-lg font-bold text-slate-900 mt-1 truncate">Akademik & Inovasi</h3>
-                <p class="text-xs text-slate-500 mt-1">Dominasi Publikasi</p>
-            </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-teal-500">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sentimen Positif</p>
-                <h3 class="text-2xl font-bold text-slate-900 mt-1">364</h3>
-                <p class="text-xs text-teal-600 font-medium mt-1">20.9% Tone Positif</p>
-            </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-rose-500">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Isu / Tone Negatif</p>
-                <h3 class="text-2xl font-bold text-slate-900 mt-1">84</h3>
-                <p class="text-xs text-rose-600 font-semibold mt-1">⚠️ Perlu Atensi Humas</p>
-            </div>
-        </div>
-
-        <!-- Charts Row 1: Volume Tren & Sentimen Breakdown -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
-                <h3 class="text-base font-bold text-slate-900 mb-1">Volume Pemberitaan per Bulan (2026)</h3>
-                <p class="text-xs text-slate-500 mb-4">Tren jumlah publikasi media eksternal harian/bulanan</p>
-                <div class="h-64">
-                    <canvas id="trendChart"></canvas>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-blue-600">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Publikasi</p>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1">1733</h3>
+                    <p class="text-xs text-slate-500 mt-1">Januari - September 2026</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-emerald-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Publikasi Media Pers</p>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1">411</h3>
+                    <p class="text-xs text-emerald-600 font-medium mt-1">23.7% dari Total Data</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-purple-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tema Terpopuler</p>
+                    <h3 class="text-lg font-bold text-slate-900 mt-1 truncate">Akademik & Inovasi</h3>
+                    <p class="text-xs text-slate-500 mt-1">Dominasi Publikasi</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-teal-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sentimen Positif</p>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1">355</h3>
+                    <p class="text-xs text-teal-600 font-medium mt-1">20.5% Tone Positif</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-rose-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Isu / Tone Negatif</p>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1">82</h3>
+                    <p class="text-xs text-rose-600 font-semibold mt-1">⚠️ Perlu Atensi Humas</p>
                 </div>
             </div>
-            <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
-                <h3 class="text-base font-bold text-slate-900 mb-1">Distribusi Sentimen Berita</h3>
-                <p class="text-xs text-slate-500 mb-4">Proporsi Tone Positif, Netral & Negatif</p>
-                <div class="h-64 flex justify-center items-center">
-                    <canvas id="sentimentChart"></canvas>
-                </div>
-            </div>
-        </div>
+        </section>
 
-        <!-- Tabel Rekap Data Berita -->
-        <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
-            <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                <div>
-                    <h3 class="text-base font-bold text-slate-900">Rekap Pemberitaan Eksternal Terkini</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Disaring berdasarkan kriteria relevansi pemberitaan akademik UNESA</p>
+        <!-- SECTION 2: ANALISIS TREN & DISTRIBUSI SENTIMEN -->
+        <section>
+            <div class="flex items-center space-x-2 mb-4">
+                <div class="w-1.5 h-5 bg-indigo-600 rounded-full"></div>
+                <h2 class="text-lg font-bold text-slate-900 uppercase tracking-wide">Analisis Tren Bulanan & Sentimen</h2>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-900 mb-1">Volume Pemberitaan per Bulan (2026)</h3>
+                    <p class="text-xs text-slate-500 mb-4">Tren jumlah publikasi berita eksternal harian/bulanan</p>
+                    <div class="h-64">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-900 mb-1">Distribusi Sentimen Berita</h3>
+                    <p class="text-xs text-slate-500 mb-4">Proporsi Tone Positif, Netral & Negatif</p>
+                    <div class="h-64 flex justify-center items-center">
+                        <canvas id="sentimentChart"></canvas>
+                    </div>
                 </div>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                            <th class="py-3 px-4">Tanggal</th>
-                            <th class="py-3 px-4">Media / Sumber</th>
-                            <th class="py-3 px-4">Kategori Tema</th>
-                            <th class="py-3 px-4">Judul Berita</th>
-                            <th class="py-3 px-4">Sentimen</th>
-                            <th class="py-3 px-4 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        
+        </section>
+
+        <!-- SECTION 3: REKAP DATA BERITA TERKINI -->
+        <section>
+            <div class="flex items-center space-x-2 mb-4">
+                <div class="w-1.5 h-5 bg-emerald-600 rounded-full"></div>
+                <h2 class="text-lg font-bold text-slate-900 uppercase tracking-wide">Rekap Pemberitaan Eksternal Terkini</h2>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100">
+                    <p class="text-xs text-slate-500">Disaring berdasarkan kriteria relevansi pemberitaan akademik UNESA & diurutkan dari yang terbaru</p>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th class="py-3 px-4">Tanggal</th>
+                                <th class="py-3 px-4">Media / Sumber</th>
+                                <th class="py-3 px-4">Kategori Tema</th>
+                                <th class="py-3 px-4">Judul Berita</th>
+                                <th class="py-3 px-4">Sentimen</th>
+                                <th class="py-3 px-4 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">olkim.sibiti.co.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Email Reset Password</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9yR3RpaHk4MTZvNFlMNl9waXhDbjljQl9yRjNmYUJxeWFQV3pyd3NZSk5xRzJpQ0JTVV9QS05YcGwwWTdaZjZKaXhsd2RObFVGdmlUZg?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">HARIAN DISWAY</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Bukan Sekadar Permainan, Orado Jatim Kenalkan Domino sebagai Olahraga di PetraNesian Fair 2026 - harian.disway.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiygFBVV95cUxOdUtyQ2drYWV4N3A2LXN3b3FwUEZsRlFnakYtSlk4OFAwNWNUYUk2ZmN5dzByeGswUDlxWDZidHRsS3FhbzJ2V1FSZDlJb213RkJpSFBDRVh5OFVXR2pNVXRnUm9Vd2F0VTZOMkN3d2xJc2c2S18xT25GazVOc1V2UV9hSzFYUEZ5dDcwSm5DMTFGOXEwZXJicHB2MFpTX21namhtcmVqX0F3Z3pQU05HV2cyR3FDZk9hZnVFdFFCNnpwV01aZER3Sm530gHIAUFVX3lxTE84bnFwUHNPMXJkUnFfcEtHZzFuNUZLQjFoRldGRjhOMUdLVlBrQ195ZjlKdXNSOTV4LUpEWHBlUWxCOXBUek9HWm00OUgydTJuWE9SN2pmaGhXdkozUE53OEFLRzdzQkxLdE9TUXBMYWx2dFdKNHlEMDZTVDhXV21rRFRySUNtNk9xZzB2ZzJsb0o0aFdqOTdCc2cyZ3dzNVNBNW5nYmotVGhnMzZIX2JCSWJXU2hIejR1NzJBY2cyYmFqZVk5SzJz?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Memorandum.co.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Taekwondo Piala Panglima TNI 2026 Lahirkan Atlet Berprestasi di Surabaya - memorandum.disway.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxNQ1pkVmdEUmVaQjJwdXU1Nkw1NXhBb01SWU5VN09xTXhaR0FjSENreWcyNU5aTlZSeXhUXzRCTFhaT2FPLU5kY1gyVUFRT0hzSWl0SnRreDRvQk5tX01sYnZHdXY5bEJsRXNCeGNFUm43VzFZcGh2ZWxpcFVOUmg2dGFpNXQ2VlBqbFZYVnZ4TFhfZkRYOHd0TEhpSGtBN2hob0ZsUUFETG1ON1hrYnUxTC1nSjdmeXU3NlhJalpSTdIBsgFBVV95cUxPMjhBVElUekQ0QldjTTdYN3g2MHJLS3Fmc3VHVHVYdWFzZm1KQ0g1bld6bl8zcjYxLU9HSlVKem1YYzdVNXZ4cG1aUGF6V1JjbkNNdkJrcDhHVDctMElzc0tMZ3hTZE5hQzVXNXpUSkw0SGx0aDRmenZlQkFjVGNpdTl1MW5GTW5PRWJ1czJHOVY2ZEhNMEdWOGh0QUxES3paSVhWQzN4TlVzc1diWkxwM2NR?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompas.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Kalender Jawa 21-27 September 2026: Cek Weton, Pasaran, dan Neptu Lengkap</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiwgFBVV95cUxPRmZlNnNxcVBxb3Q0UThHaGs3N3JZdGhyQWN3NGV4ODZjQVIzYlRWdG5PX0VGTnVQcnRPWkpmQlpRdlQxRzNwa2pROE5QTXU4U3RSVFhNOFkxdDBtNnBzb0FBSFd5ZjFtZ3FQcUpBQjFQeXZ5YVJlbnNFMWNXQmNNOGRSVlllQ2ctX1JSQnhOVElFM1R5RUVhZk9oZG9qaDRmRWgzRV9CN253Wk9vdUpMRHkyZGJaMl8wXzhhbHRIS3BWZw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">surabaya.tribunnews.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Unesa Dampingi Gadisku, Perkuat Jejak Digital Talenta Disabilitas Makin Dikenal</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQTEZoQ1MxYlpoN3JJdHFBRXVyU0ZRNnRqclB6aTVObDNsUHZqOGJwVkItTl9rTno0UUVUb3BDY1gxbzlhZk5BaWN4bHpaMHMxMk9qZG5QcmVPTDJUS0JwMEo1ekRHN0VHaVpOY0pHdTQxbER1aWpEREtFeE1qS2JoUHZ3MmsydFctNHFZd3pjUXYyOG9WYjhyRzBueS1XMlgxaE1kTDRZUGxGVU1PbUZPRWZ1QmZmUWJUcHQzREJoNA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Keparprov Jatim 2026 Petakan Regenerasi Atlet Disabilitas Melalui Kelompok Usia</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxOTlhibW9CcDlUYzV3WFVfZWFzc2o2T1hjWENMNTlhM09SM2NvVWpObFdrWjB2YjY5TXVKQUV3ckhmbUtZOTB2MGdTRDFScWJ3d0dUSk5UOG8xY3FWX0JDUTVCQ2xWZm11cHRYbUxka3FfaEJFS1hhNnEyZUd2OVZhaW9RMzJNVWRKWHFxZUdwN053ZTJ1dXZ1RWt6WUpQb2plbzRLcXFGLS11TW1kandXck1KVXJnTkI5THMtYjlNdw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">beritasatu.com</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">BeritaSatu.com</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Pikiran Pakar</span></td>
             <td class="py-3 px-4 text-slate-900 font-medium">Gebrakan Baru Presiden Soal Kuliah Gratis, Berikut Respons Pakar</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
             <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxQTjBnSGkzVnZHeHJ2N1F0cEJrdnhzUG9ZTmNPa1E5dmRXQlVKZVFra3I3d0t5WmV2RlI5dGtIYVZZTlFCenhTcW1FSDVRYkRKT1V0QWdpNGFqMnVET2FuX29sMnZLVzU0T2NpNl9HQWRpWlRGX2lKY2VIcGxxdUY2LUJSNzFpQjM2bnVZVmFGZnM0d21za0l1bnUwdXlnSXBxenZjZ3Bjc0ZNU1k?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Mendedah Konsep ADDIE: Asal-Usul Mitos, Status Hakiki, dan Silsilah Turunan</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi1wFBVV95cUxQN3RwVXhBZVpva2RsUEdXWlBDTGt2cDVTTEVHLUZpMzRMM0JMR1BiUVF1Zk1aRGQxSXNuVFdld1FCaHY4WVpsWWlRemJ6cFNtbWZnUDVGS1RsbmNCa0pnSm1wN1NpZEhacTFyMktDRzk0a1dBNVRzRGtKWThfdEstdFFsdHRDNmpJU2t1MTRuS0UwdGZzUUU0LTN0cWpxdEFJQW5aVmNGaHR4bHVOX0J6T3A4Z0tfem5vc1JsSFBJRUNsZHNpWnJRVFFCQ1JNRVo4SVRhTmxWWQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Nia Aulia Rahmawati</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTFBpbmxaQnpYRzh2d1VUNjN5cldnMFkzTkpCSDhaeDVoREVGN0xRT1NENGxVUGlzTmVPbFh3d01TaXBLRm5uWUJlREU1bGdubGVOSGZWNWRSTTlPZ05uWUhGLThnV0h3bm9sXzZuTVJkUQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Medcom.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Yoga dan Sumaya, Atlet Teqball Indonesia Peraih Medali Asian Games 2026</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMizAFBVV95cUxOVUtXQWIwT3R3U2w1ckJGUEdVSWd1ZWFFb2VhczdlckM1RHdfaWRaSWdCbFJzbDRnTmJoODdNOGhPMDhiTDB0M2w5Y0hPNm55YThidUowODBEZ2stRG55ZHQ2SFJJcWpBWnZPX093dE1xMU81X19YckluV3RobFMyWkR4a1lOd0tPNlRXYXBtcEw3UUc5Qm4ydkF4cFpBV0ZwU2o2TDJzbHpTdDNZaUhkNTlpXzROQ3lnUGZEWUp4S29sb0JyTnRJQm5kcEw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Asistensi Mengajar Tak Hanya di Kelas, tetapi Juga di Lapangan</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMizAFBVV95cUxPZEsyd2hmc1hnTzIwUEswUHRWVVp2S0xzS2lmdU1qTGs2cFVFVlp0bGN5ZjlkUUlaUTNVLVNCTlhaSjdBU3QzSTBvbWNhUHJxWVpfWXdGRDV3ZGNRX2cycklvQ3BuRUlFNkRMMTFwWEd6ZXNOcTlyejZEejl5SzZaMjd4SU9uYXdnREFuQ3g0SjFUejVfd3Bmc3lYM2hzYmNEVHV4VzlzVDRLdVNPYmpHLWRDaVRsQ2JsQ3h1RGk0d0pWbHNSSTROX2NZWl8?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -209,11 +133,83 @@
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Mendedah Konsep ADDIE: Asal-Usul Mitos, Status Hakiki, dan Silsilah Turunan</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi1wFBVV95cUxQN3RwVXhBZVpva2RsUEdXWlBDTGt2cDVTTEVHLUZpMzRMM0JMR1BiUVF1Zk1aRGQxSXNuVFdld1FCaHY4WVpsWWlRemJ6cFNtbWZnUDVGS1RsbmNCa0pnSm1wN1NpZEhacTFyMktDRzk0a1dBNVRzRGtKWThfdEstdFFsdHRDNmpJU2t1MTRuS0UwdGZzUUU0LTN0cWpxdEFJQW5aVmNGaHR4bHVOX0J6T3A4Z0tfem5vc1JsSFBJRUNsZHNpWnJRVFFCQ1JNRVo4SVRhTmxWWQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompas.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Kalender Jawa 21-27 September 2026: Cek Weton, Pasaran, dan Neptu Lengkap</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiwgFBVV95cUxPRmZlNnNxcVBxb3Q0UThHaGs3N3JZdGhyQWN3NGV4ODZjQVIzYlRWdG5PX0VGTnVQcnRPWkpmQlpRdlQxRzNwa2pROE5QTXU4U3RSVFhNOFkxdDBtNnBzb0FBSFd5ZjFtZ3FQcUpBQjFQeXZ5YVJlbnNFMWNXQmNNOGRSVlllQ2ctX1JSQnhOVElFM1R5RUVhZk9oZG9qaDRmRWgzRV9CN253Wk9vdUpMRHkyZGJaMl8wXzhhbHRIS3BWZw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">memorandum.disway.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Taekwondo Piala Panglima TNI 2026 Lahirkan Atlet Berprestasi di Surabaya - memorandum.disway.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxNQ1pkVmdEUmVaQjJwdXU1Nkw1NXhBb01SWU5VN09xTXhaR0FjSENreWcyNU5aTlZSeXhUXzRCTFhaT2FPLU5kY1gyVUFRT0hzSWl0SnRreDRvQk5tX01sYnZHdXY5bEJsRXNCeGNFUm43VzFZcGh2ZWxpcFVOUmg2dGFpNXQ2VlBqbFZYVnZ4TFhfZkRYOHd0TEhpSGtBN2hob0ZsUUFETG1ON1hrYnUxTC1nSjdmeXU3NlhJalpSTdIBsgFBVV95cUxPMjhBVElUekQ0QldjTTdYN3g2MHJLS3Fmc3VHVHVYdWFzZm1KQ0g1bld6bl8zcjYxLU9HSlVKem1YYzdVNXZ4cG1aUGF6V1JjbkNNdkJrcDhHVDctMElzc0tMZ3hTZE5hQzVXNXpUSkw0SGx0aDRmenZlQkFjVGNpdTl1MW5GTW5PRWJ1czJHOVY2ZEhNMEdWOGh0QUxES3paSVhWQzN4TlVzc1diWkxwM2NR?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Keparprov Jatim 2026 Petakan Regenerasi Atlet Disabilitas Melalui Kelompok Usia</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxOTlhibW9CcDlUYzV3WFVfZWFzc2o2T1hjWENMNTlhM09SM2NvVWpObFdrWjB2YjY5TXVKQUV3ckhmbUtZOTB2MGdTRDFScWJ3d0dUSk5UOG8xY3FWX0JDUTVCQ2xWZm11cHRYbUxka3FfaEJFS1hhNnEyZUd2OVZhaW9RMzJNVWRKWHFxZUdwN053ZTJ1dXZ1RWt6WUpQb2plbzRLcXFGLS11TW1kandXck1KVXJnTkI5THMtYjlNdw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Surya.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Unesa Dampingi Gadisku, Perkuat Jejak Digital Talenta Disabilitas Makin Dikenal</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQTEZoQ1MxYlpoN3JJdHFBRXVyU0ZRNnRqclB6aTVObDNsUHZqOGJwVkItTl9rTno0UUVUb3BDY1gxbzlhZk5BaWN4bHpaMHMxMk9qZG5QcmVPTDJUS0JwMEo1ekRHN0VHaVpOY0pHdTQxbER1aWpEREtFeE1qS2JoUHZ3MmsydFctNHFZd3pjUXYyOG9WYjhyRzBueS1XMlgxaE1kTDRZUGxGVU1PbUZPRWZ1QmZmUWJUcHQzREJoNA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
             <td class="py-3 px-4 font-semibold text-slate-800">HARIAN DISWAY</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">EducationUSA Indonesia Fall Fair 2026 Bawa Informasi Kampus dan Beasiswa untuk Pelajar Surabaya - harian.disway.id</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Bukan Sekadar Permainan, Orado Jatim Kenalkan Domino sebagai Olahraga di PetraNesian Fair 2026 - harian.disway.id</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi0AFBVV95cUxOazdQbXhoeU90aFRIakI0S3hMTGlnSDRZMjRjVDdaQnJSTHVLc3ZhcC01U2pSTDBXeEw2NDZaZFkxNDl5LUNrbUl5bTZuR1NyRHJyWkdYbW9mT2VWMXdQdGw1QzIxdE9XaTZub1BSRFFmUmhyN1NwQkVjS181eVFuc0c1aXpoWEtuRnpkcXIzZTVmNU1SejlCazZOYkdDUW1qekQ2VGNZeVp2Z0d1Y1BHclRpZmh5NGRLci1IZTNidFdKWmhPVndWeHhGNHd2NXZK0gHLAUFVX3lxTE1GS0JYanZDQkhtWVo0bTRyNHY1VERTckdwczVNdjdsRUQ4R0dVQWZqbFN2MTBjMnlQQzdrajh1eVJGZllrX2xjWGlaVWx3SnBTblc5SlRWdVA4cXlEeDAtTW1DbXdPUk1ERmNHVUNsRDZxaVFYal9JbEU0VWlSODBJYmswbGZlWFlTTzJOdzh4UGlTZFllemhqX1l1SkFwNkY5bGJJaW9PcVFRby1WNHdLaWdYam5Ja19GaVZyOWpNTVB2MHYwVDZyQWdJ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiygFBVV95cUxOdUtyQ2drYWV4N3A2LXN3b3FwUEZsRlFnakYtSlk4OFAwNWNUYUk2ZmN5dzByeGswUDlxWDZidHRsS3FhbzJ2V1FSZDlJb213RkJpSFBDRVh5OFVXR2pNVXRnUm9Vd2F0VTZOMkN3d2xJc2c2S18xT25GazVOc1V2UV9hSzFYUEZ5dDcwSm5DMTFGOXEwZXJicHB2MFpTX21namhtcmVqX0F3Z3pQU05HV2cyR3FDZk9hZnVFdFFCNnpwV01aZER3Sm530gHIAUFVX3lxTE84bnFwUHNPMXJkUnFfcEtHZzFuNUZLQjFoRldGRjhOMUdLVlBrQ195ZjlKdXNSOTV4LUpEWHBlUWxCOXBUek9HWm00OUgydTJuWE9SN2pmaGhXdkozUE53OEFLRzdzQkxLdE9TUXBMYWx2dFdKNHlEMDZTVDhXV21rRFRySUNtNk9xZzB2ZzJsb0o0aFdqOTdCc2cyZ3dzNVNBNW5nYmotVGhnMzZIX2JCSWJXU2hIejR1NzJBY2cyYmFqZVk5SzJz?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">olkim.sibiti.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Email Reset Password</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9yR3RpaHk4MTZvNFlMNl9waXhDbjljQl9yRjNmYUJxeWFQV3pyd3NZSk5xRzJpQ0JTVV9QS05YcGwwWTdaZjZKaXhsd2RObFVGdmlUZg?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">olkim.sibiti.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Login | OLKIM Unesa 2026</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiQEFVX3lxTE5XaFJtWW0wX1hzRVgxcXdfRTV6QnIyaUI5WnBoemtDNFZwQ3ZFeDgxTHRzTmpWTnBGdVJqRlVqQVc?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Asistensi Mengajar Tak Hanya di Kelas, tetapi Juga di Lapangan</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMizAFBVV95cUxPZEsyd2hmc1hnTzIwUEswUHRWVVp2S0xzS2lmdU1qTGs2cFVFVlp0bGN5ZjlkUUlaUTNVLVNCTlhaSjdBU3QzSTBvbWNhUHJxWVpfWXdGRDV3ZGNRX2cycklvQ3BuRUlFNkRMMTFwWEd6ZXNOcTlyejZEejl5SzZaMjd4SU9uYXdnREFuQ3g0SjFUejVfd3Bmc3lYM2hzYmNEVHV4VzlzVDRLdVNPYmpHLWRDaVRsQ2JsQ3h1RGk0d0pWbHNSSTROX2NZWl8?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -236,20 +232,20 @@
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">olkim.sibiti.co.id</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Login | OLKIM Unesa 2026</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Nurul Maulidyah Lailatul Ilmi</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiQEFVX3lxTE5XaFJtWW0wX1hzRVgxcXdfRTV6QnIyaUI5WnBoemtDNFZwQ3ZFeDgxTHRzTmpWTnBGdVJqRlVqQVc?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiZEFVX3lxTFAzTlZSNWRldncyQ0VNcmJScmpVZDFUN0NTY0JMcWE2ZGZZRVk2dVdNRnZJYVlWY3JGTVRDdW9ScktNWU1Pb3c0WWQySkMyREVGeEpEdVFybWhtQlJJazFha2d5MDA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Satu Abad Gontor Teguhkan Pendidikan Islam Modern Berkarakter</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Nia Aulia Rahmawati</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxNM25xcE9YZGNSbGs3QUd4elU3OWdneFVhSkw1UGFUd21udTdnaTh2R1hyWjNnVVlSM1FPcGlIQ3BQZDlfRnpCNjdFVjd6d0FhM3RSbDlKem9yZnZ4OVF4dXFFQkNVRjQ1TGtVRmd2dWFhQldXTElSX2tsTUdtbU9vRVZHcTlMX3c5YV9wU3lxYTAzSHVDYjViOExhbVh3NjVkUk9CVA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTFBpbmxaQnpYRzh2d1VUNjN5cldnMFkzTkpCSDhaeDVoREVGN0xRT1NENGxVUGlzTmVPbFh3d01TaXBLRm5uWUJlREU1bGdubGVOSGZWNWRSTTlPZ05uWUhGLThnV0h3bm9sXzZuTVJkUQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -268,6 +264,105 @@
             <td class="py-3 px-4 text-slate-900 font-medium">Apryanto Catur Irawan</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
             <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMigwFBVV95cUxOYmdiR1FPUjk0SVZXLUZvTnl0MDNCWC0yNU9wY1ppeV9GbWV3aEVQZmVPTXB6SXZyYkQ4ZzF2M0plLTJWakZ2WmdKVUNPcW1SMVB4b2E4eTVSTnV0REMxejAzYVFGbzl3SFNhaWdhZlNkNFpjWF9oTGVLT0xBTmlTMnBLRQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Satu Abad Gontor Teguhkan Pendidikan Islam Modern Berkarakter</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxNM25xcE9YZGNSbGs3QUd4elU3OWdneFVhSkw1UGFUd21udTdnaTh2R1hyWjNnVVlSM1FPcGlIQ3BQZDlfRnpCNjdFVjd6d0FhM3RSbDlKem9yZnZ4OVF4dXFFQkNVRjQ1TGtVRmd2dWFhQldXTElSX2tsTUdtbU9vRVZHcTlMX3c5YV9wU3lxYTAzSHVDYjViOExhbVh3NjVkUk9CVA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">20 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">HARIAN DISWAY</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">EducationUSA Indonesia Fall Fair 2026 Bawa Informasi Kampus dan Beasiswa untuk Pelajar Surabaya - harian.disway.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi0AFBVV95cUxOazdQbXhoeU90aFRIakI0S3hMTGlnSDRZMjRjVDdaQnJSTHVLc3ZhcC01U2pSTDBXeEw2NDZaZFkxNDl5LUNrbUl5bTZuR1NyRHJyWkdYbW9mT2VWMXdQdGw1QzIxdE9XaTZub1BSRFFmUmhyN1NwQkVjS181eVFuc0c1aXpoWEtuRnpkcXIzZTVmNU1SejlCazZOYkdDUW1qekQ2VGNZeVp2Z0d1Y1BHclRpZmh5NGRLci1IZTNidFdKWmhPVndWeHhGNHd2NXZK0gHLAUFVX3lxTE1GS0JYanZDQkhtWVo0bTRyNHY1VERTckdwczVNdjdsRUQ4R0dVQWZqbFN2MTBjMnlQQzdrajh1eVJGZllrX2xjWGlaVWx3SnBTblc5SlRWdVA4cXlEeDAtTW1DbXdPUk1ERmNHVUNsRDZxaVFYal9JbEU0VWlSODBJYmswbGZlWFlTTzJOdzh4UGlTZFllemhqX1l1SkFwNkY5bGJJaW9PcVFRby1WNHdLaWdYam5Ja19GaVZyOWpNTVB2MHYwVDZyQWdJ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">memorandum.disway.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Berita Terbaru Hari Ini - gor unesa surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTFB4OXJMQzRmbjdObXdKOWw0Sk9GdE94TFZQTDlkLUJDRVpKdHNtTTVESExEbTdWMEthZzNGQ0Z6bmpiVUFmdTJ3MFE2TURhV3hqX1kyS2RKVE5xdFhCWktCQ1lwSmhwVV9mbzdQVURCWQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">LENSA#12 dan SIREC#4 Buka Peluang bagi Generasi Muda</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMixwFBVV95cUxOcFg5bUtuNmNEcEdVWXc5b1hpQkdLVWF3RFRYbV9SWld5OUEyVlF1Yzh4a3VGSFV3eXI4N3NiVUFoS3N3OWhwejk5SkdLYWFDZGZOSWlfN3owbmJhdWFJZTV5N3RyeURFNklSV3lyeUJjSjdNRnlmU29ycjI2TlNXMEt5d0xKejEtUUo4VWxJTDlVU1R5NlJrMlJoUVVfSFF3bzhfR2NDdF9sR3Q1QUprY2R0aGxhSkdGSWZRYUdJX185QXVPMTBZ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">napaneeconcretepros.ca</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Kolam renang unesa: Lokasinya yang strategis menjadikan kolam renang ini</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTFBGUnN6Tmp4N1lYblczcWl5ekI1Z2Q1X0xrSkFLcU1JLXJIU2xrZ0Z4eEotczAwa09ZNjZpcnlLQkROQnRaVmdrUnVMWGRDRC1kMVV1TG9waVBhLXJPREVJ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Dosen UNESA Dampingi Literasi Keuangan dan Kewirausahaan di TGBC Thailand Halaman 1</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi5AFBVV95cUxNOXVzZkJ1TVRNRWt5TC1aQ0hnRHhqczFuaWhPODVJaXRiZFZCWXVFWmV6Q3FXLS1IbDRFanJsQzhxcXgwaW5md3M1eE1wN2Mwb2taZ0d4U0VmOV9IMlkxaThrSngwaWNUeVQxNzlKM2VjWUZxNW9QeWNIa1ZDTUFhWURhdmh3TUZ4dUF6Y0JZNUduZU1CNThOeHRHR2NPeFEzUmk1SU9CdGNlMTEyOGZPMUNJYzZhUjljaUpXU1NhY2JaVnJrLXY0TVlwOUc1eklhMGE3MlAwTlMtMjFpOEVOZWI1b2E?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">redaksi.duta.co</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Dampingi Gadisku, Unesa Bangun Branding Digital untuk Perluas Jejaring Pemberdayaan Disabilitas</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiuwFBVV95cUxOcGJ1b3IzUWgzb3Y3Tm5jOWhZX2NXLVJoYkczZFVkaTMyeTJQNVg2M0NjejVnNE5sb1pRNEJVLW5xd3ZIdDJET1BsOTlzcXplTnNFaUNMRWZTQ2dKejFTa0ZRV3luVWpjSk1sTzRBWVUyX2YxR2twTnJBdXI0RXJ0SlpCR1ZUbTRYcV9VVTZJTlh6MXgxekNpc1VFUXJkcFF6c0JvV0JlNEIwM3FZRFJmdHNOWmJtbkM4MFFV?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">memorandum.disway.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Open Tournament Taekwondo Piala Panglima TNI 2026 Resmi Dibuka, Cetak Atlet Berprestasi - memorandum.disway.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi0gFBVV95cUxPOHljOXNWbTJkOHpaX2RjYUZ1S0pfVmtwLXBzblpGdllWUHpoTm00MG5UM1AxWkVITTJhQk96VFF1MzNjUVFwM1ZyVTZidC1ZZnNGSWI2T3pfOG9pNDM3c1BIYVB6bEhIMkVIb1ZCN3lfdFlxNUhKR3huSVItamRHeGh3YlgtOU5pOEhUTl9JcDVhamR2QTk2RWFGYUJkYnliT1lOa0p0cnRTQ1pOaFJCd3FGZnEwN0NXRUNISjJ0QzRzcmFyenVSQkJPa1l0ZkFWa2fSAcQBQVVfeXFMTzNfUmJHcWQxaVNFcTdvRFlkQWN1YTRuaUJwWEJUR0xIclNjOHdmRDY5S20xaGpoTjM2VGRSUWtzTHZURmxkY0RhdW85ajlQZ3gwZjNXMjgyb1VBbVA4T04weVhNWDFBS1d4MTRqRkM4akJTeE1tYjhQYkFnV3VmZ2pfandjcUJ6cktTV0VtSWp5RFhYVlV3Z255c01mMEpvbVAtS0UzSWJxcHpZdEo5T1N0U0RqQzhJYWQxWkNYRDZoQ09KOQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">lunarmy.co.za</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Rektorat unesa🏆 Unesa menyelenggarakan acara Perkenalan Pejabat Baru Kepala</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE5TOVJPd1Z4VDRIdDdjV3IyTjJmSzVZUkNSZWRGaFc0UExJUE10TXlCS2c4LWZxRS1lNlhMZVEwT2JSd3VxTTN2SzFtVEhKZVZKMGc?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Misi 7 Hari Ajak Siswa SDN Sekarpuro Bijak Gunakan Gadget Halaman 1</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMizwFBVV95cUxQTE9NWVJUUzVHek5la2F4OFRjdEkzakdDR1RYRklheVAxWTkxU0lNS2hZMi02NzliREhjYTNEODFwcFQwUkhnY3haaXk0dTdtX3VpU0UxTlpnT0tXNTRfb0swamxkM216TVVQUEhsY2JaY1FEVjRwMEFadS0xT1RVRFNDVFI3bnlpaFNqWVhsbEs4UE1QN09meEU5bGtKa1Zka2doaWFmTmFVd3RzUzI2OGJZbWYtTW9PS3RYazRqMk5FUWN1dElEUVI5akItblE?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Abdhul Amrullah</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiWEFVX3lxTE84NExJTVRMUWFOTnItcnNSZFNoWVBwQlV3MXFIYVB4SzhXV05FSTFiUEIxNVVmODk3djNIZ3NjLV93OGtuLUtXVXRaeDNDcTh2cGFORlJXN0s?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -290,128 +385,11 @@
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Teknik Elektro UNESA Kenalkan IoT kepada Pelajar Indonesia di Malaysia</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi0AFBVV95cUxOQmdETjRrcDQzZVdReUNiOW5JeC1WWkpLQm9rRjhzSDlCLTlCMjhHWkFBelFiVEJta0FOT1JLUkd6RHBfVTNTT3Y5ZzR1STVDaTBORC1RLWVEMzgyclNuX0JWWXE5OWhZWWZmZUxzZmxLNk91XzBLU0pxckd1QS1rQnM4WkE3QkpUaDlhOFprR0hoVE9pcEZabUZwZTlUVC1VNzVQVUM4ZmljVHhCSVRrZm5QM3pzZXNuVjdyb3lCZl9NNExOdlNQdjZfZzJfMGJW?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Memorandum.co.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Berita Terbaru Hari Ini - gor unesa surabaya</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTFB4OXJMQzRmbjdObXdKOWw0Sk9GdE94TFZQTDlkLUJDRVpKdHNtTTVESExEbTdWMEthZzNGQ0Z6bmpiVUFmdTJ3MFE2TURhV3hqX1kyS2RKVE5xdFhCWktCQ1lwSmhwVV9mbzdQVURCWQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">redaksi.duta.co</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Dampingi Gadisku, Unesa Bangun Branding Digital untuk Perluas Jejaring Pemberdayaan Disabilitas</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiuwFBVV95cUxOcGJ1b3IzUWgzb3Y3Tm5jOWhZX2NXLVJoYkczZFVkaTMyeTJQNVg2M0NjejVnNE5sb1pRNEJVLW5xd3ZIdDJET1BsOTlzcXplTnNFaUNMRWZTQ2dKejFTa0ZRV3luVWpjSk1sTzRBWVUyX2YxR2twTnJBdXI0RXJ0SlpCR1ZUbTRYcV9VVTZJTlh6MXgxekNpc1VFUXJkcFF6c0JvV0JlNEIwM3FZRFJmdHNOWmJtbkM4MFFV?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">napaneeconcretepros.ca</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Kolam renang unesa: Lokasinya yang strategis menjadikan kolam renang ini</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTFBGUnN6Tmp4N1lYblczcWl5ekI1Z2Q1X0xrSkFLcU1JLXJIU2xrZ0Z4eEotczAwa09ZNjZpcnlLQkROQnRaVmdrUnVMWGRDRC1kMVV1TG9waVBhLXJPREVJ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Suara Surabaya</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Kelana Kota – Laman 4863</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxQRjVIb25mcXUxSnV4LU9vQktuN1dDT1hCazJUeHF0YzRHd3NBY2dwQWk2VVlDTi11U2lsd1J2R3NMWWUyN0stY3U4TWJjalpyaFcxT3RBRHRQLVR4QUVPQkYyY0tNNzB3YXBhNS13Mzk2UzlGcnVENHFvdU1ENUkxT2xDcXhVeVFWMWk1bXBaUkFpem82UWJzdjZhZk4?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
             <td class="py-3 px-4 font-semibold text-slate-800">Antara News jatim</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
             <td class="py-3 px-4 text-slate-900 font-medium">Kumpulan Berita pasti ada solusi</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
             <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBjQXktVjBZeDVPdWgyZ3Q4WWMxSFBnU0lRRHpuYjNxd3dmSUdodDRNRmFPTkkyR1BJRWN6cm5FLUQ5Y2FVYlhvckFQR0FTTGtkd1FObHZKNDVYREtmWHJzWg?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Syarafina Wahyu Ammaria</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE1kQmtCQm5JVnREY1NrdDJiOTZOS1FqSkZDOXNUbzFQV0ZHQnVQWDdWaDdzYk9XRzcwejhRYkNpOGdNaHFscmJ0Z09QTlViWWdGXzdIZ0c0d01Qa3M?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Memorandum.co.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Open Tournament Taekwondo Piala Panglima TNI 2026 Resmi Dibuka, Cetak Atlet Berprestasi - memorandum.disway.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi0gFBVV95cUxPOHljOXNWbTJkOHpaX2RjYUZ1S0pfVmtwLXBzblpGdllWUHpoTm00MG5UM1AxWkVITTJhQk96VFF1MzNjUVFwM1ZyVTZidC1ZZnNGSWI2T3pfOG9pNDM3c1BIYVB6bEhIMkVIb1ZCN3lfdFlxNUhKR3huSVItamRHeGh3YlgtOU5pOEhUTl9JcDVhamR2QTk2RWFGYUJkYnliT1lOa0p0cnRTQ1pOaFJCd3FGZnEwN0NXRUNISjJ0QzRzcmFyenVSQkJPa1l0ZkFWa2fSAcQBQVVfeXFMTzNfUmJHcWQxaVNFcTdvRFlkQWN1YTRuaUJwWEJUR0xIclNjOHdmRDY5S20xaGpoTjM2VGRSUWtzTHZURmxkY0RhdW85ajlQZ3gwZjNXMjgyb1VBbVA4T04weVhNWDFBS1d4MTRqRkM4akJTeE1tYjhQYkFnV3VmZ2pfandjcUJ6cktTV0VtSWp5RFhYVlV3Z255c01mMEpvbVAtS0UzSWJxcHpZdEo5T1N0U0RqQzhJYWQxWkNYRDZoQ09KOQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kumparan.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Riset & Inovasi</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Mahasiswa Unesa Gandeng Siswa SDN Tuwiri Kulon Ciptakan Animasi Pendek - kumparan.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxPYnh1X3V3SmRSU1lIc2drUTBIaG1DdDdNdktkaUtxejF6TWNRbTZmbzVyUXZUN3E2U0M4aEMzeXRtZG9xRURjVmFvQ3pzN3lEMGNJdUZkU3E3bUhyLVh3dVJzVEhnREhNTm52RkxQNHhUXzM5am5qRlZaUG9SaGFsRER0WWtDMVpYY1Z3djJ4VjdYLWRVR2RUczcwVFZYRnlvLWlFblJlcWhBR0w5S1hoV2R2ZEhBUlRpLU9vY3Yya9IBxwFBVV95cUxPZ0huSmVsUmthUm5VSTlOX1EydmhkS3RRV3JFQVF0OUdaNVkyRm9TREM2blVld2NMNTZJUGhGZEtXckhiVmdsMTF3Y05yWEZxWEZCb0xOTE9qRmU3VERzaEVBdGs0c1pQQ0w1elRQUWIzNkJhcE5jSTk3WUhkT1Bmbl95cDFRSEdrNXBPcTJfRFp2VHZyZ2NSU0g2ZXNFbXlnX2FKdzVXdEdvV3h4R2lISi1hUDBqMzRieE11R0MyX3FXRm83Mm5r?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">MalangTIMES</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Berita Terkini Malang Raya | Informasi Terbaru dan Terpercaya</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMizwJBVV95cUxQNlJMN1dvNzd3MlZUYTRxM1ExeGFtN1l2d3V3Tnd5bnkwMWVnc0RTdGpmbDAxQ1lidDd4VHgwME1mdW1HcmtxbUoyVjltTkRub0NvYmQ3OHl5RkhCS0VzeWQ2NnNaOGZzV3F2bGhmeHZPZUE1M2p0blE5ei14LXNydWFoY2NoYmlLN0czdEpnbmJ3VHJZX2J2MlVqWDJIV1QwRFhSM0RORlFEZ2M0ZlZNaUFHXzJqVTBHZkE3SlFZRHJEWmRuNEszb0Q1bExkSEw2X2dudjYtVDA4S1hBXzF5ZlZtdkc3QXZBT3VDUU9pWmpFSkhOUDA2T01BV2E4ZGJwUnZRMkxOWVN2VVFDX3RkSGI0bTZPbW1EcnFqSDR3aDZIUjh3Uy00M3FERTBZSFNGRTlqNl80em05MHRyN1ZMSTRWVEhmS2NPeWJSRUxDVQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Istamanul Khoiriyah</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFA4a0k0SXhPTTExcktkUEszNnNxOW9CTDAwejgyQ3puV3ZKVDJnbmZVQ0ViTEt0c19SZzhzdllPZWNVcjlUaEtFWHFCWnhNTENCVndMVUhNTGp3QQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">beritajatim.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Acer Edu Tech 2026 Surabaya Dorong Sekolah Terapkan Coding dan AI</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMikwFBVV95cUxOTFo3anBkQ2lydzF0M1JlS2trN1lZMDFXMFpueUJ4MkY4eWRUcC1zZXVNUmw5bGVLcnlpc25iWEZpYW9vNzBzVDd4ZU91X3JpZHJiSzlhdTdBUnV0ZFhRZ0dydkhUWVRuYjBkeng5LW1QakwxZlFTT1ZhQ0V0NkdhQVFhZG9SVEVfUW9WVnh0dVNBZ0k?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Prajurit Kodam XII/Tanjungpura Raih Perunggu di Kejurnas Taekwondo</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxOclFnWkFHOEk3YzFMc2ZtNEtUZXRHMWhPZ0JBNHg2NF9pRHc4ZVhLenRnejhOLWx2ck9GUVI4ZVc4NGhsMmhhM1ZfVzg0TEV2cHczRGNYaUJSNTFLM0R3S0ZPRl9BRWNHOGU0azZqLUJhVFp4QWNENlV2M1RldUpsV1Y0T2x6bU1HRnJVbl8zWVpLS0g5VkJjWDhxNVZuRG81OHRpUzdXTEVEMW1jQUE?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Misi 7 Hari Ajak Siswa SDN Sekarpuro Bijak Gunakan Gadget Halaman 1</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMizwFBVV95cUxQTE9NWVJUUzVHek5la2F4OFRjdEkzakdDR1RYRklheVAxWTkxU0lNS2hZMi02NzliREhjYTNEODFwcFQwUkhnY3haaXk0dTdtX3VpU0UxTlpnT0tXNTRfb0swamxkM216TVVQUEhsY2JaY1FEVjRwMEFadS0xT1RVRFNDVFI3bnlpaFNqWVhsbEs4UE1QN09meEU5bGtKa1Zka2doaWFmTmFVd3RzUzI2OGJZbWYtTW9PS3RYazRqMk5FUWN1dElEUVI5akItblE?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -425,47 +403,101 @@
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">MalangTIMES</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Dosen UNESA Dampingi Literasi Keuangan dan Kewirausahaan di TGBC Thailand Halaman 1</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Berita Terkini Malang Raya | Informasi Terbaru dan Terpercaya</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi5AFBVV95cUxNOXVzZkJ1TVRNRWt5TC1aQ0hnRHhqczFuaWhPODVJaXRiZFZCWXVFWmV6Q3FXLS1IbDRFanJsQzhxcXgwaW5md3M1eE1wN2Mwb2taZ0d4U0VmOV9IMlkxaThrSngwaWNUeVQxNzlKM2VjWUZxNW9QeWNIa1ZDTUFhWURhdmh3TUZ4dUF6Y0JZNUduZU1CNThOeHRHR2NPeFEzUmk1SU9CdGNlMTEyOGZPMUNJYzZhUjljaUpXU1NhY2JaVnJrLXY0TVlwOUc1eklhMGE3MlAwTlMtMjFpOEVOZWI1b2E?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE9VeGJhME9qSTJjQl9WZWE3dTQ2UFBfWV9hMmhXRFFtVWFzOFhldmUtMmZPNE5zbVVUVmloVk9yeTl6eGU4X000Nno3YUE0RHgxZTJfTW5vNHZ0TVU?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
             <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">LENSA#12 dan SIREC#4 Buka Peluang bagi Generasi Muda</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Istamanul Khoiriyah</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMixwFBVV95cUxOcFg5bUtuNmNEcEdVWXc5b1hpQkdLVWF3RFRYbV9SWld5OUEyVlF1Yzh4a3VGSFV3eXI4N3NiVUFoS3N3OWhwejk5SkdLYWFDZGZOSWlfN3owbmJhdWFJZTV5N3RyeURFNklSV3lyeUJjSjdNRnlmU29ycjI2TlNXMEt5d0xKejEtUUo4VWxJTDlVU1R5NlJrMlJoUVVfSFF3bzhfR2NDdF9sR3Q1QUprY2R0aGxhSkdGSWZRYUdJX185QXVPMTBZ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFA4a0k0SXhPTTExcktkUEszNnNxOW9CTDAwejgyQ3puV3ZKVDJnbmZVQ0ViTEt0c19SZzhzdllPZWNVcjlUaEtFWHFCWnhNTENCVndMVUhNTGp3QQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kumparan.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Riset & Inovasi</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Mahasiswa Unesa Gandeng Siswa SDN Tuwiri Kulon Ciptakan Animasi Pendek - kumparan.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxPYnh1X3V3SmRSU1lIc2drUTBIaG1DdDdNdktkaUtxejF6TWNRbTZmbzVyUXZUN3E2U0M4aEMzeXRtZG9xRURjVmFvQ3pzN3lEMGNJdUZkU3E3bUhyLVh3dVJzVEhnREhNTm52RkxQNHhUXzM5am5qRlZaUG9SaGFsRER0WWtDMVpYY1Z3djJ4VjdYLWRVR2RUczcwVFZYRnlvLWlFblJlcWhBR0w5S1hoV2R2ZEhBUlRpLU9vY3Yya9IBxwFBVV95cUxPZ0huSmVsUmthUm5VSTlOX1EydmhkS3RRV3JFQVF0OUdaNVkyRm9TREM2blVld2NMNTZJUGhGZEtXckhiVmdsMTF3Y05yWEZxWEZCb0xOTE9qRmU3VERzaEVBdGs0c1pQQ0w1elRQUWIzNkJhcE5jSTk3WUhkT1Bmbl95cDFRSEdrNXBPcTJfRFp2VHZyZ2NSU0g2ZXNFbXlnX2FKdzVXdEdvV3h4R2lISi1hUDBqMzRieE11R0MyX3FXRm83Mm5r?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
             <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Affiati</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Raka Dian Kurniawan</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiUEFVX3lxTFBmcWFaeFgwM2pINFFrcXo0OEJqZU1namxldmw2TmpCMkNQdXMyWEE2NVc4WWxuSFNES010SmpIb09KS0ZsR0FmMzBrSjVpeEpo?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMicEFVX3lxTFB4TmdjcmVLdWo4V1lMTW1HbUcwLVRlNU4yNVdXZlN0S201a21SeEVoX3NMUWJubVZrYW02XzBNa3dYLVBmeHlySnRRbmEwdTVWWVZtdUxTeGcwRzB0UVRVVXBUZDdSdlp2SnpLOV96bWw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
             <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Dosen UNESA Dampingi Literasi Keuangan dan Kewirausahaan di TGBC Thailand Halaman all</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Teknik Elektro UNESA Kenalkan IoT kepada Pelajar Indonesia di Malaysia</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi8AFBVV95cUxQRC1HbWhicExUX3RLcEh4WUJaVUhnRlVzLXhnZHFZNmx4R3d5LWs5a203XzNFLU5UWjBHaXh5dkVRXzNQTmhSSkNIek1WZ0NtR2hxTk1USDkzM0s0X0lESjN4ejRNR0dhMnBoMF9oQ1lGdndqZ29aRS1QS1ZFMXkyNFNZSHp1V0p5T0x2MkhUNWJQOEJFYlVlVEdRY2R0TUgzTkhBN2pqNW9sTWJac2x3a3l2cmdEcHdQSDZJMGNGakhTVzFqOWVlRDlFbVJyM2NJT0wzb2hrU3duVE1NWFhWMnZlNnZNZ1h2VVRhTURXdmw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi0AFBVV95cUxOQmdETjRrcDQzZVdReUNiOW5JeC1WWkpLQm9rRjhzSDlCLTlCMjhHWkFBelFiVEJta0FOT1JLUkd6RHBfVTNTT3Y5ZzR1STVDaTBORC1RLWVEMzgyclNuX0JWWXE5OWhZWWZmZUxzZmxLNk91XzBLU0pxckd1QS1rQnM4WkE3QkpUaDlhOFprR0hoVE9pcEZabUZwZTlUVC1VNzVQVUM4ZmljVHhCSVRrZm5QM3pzZXNuVjdyb3lCZl9NNExOdlNQdjZfZzJfMGJW?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">grandriverexplorations.ca</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Gedung sawunggaling surabaya: quotSaya bersyukur hari ini bertemu</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMicEFVX3lxTE42bGJjVmZEdk93MloyNTNrbk1UZEx4dXQ1OUsxaDhNWXh1aC15LVZURTVwTkxUSy1ESnRFMjQ4cDFKUFFnWHQ5OTVBd3NjNXBKZkxWNlNWUUF6U29Bbm1Zc3pGb2Q0aFZTUXJJZEc0SU0?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Suara Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Kelana Kota – Laman 4863</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxQRjVIb25mcXUxSnV4LU9vQktuN1dDT1hCazJUeHF0YzRHd3NBY2dwQWk2VVlDTi11U2lsd1J2R3NMWWUyN0stY3U4TWJjalpyaFcxT3RBRHRQLVR4QUVPQkYyY0tNNzB3YXBhNS13Mzk2UzlGcnVENHFvdU1ENUkxT2xDcXhVeVFWMWk1bXBaUkFpem82UWJzdjZhZk4?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Syarafina Wahyu Ammaria</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE1kQmtCQm5JVnREY1NrdDJiOTZOS1FqSkZDOXNUbzFQV0ZHQnVQWDdWaDdzYk9XRzcwejhRYkNpOGdNaHFscmJ0Z09QTlViWWdGXzdIZ0c0d01Qa3M?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Prajurit Kodam XII/Tanjungpura Raih Perunggu di Kejurnas Taekwondo</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxOclFnWkFHOEk3YzFMc2ZtNEtUZXRHMWhPZ0JBNHg2NF9pRHc4ZVhLenRnejhOLWx2ck9GUVI4ZVc4NGhsMmhhM1ZfVzg0TEV2cHczRGNYaUJSNTFLM0R3S0ZPRl9BRWNHOGU0azZqLUJhVFp4QWNENlV2M1RldUpsV1Y0T2x6bU1HRnJVbl8zWVpLS0g5VkJjWDhxNVZuRG81OHRpUzdXTEVEMW1jQUE?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">19 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">beritajatim.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Acer Edu Tech 2026 Surabaya Dorong Sekolah Terapkan Coding dan AI</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMikwFBVV95cUxOTFo3anBkQ2lydzF0M1JlS2trN1lZMDFXMFpueUJ4MkY4eWRUcC1zZXVNUmw5bGVLcnlpc25iWEZpYW9vNzBzVDd4ZU91X3JpZHJiSzlhdTdBUnV0ZFhRZ0dydkhUWVRuYjBkeng5LW1QakwxZlFTT1ZhQ0V0NkdhQVFhZG9SVEVfUW9WVnh0dVNBZ0k?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Suara Merdeka Surabaya</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Menteri Hukum Hadir Langsung dan Jawab Keluhan di Program Pasti Ada Solusi - Suara Merdeka Surabaya</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">10 PTN dengan Jumlah Mahasiswa Terbanyak Indonesia, Universitas Terbuka Teratas</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiygFBVV95cUxOX3pKZnllVEJHVjQ4VWJLNE5qWVg2ZlRIdXBWNW0zcXlrQUo4TW1HdjRqbmNRU3hlSGN4c1lJdVVnWUdxUVhmdlVwajJlczRkR19YVGdRcFNuQjFCR1dMdURXTUZxemliNmZuQzVwY3Y3YTg2bzdZbzhBVzFxYTQ0alZFNm45cW9JVmNrVEVkS3pGUDVYSmZQRzFPOXFlSVNQRDRCRHVicmlmWDk2WkdRSE9OeHZYa0JmUjlJY1ZEd2RLOEZpQl9zSXJR0gHPAUFVX3lxTFBYZDRQT2RMeU1yTUlIZjc4dE9YRjd2dGpIOVdibmZNU2VnYW84Yl9oNi1BNnlQeDdlTUxQR19MMEFRMlJtUHdndFpzMF9PTkh4RjVjTEgxMDdFVVdfU1Z4dFIxc05QN0Y0ZFhNVXcyb1RUUHlEeVpxSjEwcUNvTVRQakw4dXh1M2pnTGctWnhLS25wOUtfWFdvZzJIell0bjdRMmdYbmRjYWF4cWx0Q3hyd0U1QlN3cGRFNDBTQlY3aWNxUEtmVlFGMWhUS21sYw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxPYzhKNDRZaFZsNGx1U2ZRcV83ZzlXOEVBdnVvcnU0cWZpQ1J5ZGxPc01hN2hIdVhPUWFvdVRrZEtLQk5Sc3BYc2k2RkZka18wNFNHTlVvS0xfVHZPd2QyejlicFFnUUhCSjhWRWJzbmtZNzRrRlREdTNaQ3Q0UGY4dHBOQWFsUWoyTnV0ZHlQNDl1S08xaWJkcFZQYzNMU0xKQmhjSl9UbTNuVkd2S0EtcE5wMDdXLTIwcUdBeHNTNmNFSTA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -479,20 +511,29 @@
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">IDN Times Jatim</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">UPT SDN 230 Gresik Gelar Nonton Bareng Film Pramuka sebagai Upaya Pembinaan</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Khofifah Sebut 24 Daerah di Jatim Tetapkan Darurat Kekeringan</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi4AFBVV95cUxQd0VZaU94YUZ0RDZyR0xjUnBCT3BjZjJMRy1FSGJoTWdYbVRqT1hDY2ZINGJ1ME16MkFBZEV5NlRKeTlHNlZ4bUlEdjJRaDk0V29neW5Yck14YkNFRnBiUXUwN094YmhNVDY1ZC15aTA0VS1nbjJFVktLcHhFYWVfRHdRWXVJQ3djMDlPa3d3VzlRTWJpUWVuSUpTNGZWd3hXRmVnRklfYmRvTUhyZFJ3RWdYcC1rVEVOUWxyc3VDNUp5Zm1pTFpjSk5qYWVkcnA2LXR4bDAwdkVkZVFoNFFyeA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivAFBVV95cUxQSW1ydDJsWThJZ2ZrenVrQnE1ZnEtY0MyU1hjeFNjUkU5Qy1ramQ2eVQ1NHV3OEZmMnhFQTNQY2ZaTE5KRWM3M1RMU2hOLWRJczM0bnZKRVVEWTNKRVVyRmRwcHM2LW5fVkwyOVducU5Ra0VRMHFwQ1FqTEhZbmlaaERwTDVrUHRJU1BZNEp5ZG0wNG51MzBuUHRNS2Q1R2F1S1A2Q1o2UE1sejl1U2J5azktZVcwLVZGdndDRNIBwgFBVV95cUxQLVZoeGNEel9IR2FMdkhnekJQQUR0azBGcXZzZ3cyZW9ObzR5WWZYU3Z1QmN0SnhhODA5Mm1GQi10MEdTVkVDdVN6QmxKbHJnNktNS005aVNSV0ZrY0RtWUxPdHlYVHVSVTN6Uk5USTJDaXJJaFA3SDV4QU1NREZUanpRNmc5ZzVzd0NpUHBsNEszYVlmcnc2eFkwc2lCU3BVOU1ldTZQQWZEbVRFYk50XzFkUDNDYTgzb3E1SjNCalg4dw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">SINDOnews Nasional</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">IDN Times Jatim</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Ketika Suara Guru Bertemu Data PISA</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">PKh UNESA Bekali Guru Konseling Disabilitas, Sekolah Makin Inklusif!</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxQc09na2NkX1FrZGYtQ3R1T05US0sxVGJpS3IxNHJFTEtvVTM1YUJ3cjVqOWpCblFVX3M5em10cjNXenE3cklxWUlja0pFVkQ0ODA0UkNaZ014ZjVlNWxsZnRiYlk0eXNaV3BYVm1XaHZzNG8xRktmbzYwSFVScHh1cE96Z0FBcENVbGlxUjhxb2pQYWN4cWY2QdIBngFBVV95cUxONTJvNTduQkhUbEhRWURJXzgxVXBYem8yYmhFZ0VjbGlnTVBxVnVxS1h3QWhDUi1IOVEzVTdTTHRya3RTTFVaTmcxVXBoeFo5OUxSMEZPQ1d0ZmZXb2JfYzFrTTNmdGl1TGxSamU1UEdxOWU5OFNoQzRYMnhiRGVidVlnY2xpRENrMEFRUXdwQ3VobWJ2SW5qbkZqRUFkQQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxQTk54N1RmelFJanNwb3RGOUxuSWo1S0pRdER0MjdZSVl5cGw2WDJYNWpIYkV1czFrZjN5Vml1WjdRbWxuVjVDUnVUcjhOTDZxazhXLTk1Z0M1MUdNbjRRWW4yMzBvV3gzUzNKcUNrRl9kYnhpR0N3V0lJS25oX1otSUNOSnV4ckx0RllCNzdQeDhsWmRQV21SdVdZcGlMTUVOMVdoOTEyNExvM1hqWWlJU0NjY0lvdF91UlMxYkVVelRmTHPSAcgBQVVfeXFMTWpFTEJlSTd1ZUphZTFiT29rSEpzOTZ2eHRDSXp5bDRMM2tkdUY4b0NJZHRSYUZQc290YUN2dmxiX21jQkNyTmpHQ1FqYklCSDFTek11Nl9lZXhHTTEzOXhzNjNFdXU0V2xKY3p4WkZKOGFCX2xZNURIZDRWT0tKNUowZFpwMlZFLWRSYkN5ZVBwTlQxTF85eTBkenRUSVNnZ1l1alRYSzBveDdyR3pZSmJIQU4teG4yXzBkNmVkVW9KaUUyY0w1Yk0?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Erieka Nugraheni</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE9KYzFNa2VFN1V3N0JjNnh5MXBGUTVjUVR1bnlHbzl6aVNQR28tVDUxUElDZjZOZUt3RnotRHZqZk43Y3Q0Yk5EYmY3MGt1YmxzS0MzMmNJWjhhbFBhZlBVdTloZnc5dS1h?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -502,6 +543,159 @@
             <td class="py-3 px-4 text-slate-900 font-medium">Ikatan Perempuan Indonesia Peduli Hadirkan Semangat Pulih Penghuni Balai PMKS</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
             <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxPdXhFdXBuWW9aQ3ZieEdqd3AxUk4wMTFBYUNpRmllNXZBaHJFU0FuTjQxRDBZZGJPV09laF9aaERENDlaMDFrSENFVE1oZ3VNY2VsTFpyTE41ZF9ZSHRUSHFqTUh5LXNpdDVlLXVMMEtNUnF2U1RkMHQ0V3BlX3AyMTRsMGhVNUFUT29XQzYzN1ZlS3JObDE5THlINUdldXZCRUFEbnpfajF2MlZqSWVLVU1FUXJ4S2xTTU1MaW5B?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">HARIAN DISWAY</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Disway E-Paper</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE5vNzlnNjdrb0JTaGc5WmhNRHFleFBTWDJLaDZlOU1KRnd4QjBFWFNFanYybFpJRWRzWDRzbS1MUFRTZmxZZTEtV2d3RXlFbjV6UENjekRIUGJEcUtKYzljS2hEc2oyQm9xWVVEa053OA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">HARIAN DISWAY</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Riset & Inovasi</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Baca Buku Bareng, Cara Komunitas Rabo Sore Ajak Mahasiswa Baru Cintai Sastra Indonesia - harian.disway.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxQTVA4akRacjUzTmVwRTZacWdHT3NGYUN2d0VmYnYxYWtPSGJEMk82d0hpTzliTFdheGJkRkFRLVIwc1c5amRWUnJIZFB1MXlNQW9GZDJvQXlXbk5tcDV1cm1EdzBnS2NHTC1qYjN4OGdJSm5pTGJ3aTN5Vmp3cGIzRUh3Wi1GeTU4TlJrd085amFueVBDVEhkNG0zMGUzV0lfMjRRaEs1TXZSN0NsX3dQcE1fTzB3eWJWelY5VEZ30gG-AUFVX3lxTFBNUDhqRFpyNTNOZXBFNlpxZ0dPc0ZhQ3Z3RWZidjFha09IYkQyTzZ3SGlPOWJMV2F4YmRGQVEtUjBzVzlqZFZSckhkUHUxeU1Bb0ZkMm9BeVduTm1wNXVybUR3MGdLY0dMLWpiM3g4Z0lKbmlMYndpM3lWandwYjNFSHdaLUZ5NThOUmt3TzlqYW55UENUSGQ0bTMwZTNXSV8yNFFoSzVNdlI3Q2xfd1BwTV9PMHd5YlZ6VjlURnc?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">UPT SDN 230 Gresik Gelar Nonton Bareng Film Pramuka sebagai Upaya Pembinaan</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi4AFBVV95cUxQd0VZaU94YUZ0RDZyR0xjUnBCT3BjZjJMRy1FSGJoTWdYbVRqT1hDY2ZINGJ1ME16MkFBZEV5NlRKeTlHNlZ4bUlEdjJRaDk0V29neW5Yck14YkNFRnBiUXUwN094YmhNVDY1ZC15aTA0VS1nbjJFVktLcHhFYWVfRHdRWXVJQ3djMDlPa3d3VzlRTWJpUWVuSUpTNGZWd3hXRmVnRklfYmRvTUhyZFJ3RWdYcC1rVEVOUWxyc3VDNUp5Zm1pTFpjSk5qYWVkcnA2LXR4bDAwdkVkZVFoNFFyeA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">lunarmy.co.za</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Asrama unesa ketintang🏆 Asrama Mahasiswa Kampus 1 Ketintang (4 Blok & 1 Parkir)</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE81eGVNd0RCTVNsR1ZsbkU1M1BqdTRRYThOWk5lNEpKNWlLSy02RnhVWVVkZlNadmRrUnFPbmllWmVOak1Pc1F2UkVJbmJNWWlFMzAzb29ZaUtwMTd3?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Annie Fathonah</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiZkFVX3lxTE9LUnpXRkF5VGtXZFgzYUFJUUJrRWF5MDdpeDJOWU9zR3NkM1ZrMnI5cDlxSHBPT3Z6MnVBVUg0YkQ2eGxsRWtQQnVIWXRLLTBwSDZoTFh6TGJBREJmX3BKSkZ1aW44Zw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Tim Voli Putra Unija Sumenep Matangkan Persiapan Hadapi LVM 2026 Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxOLXJOdUN0allQZHU0VWxqTkVpNUVOemh4QUdfVmFYVUFDSXlPUi00NUYyU1JWNWVjS3dMTlp6eVk2VURaYkdNWmNLMjBVSlEwUk5faTk2aUFNejVXT2hYVldrbVhzRVhBdk45VjNNSy1BaWt0bzd6ZWJ2UUptOVFvTmhUczVRSWJqQnc4a1JlQ3A3aFlYYXE0UGMySUhDUWpWLW9xQktkaXRlRTZzbGkzbVJWSTFuUQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">nasional.sindonews.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Ketika Suara Guru Bertemu Data PISA</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxQc09na2NkX1FrZGYtQ3R1T05US0sxVGJpS3IxNHJFTEtvVTM1YUJ3cjVqOWpCblFVX3M5em10cjNXenE3cklxWUlja0pFVkQ0ODA0UkNaZ014ZjVlNWxsZnRiYlk0eXNaV3BYVm1XaHZzNG8xRktmbzYwSFVScHh1cE96Z0FBcENVbGlxUjhxb2pQYWN4cWY2QdIBngFBVV95cUxONTJvNTduQkhUbEhRWURJXzgxVXBYem8yYmhFZ0VjbGlnTVBxVnVxS1h3QWhDUi1IOVEzVTdTTHRya3RTTFVaTmcxVXBoeFo5OUxSMEZPQ1d0ZmZXb2JfYzFrTTNmdGl1TGxSamU1UEdxOWU5OFNoQzRYMnhiRGVidVlnY2xpRENrMEFRUXdwQ3VobWJ2SW5qbkZqRUFkQQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Daftar Lengkap Pemenang KKI 2026, ITS Surabaya Juara Umum</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxQR0gwWkhOV2c5YUpzQnN4MFhIYUV2VDFTQnpYenVrVU5OQ2g0RFFmeVlEc2lUX0NoOWxHbWhReWVsVjdUSndUeGwyOVNMb0diclJ0cHB3NzA1SmlNWDJQa1ZFVkdYQkE0a0FWYU1CcE5mZlMxT3JNVlF3TklHdjFyVW9oOVVZWFd3NWI3Z0ZpZXZFa3lHWHNwdHVxVFF4SW5qUDdv?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">antaranews.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Binus juarai Campus League Badminton Bandung lewat drama tiga gim</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxQNng1d2ZNbnZOSnJjS0NSWUlMdW1oeHpocDZ0NC1BOTlhYUpiT0JSVXpjbE5RWW5ERDFfUUZIS2FtOXdveXNjWV80Z0h1dUtRRmdiajBhWUlBTE55VWotdHE3OGVKQTJtM1FHZFljekhJSmp4eWRzaWR6X2RTa2M3VE1pa2ZoTjhLQk1lU1V0MFBURmN4aFNwRmhSUk5nNm9qOHlld25Tdi04Qk0zRFHSAa4BQVVfeXFMUDZ4NXdmTW52TkpyY0tDUllJTHVtaHh6aHA2dDQtQTk5YWFKYk9CUlV6Y2xOUVluREQxX1FGSEthbTl3b3lzY1lfNGdIdXVLUUZnYmowYVlJQUxOeVVqLXRxNzhlSkEybTNRR2RZY3pISUpqeHlkc2lkel9kU2tjN1RNaWtmaE44S0JNZVNVdDBQVEZjeGhTcEZoUlJOZzZvajh5ZXduU3YtOEJNM0RR?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Surya.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Puisi Sebagai Terapi Trauma untuk Kesehatan Mental Dibahas di AICoMS 2026 Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi0wFBVV95cUxNNWJWcFNySFpQSW1PdlBKTGk3bHpJQUEtUVhPX2lfanNSVDdra21fY0w4VDZVVjBWMFY5a1FTcFhDZTl3dWZtSEE2eFBOa2l2eDVrV1d3M3drcTFoanNPbUF5NTk0MzE3SFJBVlhKRmVYUF8tcHNoUjFvTGE1LV9fMFdzY1B3ajFxNEIxeUJEamdvaFFmdTBZVTlJcDhUMlRUcFgteDhGWC1aLTEwRGs3Q0lsQjVWWGdBckluTlVVdjh5QVRVMDZacS1reWpJdjRnZTI4?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">rumahzakat.org</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Program Terkait - Rumah Zakat</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiuAFBVV95cUxPTzBsTmlQWkphcFc3TFNkUjVGUTJNYkR6ckVKVWxVdWh1eGtJcnB5MVdWQllnQ2tmaUk5R1dXRmhxaG1jNXo1Qk1nMC01c3R3cTIzSVN5WFhCUmFMN3dabzlCTUs5RFk1a2ZzSWtlcUlGeGhPTllNVmtFYU1qa0ZobmlwUU5ib2YtLUNqX2ZyS05MMGFjQ3ROeUQ4TGtqUTNCb21kMFJ4cW92SS13TGFuYnFRcFZpbnBH?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Tempo.co</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Ketika Satwa Liar Tak Punya Suara</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTFBOVFpaYl9tVFBzT3Awa21zVHdnMi01VzNybFhUSW9iRnNQcVlrWUJsQ2M1bmVLYl9jQkNvV243MEFEZzRrYVZYZzY1WlZGeFUtQ0ZmVWxWWmhKZm9NUHRpZWlrNlNqdi1uM2V2QjNCb3NOdVROUG5lczM0UE9UUHc?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Campus League Badminton Bandung Melahirkan Juara menuju The Nationals</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxNVVJmajVjUmtfRDUwQ0tKWVhfcWVKTFZPYl93MGJTZWd5XzVvZjZVZFpPSGpTZnRjRWt6ZEhhZ0FSelZDbG9OSXEtVXFFbUE0WFQ5MkNHMkpEbFdsUjV1cEptOG80S1d4NUFUZWRjVWR2bFliZ3BIcjlKMXQ0ZlN4ZjdvSXE0eXlKWHl2M3FfdFBSczcyTnNhdlgybUdiU1lZaElza3BLbDA1Z1VBTEExQQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompas.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">6 Aktivitas Fisik Sederhana Agar Tubuh Tetap Bergerak di Tengah Kesibukan</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMixAFBVV95cUxPMXpzeUJ0RFh3VkE4UlpsQ0pYdUszV0dmVTJUWW1NaU5HV25McElMYktNMERlTjV5S3c5NlJqbXFRWngzSlRwT200VHJZM2NYbFBmMkZkZF9iSlF0VHQxdDVBbV9hd0w2bGJoN3F6SThKNjFsbnhsa1JObkc3VHFXbTF4SV9PMGM1Y1A0UDhjM0tfbndjb1dNcFVQM1lEWGZza3BfUnJYa0F3bUZtSUxVQ0p6VWM2ekFHUFZONkpaRVVYNGY5?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Fernanda LailyRahmawati</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTFA5TWdOaGEydll6RjUyWnZBeTlOS2c1ekUzdU5iLUdvd2t5eU9RSXBjb1RQYjFLX0xtNElIeURpNC1pbU1nTlJYUnVRTHNxN3VvNU9NWjhSU2c2MGc?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Suara Merdeka Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Menteri Hukum Hadir Langsung dan Jawab Keluhan di Program Pasti Ada Solusi - Suara Merdeka Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiygFBVV95cUxOX3pKZnllVEJHVjQ4VWJLNE5qWVg2ZlRIdXBWNW0zcXlrQUo4TW1HdjRqbmNRU3hlSGN4c1lJdVVnWUdxUVhmdlVwajJlczRkR19YVGdRcFNuQjFCR1dMdURXTUZxemliNmZuQzVwY3Y3YTg2bzdZbzhBVzFxYTQ0alZFNm45cW9JVmNrVEVkS3pGUDVYSmZQRzFPOXFlSVNQRDRCRHVicmlmWDk2WkdRSE9OeHZYa0JmUjlJY1ZEd2RLOEZpQl9zSXJR0gHPAUFVX3lxTFBYZDRQT2RMeU1yTUlIZjc4dE9YRjd2dGpIOVdibmZNU2VnYW84Yl9oNi1BNnlQeDdlTUxQR19MMEFRMlJtUHdndFpzMF9PTkh4RjVjTEgxMDdFVVdfU1Z4dFIxc05QN0Y0ZFhNVXcyb1RUUHlEeVpxSjEwcUNvTVRQakw4dXh1M2pnTGctWnhLS25wOUtfWFdvZzJIell0bjdRMmdYbmRjYWF4cWx0Q3hyd0U1QlN3cGRFNDBTQlY3aWNxUEtmVlFGMWhUS21sYw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">ANTARA News</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Beras fortifikasi terbukti melanggar tidak boleh beredar</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxQQ0hOeElhUGFuVDNDd25yM2N6cHp1WGp6VjJEdURkMG5uRWtkdFUyUWU1cFF0UFQ3YUpDU3pEYmRheUxVSG91MllXelZxMkNPX0xlcDA1TGRqMFhhdGRTYnNtYzRieHY1cVFJdkw1eUVlWWFfamVyQXNyYkt4Ungzc25sbnI3VDVkSmxpTzFsUmp3eXkxTnozdVpoSkZySkptaEHSAacBQVVfeXFMT1RJM0lGaGlkcm12UkdYcmZkcUlWckJwVWpHWUhpZHVHSFEteHMzRl95ckRETGp2cS1lRHh6MnRQX25mTmZEcjNZRjRQU1lQNGZMeUVDaW1WdkNIa2RLTXFPLUxwYU9adTI0WDhXdmZIaThmeGhWWlpaa3VjWDZOalhZSEs5TU95VUxvMWdFakZyc2k4WGlRWGxOVzVETmZxMEZhMlVaMGs?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -524,38 +718,11 @@
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">ANTARA News</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">HARIAN DISWAY</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Beras fortifikasi terbukti melanggar tidak boleh beredar</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Unesa Training Ground Sports Festival 2026 Dibuka, 145 Peserta Pushbike dan 180 Peserta Aerobic Bersaing - harian.disway.id</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxQQ0hOeElhUGFuVDNDd25yM2N6cHp1WGp6VjJEdURkMG5uRWtkdFUyUWU1cFF0UFQ3YUpDU3pEYmRheUxVSG91MllXelZxMkNPX0xlcDA1TGRqMFhhdGRTYnNtYzRieHY1cVFJdkw1eUVlWWFfamVyQXNyYkt4Ungzc25sbnI3VDVkSmxpTzFsUmp3eXkxTnozdVpoSkZySkptaEHSAacBQVVfeXFMT1RJM0lGaGlkcm12UkdYcmZkcUlWckJwVWpHWUhpZHVHSFEteHMzRl95ckRETGp2cS1lRHh6MnRQX25mTmZEcjNZRjRQU1lQNGZMeUVDaW1WdkNIa2RLTXFPLUxwYU9adTI0WDhXdmZIaThmeGhWWlpaa3VjWDZOalhZSEs5TU95VUxvMWdFakZyc2k4WGlRWGxOVzVETmZxMEZhMlVaMGs?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">mediaindonesia.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">BINUS Jakarta Juara Campus League Badminton Regional Bandung 2026</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMirAFBVV95cUxQYnRkNnFmdFdUOUtwVEJXRmd2SWVUVnVtcXlkeVNXbVdDdFBTNUtXYm56T3c3bVRYemRiWjFFX003SGVGeUx0Z2xOZm1BandpRXRlb1Y5RWU4R1ZqMFNpRVJld0syN3Q0THhxbXF3U3g1ZHlKbGdWWnJyQWRvWmhrOFlJeTU5ZXBEVy1DQlRYSnR6anJTajFhNDByQ2pVZTg5OTdIdTJYZ0FQWjJ4?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Tim Voli Putra Unija Sumenep Matangkan Persiapan Hadapi LVM 2026 Surabaya</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxOLXJOdUN0allQZHU0VWxqTkVpNUVOemh4QUdfVmFYVUFDSXlPUi00NUYyU1JWNWVjS3dMTlp6eVk2VURaYkdNWmNLMjBVSlEwUk5faTk2aUFNejVXT2hYVldrbVhzRVhBdk45VjNNSy1BaWt0bzd6ZWJ2UUptOVFvTmhUczVRSWJqQnc4a1JlQ3A3aFlYYXE0UGMySUhDUWpWLW9xQktkaXRlRTZzbGkzbVJWSTFuUQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Erieka Nugraheni</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE9KYzFNa2VFN1V3N0JjNnh5MXBGUTVjUVR1bnlHbzl6aVNQR28tVDUxUElDZjZOZUt3RnotRHZqZk43Y3Q0Yk5EYmY3MGt1YmxzS0MzMmNJWjhhbFBhZlBVdTloZnc5dS1h?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi2wFBVV95cUxPOG83RWhxNXZqWE5TQWRqTU8tZmhzOE5fMXcxWHRKOENvYU14N0tBNmhNRWJxaXBORGJLSEJ4ZmM1N3VRRjlMTEJSSlZENGNuLUg3X1U4VHUtVkpQbWlLeFIwbEEzUVJvYlgyRVZQd24zVl9BSGJ4VzZ6Vzhmejd4WHpTX2doNmI4ZnZReXBTTjM5QUlEOFlfZERQNDkyaVlQTG5wZkpFUFA4LXQ4akdEWFFFYUdUZXhudXd0WkE2emFYWHRIckt3ZGVoUmlTVkQ2THhDclNULXdEcVXSAdYBQVVfeXFMUDhZdkcwVnNGS29Ba1VUTl9NcFN4MWx2TTNJTUZYWENwTFYtOVFoUXljMDdzSEQ0NzNQaFNHYTZIZjVxa0VwSUxkU244TmM3UzZYWW1pN3FFOW1LSTFUbVZzdlpkSGpwWkxJWEh1dzlhUjNwVTF2RDlrbVZWUW0zYUpiZmhlV2JHTHVGTU5mckpCNm02M1A1d2pjUHNQUS1Vck5ZNEdkd0t4Ry1DcVVsV3IzdjBjYjlIdGdBa3lJSnFOVGRrWDkyeGhEWmdXd1Zrb3BRaDg4dw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -569,155 +736,38 @@
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">IDN Times Jatim</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Khofifah Sebut 24 Daerah di Jatim Tetapkan Darurat Kekeringan</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivAFBVV95cUxQSW1ydDJsWThJZ2ZrenVrQnE1ZnEtY0MyU1hjeFNjUkU5Qy1ramQ2eVQ1NHV3OEZmMnhFQTNQY2ZaTE5KRWM3M1RMU2hOLWRJczM0bnZKRVVEWTNKRVVyRmRwcHM2LW5fVkwyOVducU5Ra0VRMHFwQ1FqTEhZbmlaaERwTDVrUHRJU1BZNEp5ZG0wNG51MzBuUHRNS2Q1R2F1S1A2Q1o2UE1sejl1U2J5azktZVcwLVZGdndDRNIBwgFBVV95cUxQLVZoeGNEel9IR2FMdkhnekJQQUR0azBGcXZzZ3cyZW9ObzR5WWZYU3Z1QmN0SnhhODA5Mm1GQi10MEdTVkVDdVN6QmxKbHJnNktNS005aVNSV0ZrY0RtWUxPdHlYVHVSVTN6Uk5USTJDaXJJaFA3SDV4QU1NREZUanpRNmc5ZzVzd0NpUHBsNEszYVlmcnc2eFkwc2lCU3BVOU1ldTZQQWZEbVRFYk50XzFkUDNDYTgzb3E1SjNCalg4dw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Media Indonesia</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Campus League Badminton Bandung Melahirkan Juara menuju The Nationals</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">BINUS Jakarta Juara Campus League Badminton Regional Bandung 2026</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxNVVJmajVjUmtfRDUwQ0tKWVhfcWVKTFZPYl93MGJTZWd5XzVvZjZVZFpPSGpTZnRjRWt6ZEhhZ0FSelZDbG9OSXEtVXFFbUE0WFQ5MkNHMkpEbFdsUjV1cEptOG80S1d4NUFUZWRjVWR2bFliZ3BIcjlKMXQ0ZlN4ZjdvSXE0eXlKWHl2M3FfdFBSczcyTnNhdlgybUdiU1lZaElza3BLbDA1Z1VBTEExQQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">ANTARA News</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Binus juarai Campus League Badminton Bandung lewat drama tiga gim</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxQNng1d2ZNbnZOSnJjS0NSWUlMdW1oeHpocDZ0NC1BOTlhYUpiT0JSVXpjbE5RWW5ERDFfUUZIS2FtOXdveXNjWV80Z0h1dUtRRmdiajBhWUlBTE55VWotdHE3OGVKQTJtM1FHZFljekhJSmp4eWRzaWR6X2RTa2M3VE1pa2ZoTjhLQk1lU1V0MFBURmN4aFNwRmhSUk5nNm9qOHlld25Tdi04Qk0zRFHSAa4BQVVfeXFMUDZ4NXdmTW52TkpyY0tDUllJTHVtaHh6aHA2dDQtQTk5YWFKYk9CUlV6Y2xOUVluREQxX1FGSEthbTl3b3lzY1lfNGdIdXVLUUZnYmowYVlJQUxOeVVqLXRxNzhlSkEybTNRR2RZY3pISUpqeHlkc2lkel9kU2tjN1RNaWtmaE44S0JNZVNVdDBQVEZjeGhTcEZoUlJOZzZvajh5ZXduU3YtOEJNM0RR?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Tempo.co</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Ketika Satwa Liar Tak Punya Suara</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTFBOVFpaYl9tVFBzT3Awa21zVHdnMi01VzNybFhUSW9iRnNQcVlrWUJsQ2M1bmVLYl9jQkNvV243MEFEZzRrYVZYZzY1WlZGeFUtQ0ZmVWxWWmhKZm9NUHRpZWlrNlNqdi1uM2V2QjNCb3NOdVROUG5lczM0UE9UUHc?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Annie Fathonah</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiZkFVX3lxTE9LUnpXRkF5VGtXZFgzYUFJUUJrRWF5MDdpeDJOWU9zR3NkM1ZrMnI5cDlxSHBPT3Z6MnVBVUg0YkQ2eGxsRWtQQnVIWXRLLTBwSDZoTFh6TGJBREJmX3BKSkZ1aW44Zw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompas.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">6 Aktivitas Fisik Sederhana Agar Tubuh Tetap Bergerak di Tengah Kesibukan</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMixAFBVV95cUxPMXpzeUJ0RFh3VkE4UlpsQ0pYdUszV0dmVTJUWW1NaU5HV25McElMYktNMERlTjV5S3c5NlJqbXFRWngzSlRwT200VHJZM2NYbFBmMkZkZF9iSlF0VHQxdDVBbV9hd0w2bGJoN3F6SThKNjFsbnhsa1JObkc3VHFXbTF4SV9PMGM1Y1A0UDhjM0tfbndjb1dNcFVQM1lEWGZza3BfUnJYa0F3bUZtSUxVQ0p6VWM2ekFHUFZONkpaRVVYNGY5?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">surabaya.tribunnews.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Puisi Sebagai Terapi Trauma untuk Kesehatan Mental Dibahas di AICoMS 2026 Surabaya</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi0wFBVV95cUxNNWJWcFNySFpQSW1PdlBKTGk3bHpJQUEtUVhPX2lfanNSVDdra21fY0w4VDZVVjBWMFY5a1FTcFhDZTl3dWZtSEE2eFBOa2l2eDVrV1d3M3drcTFoanNPbUF5NTk0MzE3SFJBVlhKRmVYUF8tcHNoUjFvTGE1LV9fMFdzY1B3ajFxNEIxeUJEamdvaFFmdTBZVTlJcDhUMlRUcFgteDhGWC1aLTEwRGs3Q0lsQjVWWGdBckluTlVVdjh5QVRVMDZacS1reWpJdjRnZTI4?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">HARIAN DISWAY</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Riset & Inovasi</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Baca Buku Bareng, Cara Komunitas Rabo Sore Ajak Mahasiswa Baru Cintai Sastra Indonesia - harian.disway.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxQTVA4akRacjUzTmVwRTZacWdHT3NGYUN2d0VmYnYxYWtPSGJEMk82d0hpTzliTFdheGJkRkFRLVIwc1c5amRWUnJIZFB1MXlNQW9GZDJvQXlXbk5tcDV1cm1EdzBnS2NHTC1qYjN4OGdJSm5pTGJ3aTN5Vmp3cGIzRUh3Wi1GeTU4TlJrd085amFueVBDVEhkNG0zMGUzV0lfMjRRaEs1TXZSN0NsX3dQcE1fTzB3eWJWelY5VEZ30gG-AUFVX3lxTFBNUDhqRFpyNTNOZXBFNlpxZ0dPc0ZhQ3Z3RWZidjFha09IYkQyTzZ3SGlPOWJMV2F4YmRGQVEtUjBzVzlqZFZSckhkUHUxeU1Bb0ZkMm9BeVduTm1wNXVybUR3MGdLY0dMLWpiM3g4Z0lKbmlMYndpM3lWandwYjNFSHdaLUZ5NThOUmt3TzlqYW55UENUSGQ0bTMwZTNXSV8yNFFoSzVNdlI3Q2xfd1BwTV9PMHd5YlZ6VjlURnc?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">HARIAN DISWAY</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Unesa Training Ground Sports Festival 2026 Dibuka, 145 Peserta Pushbike dan 180 Peserta Aerobic Bersaing - harian.disway.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi2wFBVV95cUxPOG83RWhxNXZqWE5TQWRqTU8tZmhzOE5fMXcxWHRKOENvYU14N0tBNmhNRWJxaXBORGJLSEJ4ZmM1N3VRRjlMTEJSSlZENGNuLUg3X1U4VHUtVkpQbWlLeFIwbEEzUVJvYlgyRVZQd24zVl9BSGJ4VzZ6Vzhmejd4WHpTX2doNmI4ZnZReXBTTjM5QUlEOFlfZERQNDkyaVlQTG5wZkpFUFA4LXQ4akdEWFFFYUdUZXhudXd0WkE2emFYWHRIckt3ZGVoUmlTVkQ2THhDclNULXdEcVXSAdYBQVVfeXFMUDhZdkcwVnNGS29Ba1VUTl9NcFN4MWx2TTNJTUZYWENwTFYtOVFoUXljMDdzSEQ0NzNQaFNHYTZIZjVxa0VwSUxkU244TmM3UzZYWW1pN3FFOW1LSTFUbVZzdlpkSGpwWkxJWEh1dzlhUjNwVTF2RDlrbVZWUW0zYUpiZmhlV2JHTHVGTU5mckpCNm02M1A1d2pjUHNQUS1Vck5ZNEdkd0t4Ry1DcVVsV3IzdjBjYjlIdGdBa3lJSnFOVGRrWDkyeGhEWmdXd1Zrb3BRaDg4dw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Rumah Zakat</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Program Terkait - Rumah Zakat</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiuAFBVV95cUxPTzBsTmlQWkphcFc3TFNkUjVGUTJNYkR6ckVKVWxVdWh1eGtJcnB5MVdWQllnQ2tmaUk5R1dXRmhxaG1jNXo1Qk1nMC01c3R3cTIzSVN5WFhCUmFMN3dabzlCTUs5RFk1a2ZzSWtlcUlGeGhPTllNVmtFYU1qa0ZobmlwUU5ib2YtLUNqX2ZyS05MMGFjQ3ROeUQ4TGtqUTNCb21kMFJ4cW92SS13TGFuYnFRcFZpbnBH?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">10 PTN dengan Jumlah Mahasiswa Terbanyak Indonesia, Universitas Terbuka Teratas</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxPYzhKNDRZaFZsNGx1U2ZRcV83ZzlXOEVBdnVvcnU0cWZpQ1J5ZGxPc01hN2hIdVhPUWFvdVRrZEtLQk5Sc3BYc2k2RkZka18wNFNHTlVvS0xfVHZPd2QyejlicFFnUUhCSjhWRWJzbmtZNzRrRlREdTNaQ3Q0UGY4dHBOQWFsUWoyTnV0ZHlQNDl1S08xaWJkcFZQYzNMU0xKQmhjSl9UbTNuVkd2S0EtcE5wMDdXLTIwcUdBeHNTNmNFSTA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Daftar Lengkap Pemenang KKI 2026, ITS Surabaya Juara Umum</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxQR0gwWkhOV2c5YUpzQnN4MFhIYUV2VDFTQnpYenVrVU5OQ2g0RFFmeVlEc2lUX0NoOWxHbWhReWVsVjdUSndUeGwyOVNMb0diclJ0cHB3NzA1SmlNWDJQa1ZFVkdYQkE0a0FWYU1CcE5mZlMxT3JNVlF3TklHdjFyVW9oOVVZWFd3NWI3Z0ZpZXZFa3lHWHNwdHVxVFF4SW5qUDdv?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">IDN Times Jatim</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">PKh UNESA Bekali Guru Konseling Disabilitas, Sekolah Makin Inklusif!</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxQTk54N1RmelFJanNwb3RGOUxuSWo1S0pRdER0MjdZSVl5cGw2WDJYNWpIYkV1czFrZjN5Vml1WjdRbWxuVjVDUnVUcjhOTDZxazhXLTk1Z0M1MUdNbjRRWW4yMzBvV3gzUzNKcUNrRl9kYnhpR0N3V0lJS25oX1otSUNOSnV4ckx0RllCNzdQeDhsWmRQV21SdVdZcGlMTUVOMVdoOTEyNExvM1hqWWlJU0NjY0lvdF91UlMxYkVVelRmTHPSAcgBQVVfeXFMTWpFTEJlSTd1ZUphZTFiT29rSEpzOTZ2eHRDSXp5bDRMM2tkdUY4b0NJZHRSYUZQc290YUN2dmxiX21jQkNyTmpHQ1FqYklCSDFTek11Nl9lZXhHTTEzOXhzNjNFdXU0V2xKY3p4WkZKOGFCX2xZNURIZDRWT0tKNUowZFpwMlZFLWRSYkN5ZVBwTlQxTF85eTBkenRUSVNnZ1l1alRYSzBveDdyR3pZSmJIQU4teG4yXzBkNmVkVW9KaUUyY0w1Yk0?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">HARIAN DISWAY</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Disway E-Paper</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE5vNzlnNjdrb0JTaGc5WmhNRHFleFBTWDJLaDZlOU1KRnd4QjBFWFNFanYybFpJRWRzWDRzbS1MUFRTZmxZZTEtV2d3RXlFbjV6UENjekRIUGJEcUtKYzljS2hEc2oyQm9xWVVEa053OA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">18 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Fernanda LailyRahmawati</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTFA5TWdOaGEydll6RjUyWnZBeTlOS2c1ekUzdU5iLUdvd2t5eU9RSXBjb1RQYjFLX0xtNElIeURpNC1pbU1nTlJYUnVRTHNxN3VvNU9NWjhSU2c2MGc?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMirAFBVV95cUxQYnRkNnFmdFdUOUtwVEJXRmd2SWVUVnVtcXlkeVNXbVdDdFBTNUtXYm56T3c3bVRYemRiWjFFX003SGVGeUx0Z2xOZm1BandpRXRlb1Y5RWU4R1ZqMFNpRVJld0syN3Q0THhxbXF3U3g1ZHlKbGdWWnJyQWRvWmhrOFlJeTU5ZXBEVy1DQlRYSnR6anJTajFhNDByQ2pVZTg5OTdIdTJYZ0FQWjJ4?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">mediaindonesia.com</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Berita dan Informasi unesa fc academy Terkini dan Terbaru Hari Ini</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBET05ZR2c4WjV1WFVxQ2p6RldIQklOcDdKQUZ3SGEwNEJ5YmZFODNWM2hhemNfZHZwTXg5dEpZTGlISnpBNXcyWmJxTFlpVkxSSXJYOFNBWFdUb3VX?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Isma Nabila</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE1QNjNwODQtNzNFTTF6X3RNTFY4bldmX1pkMkRqTV9wRzFuVjU0dEFDcllpYm1YWENjWXR1Nm92aDZ1elJ3VnJLQW9YMkpQLWw0Y0w2eTVvTWtBVVNrSzRibw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Media Indonesia</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
             <td class="py-3 px-4 text-slate-900 font-medium">Darurat Kecurangan Seleksi Mandiri, Forum Wakil Rektor PTN Susun Mitigasi</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
             <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxNa1FnWVAwWkhSSDFkLXBqX19GQkVqYVJ3cUd6dV9TekVzdG83NFYyUFJmd1I0MElQR1E1NFlJU1ZMVDltdVlMMzI4S2ZhMUxMWWUwNzM1YXplT2VoSzdNVVRtNlM5WHVmd190amdlY3kyYUlzUXhtdmIwTERmM1JwZG9XRnp3aTdTSU05Tm1raXVvb2IzYzkyLVBZMzhFU1dVWmQ2V1NHVXI0cjJWcVJMSU1ocThBMWM?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Atta Divanita</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE9YODAyOVQwSnpRY2NTSTE3eG9PamtGQjE1RGs1N0NuYW9oSXZUYU1lRHBjbERLUlRmd1FCYVFXeWxrQ0EyNmhYRDhGeGF1cXc0RUJSWmN1WnlLVFU?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -731,29 +781,11 @@
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Radar Surabaya</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Pengabdian Masyarakat</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Latih Guru RA, Bina Diri Tata Rias Dasar Dukung Kemandirian Anak Berkebutuhan Khusus</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi2AFBVV95cUxNRnpIME51TEtBSEdDVTZ0bzY0RUZhU3hrSm92V1FJNXE5bHVIS0dhZkxkSEJnMUE4S2sxazNST1pkR2dvR1p6Y1FKMEdYdzhSTkY2V1BxY2ZSZmhKdktzMzE5ZTYtUFpJWVlQVmIwbFRCX25lUEswaERBazVmaldYaGc4Zm1DUTJqUnNFUi04NUh1MS1CS213OGwySTZjRXVoclp0NFlReWtXUXZCWm1Nc3BqdWhrXzNWR0VEYnhGejByYWo5MjB1Y3liSVozY0tmQ2JKMnlpRUjSAdgBQVVfeXFMTUZ6SDBOdUxLQUhHQ1U2dG82NEVGYVN4a0pvdldRSTVxOWx1SEtHYWZMZEhCZzFBOEtrMWszUk9aZEdnb0daemNRSjBHWHc4Uk5GNldQcWNmUmZoSnZLczMxOWU2LVBaSVlZUFZiMGxUQl9uZVBLMGhEQWs1ZmpXWGhnOGZtQ1EyalJzRVItODVIdTEtQkttdzhsMkk2Y0V1aHJadDRZUXlrV1F2QlptTXNwanVoa18zVkdFRGJ4RnowcmFqOTIwdWN5YklaM2NLZkNiSjJ5aUVI?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">beritajatim.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Pengabdian Masyarakat</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Pelatihan TEACCH, Guru SLB di Tulungagung Didorong Perkuat Perilaku Adaptif ABK</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxQaVppcVpoSXZ1UEVLTHljcjRyaVdYekh5bElxVjBnWFFWaUl4RjY0dkNlVUdyMDBwQmlPQ3A2aTB3OE1iVVpxZnluWlVmaGFDdlhHemp2aF9VbTJTLTI5NEZ5WUMyaU1Oci1taks5WGh6MXd4dEJtdzhwb05XRVNldjdseXZ4M25nalBRZ0tJM3NxQXczS3g0MjhYU1lhenYyUExzQg?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Antara News jatim</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Riset & Inovasi</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Kumpulan Berita riset dosen</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiV0FVX3lxTE9uY1c4QjFheEIySlI5SV81MEkxOGItakRsd185OEprbVMyeXVqNEdfZEpQalFpdFJNd296Z2hhOXhJMWxSNHlqQm03alBvUnVpSWJmeGpzNA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 font-semibold text-slate-800">JPNN.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Acer Edu Tech 2026 Dorong Transformasi Sekolah Lewat Coding dan AI</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMingFBVV95cUxObTVqSnNmUzZ5Vk1ZWkoza25EZDdDckZIQkVXMGU5MGZyd1FPNVM5ekZPcnVGU2pJTTNoRnhOeXFBMnVYWjMxcnpQdzhYckhGcVRiT1RubjV2NFBPQllWcDNlYTNjR0ZPeDU3Z3ViQ3BFOXo4WGF4V1E1d19wUUxYR0d5MDFuMFZhaEJzdVB1MExCbWZUMFo0c0hNTmJ1UdIBmgFBVV95cUxNeFFVM1NLWS01RUpaZG41bF9yeDgtZjhJbXJSeXA4VFYwcTJOWE5od0NvNzdQcEdTMTQ0NnlSUUhweS1ZZURfcng3eWRQdTNMVzhrdngzemQ3ZG9wQkRHZ0xsZmRlaUFLY2RlQVBicEJROUdkUU9mV2lwUFh3Unlzd3dJV2VDRzA5eWg5dUJVeTY0R3JOUnRIZ3pn?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -767,29 +799,11 @@
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">kota-surabaya.kpu.go.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">KPU SURABAYA MATANGKAN PENDIDIKAN PEMILIH BERKELANJUTAN SASAR PEMILIH DISABILITAS DAN PEMILIH MUDA</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi3wFBVV95cUxPNVZmbHN6bzhITm0xTmJobThwbEJCX1RmMUlVOHRIOWRGeDc4NFJoNUwtZHpCa0Z2VHBxb0Z0N0VwNDBVUUdPcUdKdWU4OWdOd2hacDZTU3huQng4MVJYeWx4Z3JhU2Y3c0VHU3M2c1lSeGkwMEJuZlR3TnZINGtMWjctTHBaSnM4Wng3bVlwaVQtelFQdVhyajFMQTRSRmUxZ1FrUlVJZ2VraWNjRUs1NDF6ekVVSWlfVVI0VjFDTkhhY3JVZzg1NmQtLXMyTGExSWZkOUdub1RmeU96SklV?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
             <td class="py-3 px-4 font-semibold text-slate-800">Antara News jatim</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
             <td class="py-3 px-4 text-slate-900 font-medium">Pemkab Gresik kejar cakupan BPJS 55 persen untuk lindungi pekerja</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
             <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxONGE5di1JYWN2QW9vT0s4elNWZUN4NGU1N1R1R2VESk41dXhtUy1ELTFJVDNCNlBnRUY1V1c3RDlTVDFqWWlyaTJOVzhwdmZiTEZaRWpNUncyOEpJdEdOX2FnUXR5MkFLa0h0TjhLZWFWX2lhTVNaWHFJVk5RdU1yWUpkUDI4MkxCbngtRzVpd2NmYWh1QWN4Q2pzenNTYXRQNFNYTzFod1RRd1Q5VmfSAbMBQVVfeXFMT1d0SnlKMFhNME1XODBDby16RWlnTUMtSkZTZjZ0NFlEWExIWkNPWFg0QnhEbER6c1BIeWZQeE8wV0hTQ28zTUF1bGxBaWE1RGxoVEhONjV0QzlORVZyd2lVMFlrek9Eak1uT0VYV2Q3WHdWalZmUjBDVjJnSFFOWF93ek9DY2xqS3JZNGRSUE5LV2kwQ3RkMEttRG1STzlMWGdkY0dsYTJKbUdiN1NLYThZbWM?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Muhammad AzhariSiregar</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE5GeDJuUHpCeFk1bEc3bDZjUkNreTMxeGhkN2JYazNXbGZ4T3dnaDJlbEw1NU5sS1ptMWRfMUh5MEEtc1dvNVNoMlFQMEpuTV9qOU1PeUV3SnlaY3puLWhiYg?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -812,29 +826,29 @@
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Antara News jatim</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Riset & Inovasi</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Kumpulan Berita riset dosen</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiV0FVX3lxTE9uY1c4QjFheEIySlI5SV81MEkxOGItakRsd185OEprbVMyeXVqNEdfZEpQalFpdFJNd296Z2hhOXhJMWxSNHlqQm03alBvUnVpSWJmeGpzNA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Pintarly</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">ada yang hukum unesa tidaa</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMigAFBVV95cUxNZE1vcHZkNldlb2VrS3E1R3V2dVlpX1BTaF9vSDdPaXNzR3p5eHhqNlVMSE1BbUU1cURFZ3lFYXAtam5TV0lMN09IT0h4STI5NFRMRHAwclN1WEFtRE0ybk1fSlp4b3AxZXBULTRVZ0c1MThzNk5hTTQ2azBnOEFDcg?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
             <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
             <td class="py-3 px-4 text-slate-900 font-medium">Profil Rahmadian Kahfi Zulfa Kamila</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
             <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTFBmMzVlRGtWdzh4WkRPZmxua1VGdGpUemc5M21qajJ1NWUyNHM3QnFfSjFyTDdad19NeXhzOXU2ZFZsZXhRZ0FlVUZpWXZsSUN3WFQ0N3Jock53R2kxMWtIek13?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">ADDIE IS NOT A MODEL? Memahami Asal Usul dan Perkembangan ADDIE Halaman 1</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi0wFBVV95cUxNOWdoTGxiOFRDWjNKT0h4SlY3N0hZQ3l6UWV5WlpkWnE3MHNTMzBjUllPbHc0NkdGYkVRRVNocUM3OGsxU2h3Mzc4MmRIaS1qTUJvcDlDZUlVT2NHZUo5cm5TZDdjNjdoRzRwd0o4dFMwUmdIblN4aDd2TDdza3BBRXZ3emY2RS1sdjM3TGRPUVRaR2R2dnlSdTh3OEtTZkREeGg2cDBCV0RuN2RGXzJxaWFlUXhsN2ljWS1sd0VDRHlldnNtYkViWWNVdVdyUWl2SHVr?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">JPNN.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Acer Edu Tech 2026 Dorong Transformasi Sekolah Lewat Coding dan AI</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMingFBVV95cUxObTVqSnNmUzZ5Vk1ZWkoza25EZDdDckZIQkVXMGU5MGZyd1FPNVM5ekZPcnVGU2pJTTNoRnhOeXFBMnVYWjMxcnpQdzhYckhGcVRiT1RubjV2NFBPQllWcDNlYTNjR0ZPeDU3Z3ViQ3BFOXo4WGF4V1E1d19wUUxYR0d5MDFuMFZhaEJzdVB1MExCbWZUMFo0c0hNTmJ1UdIBmgFBVV95cUxNeFFVM1NLWS01RUpaZG41bF9yeDgtZjhJbXJSeXA4VFYwcTJOWE5od0NvNzdQcEdTMTQ0NnlSUUhweS1ZZURfcng3eWRQdTNMVzhrdngzemQ3ZG9wQkRHZ0xsZmRlaUFLY2RlQVBicEJROUdkUU9mV2lwUFh3Unlzd3dJV2VDRzA5eWg5dUJVeTY0R3JOUnRIZ3pn?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -848,29 +862,29 @@
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Pemerintah Kota Madiun</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Pengabdian Masyarakat</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Berangkatkan Enam Atlet NPCI ke Keparprov Jatim, Plt Wali Kota Pastikan Pendampingan dan Kawal hingga Pertandingan Selesai</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMigwJBVV95cUxPY0o4VEhXTGYzbjhYSUFuQlc0QmRZZHhZNU1JVk1SVlNxZTFPVDFhd0dITEhjQXE0SkdWbk1XTkoyQ2tKT2trNXhoVFRnN08zeDFLX2lnX1hIS2pjS3V5blBSZ1VYNi1lbGoyX2dFUFBqMk4zUTl6R2NnLVRWNUNPb3F4bHFJazNnTkFJQXpWMzZpTFRsaTdNRUhaTFFQNjNwWTB6ZDFnSEtiTFNBOUROUU1VeDVhNkhXRjk1SHozTmJMWUVKTk02YXJjbU1mRVNaZnFrNTA2TlJWSElvX2xfbXhSRGREbExnVWdCc1dDMTFueXdEc05Zc2cyUUQtLURjZDFJ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
             <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Berita dan Informasi unesa fc academy Terkini dan Terbaru Hari Ini</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Bagaimana Kapal Bisa Mengapung di Laut? Ini Penjelasannya</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBET05ZR2c4WjV1WFVxQ2p6RldIQklOcDdKQUZ3SGEwNEJ5YmZFODNWM2hhemNfZHZwTXg5dEpZTGlISnpBNXcyWmJxTFlpVkxSSXJYOFNBWFdUb3VX?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxOSGo5T2c3ZDdFTzhVZmVhY05iZXdlVk9JazNBbFQ0c2ktX1NjYUI1M0t2LUJjaThQNnBsOENhNG1XMUo2NkY5dW9zdzZIbVVGQUVmMVBrR3JmdVY1NWoyRkpFbHBfWXZkaFpqTGppeDBTdWh2dVJvRGhndC1EWlFPS3ZIX25zc24xM295ZWo3dVNPYXhLbWRmN1Vn?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
             <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Bukan Sekadar Berkemah, Ada Banyak Pelajaran dari Perjusa SDIT Al Uswah Halaman 1</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Yaquta Wiam</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi2gFBVV95cUxPM1ZLMTV1UGdzanVfZnljN1FQT3U4bWw4ejlCdkE5VTM2STQ5ampKNlVWeHY5anI0RkM3Yk5udG9ZQUxpQmNhemlJemEzalozNWZXbDRBMm9HdTQtS00xdFdZTk9RLWNPZG5JdkVaelo3ZUtYRjVvU0FLQVJyTk9TR2FPbi02Q1B2dThVMEdvMXI0RzFoenMzTzA1dDR2ZDVKU09XTF9xejV1OHpqazJpT01QMl9NZUlseFotbDJzODUzWjdSS3hyX0dzNUhkTTZzTUlRdlpJUnhnUQ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTE5yaVZLSFVxOXpQdU5KRVJhT2I1cXktaGd6Z3FQelV4dk9SeW1EUkR2OFUtMmkxdVB2Q3l2dkVhTy1ldFRrdTdwd09BMjRETWJmNmUtT2V3X1JKaUlhRWVReTBB?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Antara News jatim</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Acer dorong sekolah di Jatim terapkan "coding" dan AI</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMimwFBVV95cUxOWWo0WWZMN3dONHBkekpmbmd2Z2JibnRFU2s1cHh2VTdDZlA1N3ZZV24zQXVpRGMwX1NycldSd2U3UzdEeExEOEZVSnRiNFNyd0FpNjM1SmlkNk5NcEJpSkxYUlFEdVJBVXB1eDZueFF0ZmkyXzZTM0pFVnhjUmdGSGQxSTA4UXNXVWl6Wk5CR1FleXVDRmM5bklEc9IBoAFBVV95cUxOVzFFdGItU19MVjhxXzRNQ05taHAxWWoydXFmWlBVeXdnRHJVUWI0ZVo3RTdkbFliQV9zdXo0WnJZRW82SWF2dUNnNDlLNWttT2NGYk8xT1JUeWM5c2k3ZEd0Sm9Nc1JxQ0RWc3NCTVRKZUhhczlOMEZmUjg4dmNnanBfQjVGNlNTQ0JQbGpmd3NuV2hldjI5N0pxLTA4Tmdt?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -886,59 +900,14 @@
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
             <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Isma Nabila</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Atta Divanita</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE1QNjNwODQtNzNFTTF6X3RNTFY4bldmX1pkMkRqTV9wRzFuVjU0dEFDcllpYm1YWENjWXR1Nm92aDZ1elJ3VnJLQW9YMkpQLWw0Y0w2eTVvTWtBVVNrSzRibw?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE9YODAyOVQwSnpRY2NTSTE3eG9PamtGQjE1RGs1N0NuYW9oSXZUYU1lRHBjbERLUlRmd1FCYVFXeWxrQ0EyNmhYRDhGeGF1cXc0RUJSWmN1WnlLVFU?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Antara News jatim</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Acer dorong sekolah di Jatim terapkan "coding" dan AI</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMimwFBVV95cUxOWWo0WWZMN3dONHBkekpmbmd2Z2JibnRFU2s1cHh2VTdDZlA1N3ZZV24zQXVpRGMwX1NycldSd2U3UzdEeExEOEZVSnRiNFNyd0FpNjM1SmlkNk5NcEJpSkxYUlFEdVJBVXB1eDZueFF0ZmkyXzZTM0pFVnhjUmdGSGQxSTA4UXNXVWl6Wk5CR1FleXVDRmM5bklEc9IBoAFBVV95cUxOVzFFdGItU19MVjhxXzRNQ05taHAxWWoydXFmWlBVeXdnRHJVUWI0ZVo3RTdkbFliQV9zdXo0WnJZRW82SWF2dUNnNDlLNWttT2NGYk8xT1JUeWM5c2k3ZEd0Sm9Nc1JxQ0RWc3NCTVRKZUhhczlOMEZmUjg4dmNnanBfQjVGNlNTQ0JQbGpmd3NuV2hldjI5N0pxLTA4Tmdt?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">HARIAN DISWAY</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Apakah Kurikulum Cambridge di Sekolah Sudah Benar Cambridge? - harian.disway.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxOMWhmQTJoUDhlczJldzdvcTlqd0VpR2lZSkx6TEI1LTJ3emxVMVcycXh5SGs0LTFOOFV4Mk8xYXJRWjNiMzN0VjNTakZpeWU2RDNWXzVBcGswNXVySW14dTJzZjhWZ18zTUpubWVpelpwbzNCMVgwNnBLQmcxY3k0YS1uM0hHZ1FyRmwtSlBIUDVyRVhUOG9Ub1VkS1FIZ2xa0gGbAUFVX3lxTE5UYm1xdEFCOTNxdXQ0cmZGSmkyaWdJc3VtMWsxSmxxSW44LXlNMHNGbTlzT3FBN3E2blI1MWl0ODZ0MEx2aWtxVTg3dnN1clc5UDZ0TFhoZnJkY1llNVk2ODE1MGRCUUpydWRERGQ1RHJSYzdSMnByd1dWRE9hVk8wQXQ2RG53TF92cVFxYXRrQ1BfcVNMNHRFcEpj?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Profil Yaquta Wiam</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTE5yaVZLSFVxOXpQdU5KRVJhT2I1cXktaGd6Z3FQelV4dk9SeW1EUkR2OFUtMmkxdVB2Q3l2dkVhTy1ldFRrdTdwd09BMjRETWJmNmUtT2V3X1JKaUlhRWVReTBB?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">RRI.co.id</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Bagaimana Kapal Bisa Mengapung di Laut? Ini Penjelasannya</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxOSGo5T2c3ZDdFTzhVZmVhY05iZXdlVk9JazNBbFQ0c2ktX1NjYUI1M0t2LUJjaThQNnBsOENhNG1XMUo2NkY5dW9zdzZIbVVGQUVmMVBrR3JmdVY1NWoyRkpFbHBfWXZkaFpqTGppeDBTdWh2dVJvRGhndC1EWlFPS3ZIX25zc24xM295ZWo3dVNPYXhLbWRmN1Vn?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Pintarly</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">ada yang hukum unesa tidaa</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMigAFBVV95cUxNZE1vcHZkNldlb2VrS3E1R3V2dVlpX1BTaF9vSDdPaXNzR3p5eHhqNlVMSE1BbUU1cURFZ3lFYXAtam5TV0lMN09IT0h4STI5NFRMRHAwclN1WEFtRE0ybk1fSlp4b3AxZXBULTRVZ0c1MThzNk5hTTQ2azBnOEFDcg?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">mediaindonesia.com</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Media Indonesia</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
             <td class="py-3 px-4 text-slate-900 font-medium">Dorong Transformasi Sekolah melalui Implementasi Coding dan AI</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
@@ -952,6 +921,51 @@
             <td class="py-3 px-4 text-slate-900 font-medium">7 Cara Alami Redakan Sakit Gigi Berdenyut - harian.disway.id</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
             <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxOTGxqMEJ0V0pQaDEzeXVWNGY2dU12X0dLQmpRRlRZdTBLM2EwVjBYeVlMZDBuazZ2cnE2MVU1aGs5TzZkblBHS0ZXenpvb19YRERjWmcxTUw1bjJIOEpyLVBva1RyQ3JSa1RQQnpYTkhoRzVhVk1Bcjh4MTcwNTlNVW9ncErSAYMBQVVfeXFMUHRjTnZKSF81VVdtblZIRnZFXzFfNEdUclZVSkVqOTdabWo0ejN5bnNhY09xUFY2bEl4dnZTTmlLUk9kaTJmZWFOV2FZTmNGdXJKRGQ1TDBGeFpOSVp5Z09rUEpNQ0cxSlpxS0RXaEFwRV9ialliMnhIWlpuNzRLWUhpb28?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">kota-surabaya.kpu.go.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">KPU SURABAYA MATANGKAN PENDIDIKAN PEMILIH BERKELANJUTAN SASAR PEMILIH DISABILITAS DAN PEMILIH MUDA</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi3wFBVV95cUxPNVZmbHN6bzhITm0xTmJobThwbEJCX1RmMUlVOHRIOWRGeDc4NFJoNUwtZHpCa0Z2VHBxb0Z0N0VwNDBVUUdPcUdKdWU4OWdOd2hacDZTU3huQng4MVJYeWx4Z3JhU2Y3c0VHU3M2c1lSeGkwMEJuZlR3TnZINGtMWjctTHBaSnM4Wng3bVlwaVQtelFQdVhyajFMQTRSRmUxZ1FrUlVJZ2VraWNjRUs1NDF6ekVVSWlfVVI0VjFDTkhhY3JVZzg1NmQtLXMyTGExSWZkOUdub1RmeU96SklV?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Radar Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Pengabdian Masyarakat</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Latih Guru RA, Bina Diri Tata Rias Dasar Dukung Kemandirian Anak Berkebutuhan Khusus</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi2AFBVV95cUxNRnpIME51TEtBSEdDVTZ0bzY0RUZhU3hrSm92V1FJNXE5bHVIS0dhZkxkSEJnMUE4S2sxazNST1pkR2dvR1p6Y1FKMEdYdzhSTkY2V1BxY2ZSZmhKdktzMzE5ZTYtUFpJWVlQVmIwbFRCX25lUEswaERBazVmaldYaGc4Zm1DUTJqUnNFUi04NUh1MS1CS213OGwySTZjRXVoclp0NFlReWtXUXZCWm1Nc3BqdWhrXzNWR0VEYnhGejByYWo5MjB1Y3liSVozY0tmQ2JKMnlpRUjSAdgBQVVfeXFMTUZ6SDBOdUxLQUhHQ1U2dG82NEVGYVN4a0pvdldRSTVxOWx1SEtHYWZMZEhCZzFBOEtrMWszUk9aZEdnb0daemNRSjBHWHc4Uk5GNldQcWNmUmZoSnZLczMxOWU2LVBaSVlZUFZiMGxUQl9uZVBLMGhEQWs1ZmpXWGhnOGZtQ1EyalJzRVItODVIdTEtQkttdzhsMkk2Y0V1aHJadDRZUXlrV1F2QlptTXNwanVoa18zVkdFRGJ4RnowcmFqOTIwdWN5YklaM2NLZkNiSjJ5aUVI?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">HARIAN DISWAY</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Apakah Kurikulum Cambridge di Sekolah Sudah Benar Cambridge? - harian.disway.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxOMWhmQTJoUDhlczJldzdvcTlqd0VpR2lZSkx6TEI1LTJ3emxVMVcycXh5SGs0LTFOOFV4Mk8xYXJRWjNiMzN0VjNTakZpeWU2RDNWXzVBcGswNXVySW14dTJzZjhWZ18zTUpubWVpelpwbzNCMVgwNnBLQmcxY3k0YS1uM0hHZ1FyRmwtSlBIUDVyRVhUOG9Ub1VkS1FIZ2xa0gGbAUFVX3lxTE5UYm1xdEFCOTNxdXQ0cmZGSmkyaWdJc3VtMWsxSmxxSW44LXlNMHNGbTlzT3FBN3E2blI1MWl0ODZ0MEx2aWtxVTg3dnN1clc5UDZ0TFhoZnJkY1llNVk2ODE1MGRCUUpydWRERGQ1RHJSYzdSMnByd1dWRE9hVk8wQXQ2RG53TF92cVFxYXRrQ1BfcVNMNHRFcEpj?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">beasiswa.madiunkota.go.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Pengabdian Masyarakat</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Berangkatkan Enam Atlet NPCI ke Keparprov Jatim, Plt Wali Kota Pastikan Pendampingan dan Kawal hingga Pertandingan Selesai</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMigwJBVV95cUxPY0o4VEhXTGYzbjhYSUFuQlc0QmRZZHhZNU1JVk1SVlNxZTFPVDFhd0dITEhjQXE0SkdWbk1XTkoyQ2tKT2trNXhoVFRnN08zeDFLX2lnX1hIS2pjS3V5blBSZ1VYNi1lbGoyX2dFUFBqMk4zUTl6R2NnLVRWNUNPb3F4bHFJazNnTkFJQXpWMzZpTFRsaTdNRUhaTFFQNjNwWTB6ZDFnSEtiTFNBOUROUU1VeDVhNkhXRjk1SHozTmJMWUVKTk02YXJjbU1mRVNaZnFrNTA2TlJWSElvX2xfbXhSRGREbExnVWdCc1dDMTFueXdEc05Zc2cyUUQtLURjZDFJ?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">ADDIE IS NOT A MODEL? Memahami Asal Usul dan Perkembangan ADDIE Halaman 1</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi0wFBVV95cUxNOWdoTGxiOFRDWjNKT0h4SlY3N0hZQ3l6UWV5WlpkWnE3MHNTMzBjUllPbHc0NkdGYkVRRVNocUM3OGsxU2h3Mzc4MmRIaS1qTUJvcDlDZUlVT2NHZUo5cm5TZDdjNjdoRzRwd0o4dFMwUmdIblN4aDd2TDdza3BBRXZ3emY2RS1sdjM3TGRPUVRaR2R2dnlSdTh3OEtTZkREeGg2cDBCV0RuN2RGXzJxaWFlUXhsN2ljWS1sd0VDRHlldnNtYkViWWNVdVdyUWl2SHVr?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
@@ -973,41 +987,42 @@
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">16 September 2026</td>
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">beritajatim.com</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Pengabdian Masyarakat</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Pelatihan TEACCH, Guru SLB di Tulungagung Didorong Perkuat Perilaku Adaptif ABK</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxQaVppcVpoSXZ1UEVLTHljcjRyaVdYekh5bElxVjBnWFFWaUl4RjY0dkNlVUdyMDBwQmlPQ3A2aTB3OE1iVVpxZnluWlVmaGFDdlhHemp2aF9VbTJTLTI5NEZ5WUMyaU1Oci1taks5WGh6MXd4dEJtdzhwb05XRVNldjdseXZ4M25nalBRZ0tJM3NxQXczS3g0MjhYU1lhenYyUExzQg?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">17 September 2026</td>
             <td class="py-3 px-4 font-semibold text-slate-800">Kompasiana.com</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Kumpulan Artikel Terbaru hmppk unesa</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Profil Muhammad AzhariSiregar</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9yX2ZjX2xjbmFhQjFGak1SSlVoVjgteWpoU2ZuOE9Cc2EzZ1BZUWY1ZWJ6bzFPZUd0bHdDX0tOS2xNdkJaQmZkMFRsYmJiTWlTWllrVA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE5GeDJuUHpCeFk1bEc3bDZjUkNreTMxeGhkN2JYazNXbGZ4T3dnaDJlbEw1NU5sS1ptMWRfMUh5MEEtc1dvNVNoMlFQMEpuTV9qOU1PeUV3SnlaY3puLWhiYg?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
         <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
             <td class="py-3 px-4 whitespace-nowrap text-slate-500">16 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">VIVA Bogor</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">detikcom</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">Acer Edu Tech 2026, Dorong Transformasi Sekolah melalui Implementasi Coding dan AI Menuju Pembelajaran Berkualitas</td>
+            <td class="py-3 px-4 text-slate-900 font-medium">Pecah! Hillsong Worship Perdana Sapa Surabaya di Asia Tour 2026</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMi9wFBVV95cUxNNkJBX2lyLWE4TUVTSEtzRDk1cEx3QlNZdl9sajI3R0xDdDJqb3JyMGhNX3JsYl9kNFl4YmpnaHRseGYyLWdDRjlnVUlJT3REOS1rS1JYWUR4TjFuYXlFZnlaTm9fMUtpek5MQUZncnhucXJHSXFmaC13a3Fkbkc0ODVpV21yQzFnRk9nc254NWtyYWNTX3luZUc4TzFLWnVVbWRRaVRFSkdXal9hX2U0cFE5djRlVGlxLXNhLXV0RFIyUUVoWklaQ2NtNFBiQ3FjNDdmVFRwalJWX01OdnUwVEFuLTZ4T29DV3dJcGdTVnNKU2xBNGJJ0gH8AUFVX3lxTFAwUnpWS2pNbFRfLUdIQkFNbHJOaFo0TFQ1M1Q3OWdTazBCME1sT1B0eWNwbDJ1VVN5Mno1X1NvYnVWQWxQaDktblJwSkUyZTZWZTFmcjU1MVpaOVlmcWRiM2hBTGtid01XU2pOTGFFaXJqaVBGY3JNaFA2N1dPNGI2SEVWN003TUg2alFlbUxxUlBwTGhGWFVKMnZLOXlUdHdxNWNKOXBQSXFCSml1SFpXXzVFcmhsSnhyWWRmaVNFOXpHdmw5cWpld2xYOUNaamlKVTJwbXNaclFKcm9taXJuQXNRT0szeWFlMUk5TjROWkZxeUhDRXFEZTJFRg?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxNbF9Jc0hJOGNpbm9KaTFiVjQyS09BeFNYaEgxWlA4SEEtMGljZ0ZBUURHUWFkRV81MDZPbF9LZXNiZ0k2WE1OUDhJUWhSYXFISDllOVFHNWktS1JIRGtZU29OcmpldGJQbmlWZ3B0UDV5aVJIZWJkS1YyY3NOSEZrVDRteEpjWVg5QVdiU3VCLWlrQ2p0NFRYeW5rR2pPenRhLXMzUnFhMNIBrAFBVV95cUxOOHpnMDk0WHMxUmNnWWZZV1pqLW56WE14U0JPTDdiakVpMTR1RUhia3ppaExIR191aWh3WThQQzh6bGdBZFpzU1JRTXFXU09tbGlDVjBpcjBwQ3paVS04RmRkMlhSSmhOR3V4NjZmZUVLR25tTDEzY29DUTZzRS1ZQjdrODI0SkcxYTA0cWRoU2VnOWE1Smc5c0paS0hYYmY3SXFMVE51NU5hb2tp?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
         
-        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-slate-500">16 September 2026</td>
-            <td class="py-3 px-4 font-semibold text-slate-800">Universitas Muhammadiyah Gorontalo</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
-            <td class="py-3 px-4 text-slate-900 font-medium">PJIA Reading Tools</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-100 text-slate-700">Netral</span></td>
-            <td class="py-3 px-4 text-right"><a href="https://news.google.com/rss/articles/CBMic0FVX3lxTE81TFl4R21seGVWb2dNWTJJaTk2amdheVY5dWx2QnF6OEVnODdOSUF2b3ZyeDd3aERmTEJHLXcxZGRlX1NuRFlKajMxMmRuNDRpY0JoUGJZXzc2V3llNVd6TVVIdVJyb0FOVmg2d01lWVozUjA?oc=5" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
-        </tr>
-        
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </section>
 
     </main>
 
     <script>
-        // Tren Chart
+        // Tren Chart (Warna-warni tiap bulan)
         const ctxTrend = document.getElementById('trendChart').getContext('2d');
         new Chart(ctxTrend, {
             type: 'bar',
@@ -1015,8 +1030,12 @@
                 labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
                 datasets: [{
                     label: 'Jumlah Berita',
-                    data: [61, 136, 159, 226, 191, 208, 257, 214, 290, 0, 0, 0],
-                    backgroundColor: '#2563eb',
+                    data: [57, 135, 160, 227, 194, 208, 254, 212, 286, 0, 0, 0],
+                    backgroundColor: [
+                        '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', 
+                        '#ec4899', '#06b6d4', '#84cc16', '#6366f1', 
+                        '#14b8a6', '#f97316', '#a855f7', '#64748b'
+                    ],
                     borderRadius: 6
                 }]
             },
@@ -1035,7 +1054,7 @@
             data: {
                 labels: ['Positif', 'Netral', 'Negatif'],
                 datasets: [{
-                    data: [364, 1294, 84],
+                    data: [355, 1296, 82],
                     backgroundColor: ['#10b981', '#cbd5e1', '#f43f5e']
                 }]
             },
