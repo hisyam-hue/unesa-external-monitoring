@@ -36,20 +36,6 @@ def generate_dashboard():
     else:
         sub_isu_counts = {"Kekerasan Seksual & PPKS": negatif_count}
 
-    # Hitung Tren Bulanan
-    bulan_order = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep']
-    monthly_data = {b: 0 for b in bulan_order}
-    
-    for idx, row in df.iterrows():
-        try:
-            tgl = str(row['tanggal'])
-            if '-' in tgl:
-                m = int(tgl.split('-')[1])
-                if 1 <= m <= 9:
-                    monthly_data[bulan_order[m-1]] += 1
-        except Exception:
-            pass
-
     html_content = f"""<!DOCTYPE html>
 <html lang="id">
 <head>
@@ -122,6 +108,7 @@ def generate_dashboard():
         <!-- TAB 1: IKHTISAR -->
         <div id="tab-ikhtisar" class="tab-panel active space-y-6">
             <div class="grid grid-cols-12 gap-6">
+                <!-- Volume Pemberitaan per Bulan (2026) -->
                 <div class="col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <div class="flex justify-between items-center mb-1">
                         <div>
@@ -133,6 +120,7 @@ def generate_dashboard():
                     <div class="h-64 mt-4"><canvas id="volumeMonthlyChart"></canvas></div>
                 </div>
 
+                <!-- Proporsi Tema & Kategori -->
                 <div class="col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <h2 class="text-base font-bold text-slate-800 mb-0.5">Proporsi Tema & Kategori</h2>
                     <p class="text-xs text-slate-400 mb-4">Distribusikan topik berita berdasarkan bidang</p>
@@ -165,10 +153,9 @@ def generate_dashboard():
             </div>
         </div>
 
-        <!-- TAB 2: ANALISIS TREN TEMA (PERSIS GAMBAR PPT) -->
+        <!-- TAB 2: ANALISIS TREN TEMA -->
         <div id="tab-tema" class="tab-panel space-y-6">
             <div class="grid grid-cols-12 gap-6">
-                <!-- Kartu Rincian Tema Populer (Kiri) -->
                 <div class="col-span-6 bg-white p-6 rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50/50 to-white shadow-sm flex flex-col justify-between">
                     <div>
                         <h2 class="text-lg font-bold text-blue-900 mb-1">Peta Tema & Isu Populer Eksternal UNESA</h2>
@@ -183,7 +170,6 @@ def generate_dashboard():
                     </div>
                 </div>
 
-                <!-- Grafik Donat Proporsi Tema (Kanan) -->
                 <div class="col-span-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                     <div>
                         <h2 class="text-lg font-bold text-slate-800 mb-1">Proporsi Tema dan Kategori Publikasi Eksternal</h2>
@@ -193,7 +179,6 @@ def generate_dashboard():
                 </div>
             </div>
 
-            <!-- Tabel Daftar Berita Berdasarkan Tema (Bawah) -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div class="p-5 border-b border-slate-100">
                     <h2 class="text-base font-bold text-slate-800">Daftar Berita Eksternal Berdasarkan Tema</h2>
@@ -216,10 +201,9 @@ def generate_dashboard():
             </div>
         </div>
 
-        <!-- TAB 3: ANALISIS TIER MEDIA (PERSIS GAMBAR PPT) -->
+        <!-- TAB 3: ANALISIS TIER MEDIA -->
         <div id="tab-tier" class="tab-panel space-y-6">
             <div class="grid grid-cols-12 gap-6">
-                <!-- Kartu Top Media per Tier (Kiri) -->
                 <div class="col-span-6 bg-white p-6 rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-50/50 to-white shadow-sm">
                     <h2 class="text-lg font-bold text-indigo-900 mb-1">Rincian Top Media Pemberita UNESA</h2>
                     <p class="text-xs text-slate-500 mb-4">Media pers teratas yang paling aktif mempublikasikan berita UNESA</p>
@@ -240,7 +224,6 @@ def generate_dashboard():
                     </div>
                 </div>
 
-                <!-- Grafik Donat Tier Media (Kanan) -->
                 <div class="col-span-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                     <div>
                         <h2 class="text-lg font-bold text-slate-800 mb-1">Proporsi Sebaran Berita Berdasarkan Tier Media</h2>
@@ -250,7 +233,6 @@ def generate_dashboard():
                 </div>
             </div>
 
-            <!-- Tabel Daftar Seluruh Media (Bawah) -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div class="p-5 border-b border-slate-100">
                     <h2 class="text-base font-bold text-slate-800">Daftar Seluruh Media yang Memberitakan UNESA</h2>
@@ -334,15 +316,57 @@ def generate_dashboard():
             document.getElementById('btn-' + tabId).classList.add('active');
         }}
 
-        // 1. Chart Ikhtisar
-        const monthlyValues = {json.dumps(list(monthly_data.values()))};
+        // PERBAIKAN PARSING BULANAN (SANGAT FLEKSIBEL BISA BACA NAMA BULAN INGGRIS/INDONESIA MAUPUN ISO)
+        const monthMap = {{
+            'jan': 0, 'january': 0, 'januari': 0,
+            'feb': 1, 'february': 1, 'februari': 1,
+            'mar': 2, 'march': 2, 'maret': 2,
+            'apr': 3, 'april': 3,
+            'may': 4, 'mei': 4,
+            'jun': 5, 'june': 5, 'juni': 5,
+            'jul': 6, 'july': 6, 'juli': 6,
+            'aug': 7, 'august': 7, 'agustus': 7, 'agu': 7,
+            'sep': 8, 'september': 8
+        }};
+
+        const monthlyCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0]; // Jan - Sep
+
+        rawData.forEach(item => {{
+            if (item.tanggal) {{
+                const strTgl = String(item.tanggal).toLowerCase().strip ? String(item.tanggal).toLowerCase().strip() : String(item.tanggal).toLowerCase();
+                let foundIndex = -1;
+
+                // 1. Cek jika mengandung kata bulan (contoh: "13 august 2026")
+                for (const [key, idx] of Object.entries(monthMap)) {{
+                    if (strTgl.includes(key)) {{
+                        foundIndex = idx;
+                        break;
+                    }}
+                }}
+
+                // 2. Cek jika format ISO (2026-08-13)
+                if (foundIndex === -1 && strTgl.includes('-')) {{
+                    const parts = strTgl.split('-');
+                    if (parts.length >= 2) {{
+                        const mVal = parseInt(parts[1], 10);
+                        if (mVal >= 1 && mVal <= 9) foundIndex = mVal - 1;
+                    }}
+                }}
+
+                if (foundIndex >= 0 && foundIndex <= 8) {{
+                    monthlyCounts[foundIndex] += 1;
+                }}
+            }}
+        }});
+
+        // 1. Chart Ikhtisar Volume Monthly
         new Chart(document.getElementById('volumeMonthlyChart'), {{
             type: 'bar',
             data: {{
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep'],
                 datasets: [{{
                     label: 'Jumlah Berita',
-                    data: monthlyValues,
+                    data: monthlyCounts,
                     backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#a855f7', '#14b8a6'],
                     borderRadius: 6
                 }}]
@@ -491,7 +515,7 @@ def generate_dashboard():
 
     with open(OUTPUT_HTML, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print("Dashboard HTML berhasil diperbarui!")
+    print("Dashboard HTML berhasil diperbarui dengan parsing tanggal fleksibel!")
 
 if __name__ == "__main__":
     generate_dashboard()
