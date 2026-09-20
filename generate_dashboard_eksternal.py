@@ -26,12 +26,26 @@ def generate_dashboard():
 
     tier_counts = df['tier_media'].value_counts().to_dict()
 
-    # Sub-isu krisis
+    # Sub-isu krisis (Khusus Negatif)
     df_negatif = df[df['sentimen'] == 'Negatif'].copy()
     if not df_negatif.empty and 'sub_isu' in df_negatif.columns:
         sub_isu_counts = df_negatif['sub_isu'].value_counts().to_dict()
     else:
         sub_isu_counts = {"Kekerasan Seksual & PPKS": negatif_count}
+
+    # Hitung Tren Bulanan (Jan - Sep)
+    bulan_order = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep']
+    monthly_data = {b: 0 for b in bulan_order}
+    
+    for idx, row in df.iterrows():
+        try:
+            tgl = str(row['tanggal'])
+            if '-' in tgl:
+                m = int(tgl.split('-')[1])
+                if 1 <= m <= 9:
+                    monthly_data[bulan_order[m-1]] += 1
+        except Exception:
+            pass
 
     html_content = f"""<!DOCTYPE html>
 <html lang="id">
@@ -51,65 +65,109 @@ def generate_dashboard():
 </head>
 <body class="p-6">
     <div class="max-w-7xl mx-auto space-y-6">
-        <!-- Header -->
+        <!-- Header Presisi Tampilan Awal -->
         <div class="bg-slate-900 text-white p-6 rounded-2xl flex justify-between items-center shadow-lg">
             <div>
-                <span class="bg-blue-600 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">EXTERNAL</span>
+                <div class="flex items-center gap-2">
+                    <span class="bg-blue-600 text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">EXTERNAL</span>
+                </div>
                 <h1 class="text-2xl font-bold mt-2">Monitoring Pemberitaan Eksternal UNESA</h1>
-                <p class="text-slate-400 text-sm">Analisis Media Massa Digital, Sentiment Tracking & Detector Isu (2026)</p>
+                <p class="text-slate-400 text-xs mt-0.5">Analisis Media Massa Digital, Sentiment Tracking & Detector Isu (2026)</p>
             </div>
-            <div class="flex gap-2 bg-slate-800 p-1.5 rounded-xl text-xs font-semibold text-slate-300">
-                <button onclick="openTab('ikhtisar')" id="btn-ikhtisar" class="tab-btn active px-4 py-2 rounded-lg transition">📊 Ikhtisar</button>
-                <button onclick="openTab('tema')" id="btn-tema" class="tab-btn px-4 py-2 rounded-lg transition">📊 Analisis Tren Tema</button>
-                <button onclick="openTab('tier')" id="btn-tier" class="tab-btn px-4 py-2 rounded-lg transition">📊 Analisis Tier Media</button>
-                <button onclick="openTab('tone')" id="btn-tone" class="tab-btn px-4 py-2 rounded-lg transition">🚨 Analisis Tone Pemberitaan</button>
+            <div class="flex flex-col items-end gap-2">
+                <div class="flex gap-2 bg-slate-800 p-1.5 rounded-xl text-xs font-semibold text-slate-300">
+                    <button onclick="openTab('ikhtisar')" id="btn-ikhtisar" class="tab-btn active px-4 py-2 rounded-lg transition">📊 Ikhtisar</button>
+                    <button onclick="openTab('tema')" id="btn-tema" class="tab-btn px-4 py-2 rounded-lg transition">📊 Analisis Tren Tema</button>
+                    <button onclick="openTab('tier')" id="btn-tier" class="tab-btn px-4 py-2 rounded-lg transition">📊 Analisis Tier Media</button>
+                    <button onclick="openTab('tone')" id="btn-tone" class="tab-btn px-4 py-2 rounded-lg transition">🚨 Analisis Tone Pemberitaan</button>
+                </div>
+                <span class="bg-emerald-950/80 text-emerald-400 border border-emerald-800/50 text-[11px] px-3 py-1 rounded-full font-medium flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    {total_publikasi} Berita Loaded
+                </span>
             </div>
         </div>
 
-        <!-- Metric Cards -->
+        <!-- Metric Cards dengan Border Warna Sisi Kiri -->
         <div class="grid grid-cols-5 gap-4">
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                <p class="text-xs font-semibold text-slate-500 uppercase">Total Publikasi</p>
-                <h3 class="text-3xl font-bold text-slate-900 mt-2">{total_publikasi}</h3>
-                <span class="text-xs text-blue-600 font-medium">Januari - September 2026</span>
+            <div class="bg-white p-5 rounded-xl border border-slate-200 border-l-4 border-l-blue-500 shadow-sm">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">TOTAL PUBLIKASI</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 mt-1">{total_publikasi}</h3>
+                <span class="text-xs text-blue-600 font-medium mt-1 block">Januari - September 2026</span>
             </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                <p class="text-xs font-semibold text-slate-500 uppercase">Publikasi Media Pers</p>
-                <h3 class="text-3xl font-bold text-slate-900 mt-2">{total_media}</h3>
-                <span class="text-xs text-emerald-600 font-medium">{round(total_media/total_publikasi*100, 1) if total_publikasi else 0}% dari Total</span>
+            <div class="bg-white p-5 rounded-xl border border-slate-200 border-l-4 border-l-emerald-500 shadow-sm">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">PUBLIKASI MEDIA PERS</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 mt-1">{total_media}</h3>
+                <span class="text-xs text-emerald-600 font-medium mt-1 block">{round(total_media/total_publikasi*100, 1) if total_publikasi else 0}% dari Total</span>
             </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                <p class="text-xs font-semibold text-slate-500 uppercase">Tema Terpopuler</p>
-                <h3 class="text-lg font-bold text-blue-600 mt-2 truncate">{tema_terpopuler}</h3>
-                <span class="text-xs text-slate-500 font-medium">{tema_count} Berita</span>
+            <div class="bg-white p-5 rounded-xl border border-slate-200 border-l-4 border-l-indigo-500 shadow-sm">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">TEMA TERPOPULER</p>
+                <h3 class="text-lg font-bold text-indigo-600 mt-1 truncate">{tema_terpopuler}</h3>
+                <span class="text-xs text-slate-500 font-medium mt-1 block">{tema_count} Berita</span>
             </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                <p class="text-xs font-semibold text-slate-500 uppercase">Sentimen Positif</p>
-                <h3 class="text-3xl font-bold text-emerald-600 mt-2">{positif_count}</h3>
-                <span class="text-xs text-emerald-600 font-medium">{round(positif_count/total_publikasi*100, 1) if total_publikasi else 0}% Tone Positif</span>
+            <div class="bg-white p-5 rounded-xl border border-slate-200 border-l-4 border-l-purple-500 shadow-sm">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">SENTIMEN POSITIF</p>
+                <h3 class="text-3xl font-extrabold text-purple-600 mt-1">{positif_count}</h3>
+                <span class="text-xs text-purple-600 font-medium mt-1 block">{round(positif_count/total_publikasi*100, 1) if total_publikasi else 0}% Tone Positif</span>
             </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-rose-500">
-                <p class="text-xs font-semibold text-slate-500 uppercase">Isu / Tone Negatif</p>
-                <h3 class="text-3xl font-bold text-rose-600 mt-2">{negatif_count}</h3>
-                <span class="text-xs text-rose-600 font-medium">{round(negatif_count/total_publikasi*100, 1) if total_publikasi else 0}% Perlu Atensi</span>
+            <div class="bg-white p-5 rounded-xl border border-slate-200 border-l-4 border-l-rose-500 shadow-sm relative">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">ISU / TONE NEGATIF</p>
+                <h3 class="text-3xl font-extrabold text-rose-600 mt-1">{negatif_count}</h3>
+                <span class="text-xs text-rose-600 font-medium mt-1 block">{round(negatif_count/total_publikasi*100, 1) if total_publikasi else 0}% Perlu Atensi</span>
+                <span class="absolute top-4 right-4 bg-rose-100 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded">Atensi ↗</span>
             </div>
         </div>
 
-        <!-- TAB 1: IKHTISAR -->
+        <!-- TAB 1: IKHTISAR (SAMA PERSIS TAMPILAN AWAL) -->
         <div id="tab-ikhtisar" class="tab-panel active space-y-6">
-            <div class="grid grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                    <h2 class="text-lg font-bold text-slate-800 mb-4">Sebaran Kategori Berita</h2>
-                    <div class="h-64"><canvas id="kategoriChart"></canvas></div>
+            <div class="grid grid-cols-12 gap-6">
+                <!-- Volume Pemberitaan per Bulan -->
+                <div class="col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-1">
+                        <div>
+                            <h2 class="text-base font-bold text-slate-800">Volume Pemberitaan per Bulan (2026)</h2>
+                            <p class="text-xs text-slate-400">Tren jumlah publikasi berita eksternal dari Januari s.d September 2026</p>
+                        </div>
+                        <span class="bg-slate-100 text-slate-600 text-[10px] font-semibold px-2.5 py-1 rounded">Tren Bulanan</span>
+                    </div>
+                    <div class="h-64 mt-4"><canvas id="volumeMonthlyChart"></canvas></div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                    <h2 class="text-lg font-bold text-slate-800 mb-4">Sebaran Tier Media</h2>
-                    <div class="h-64"><canvas id="tierOverviewChart"></canvas></div>
+
+                <!-- Proporsi Tema & Kategori -->
+                <div class="col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <h2 class="text-base font-bold text-slate-800 mb-0.5">Proporsi Tema & Kategori</h2>
+                    <p class="text-xs text-slate-400 mb-4">Distribusikan topik berita berdasarkan bidang</p>
+                    <div class="h-64 flex justify-center"><canvas id="proporsiTemaChart"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Tabel Rekap Pemberitaan Eksternal Terkini -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-800">Rekap Pemberitaan Eksternal Terkini</h2>
+                        <p class="text-xs text-slate-400">Diurutkan dari yang terbaru & disaring relevansinya</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto max-h-[500px]">
+                    <table class="w-full text-left text-xs text-slate-600">
+                        <thead class="bg-slate-50 text-[11px] uppercase text-slate-400 sticky top-0 border-b border-slate-200">
+                            <tr>
+                                <th class="p-4 w-28">TANGGAL</th>
+                                <th class="p-4 w-40">MEDIA / SUMBER</th>
+                                <th class="p-4 w-48">KATEGORI TEMA</th>
+                                <th class="p-4">JUDUL BERITA</th>
+                                <th class="p-4 w-24 text-center">SENTIMEN</th>
+                                <th class="p-4 w-20 text-right">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100" id="table-ikhtisar-body"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 2: TEMA -->
+        <!-- TAB 2: ANALISIS TREN TEMA -->
         <div id="tab-tema" class="tab-panel space-y-6">
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                 <h2 class="text-lg font-bold text-slate-800 mb-4">Analisis Tren Tema Pemberitaan</h2>
@@ -117,7 +175,7 @@ def generate_dashboard():
             </div>
         </div>
 
-        <!-- TAB 3: TIER MEDIA -->
+        <!-- TAB 3: ANALISIS TIER MEDIA -->
         <div id="tab-tier" class="tab-panel space-y-6">
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                 <h2 class="text-lg font-bold text-slate-800 mb-4">Distribusi Media Berdasarkan Tier</h2>
@@ -125,15 +183,17 @@ def generate_dashboard():
             </div>
         </div>
 
-        <!-- TAB 4: TONE -->
+        <!-- TAB 4: ANALISIS TONE PEMBERITAAN (DENGAN RINCIAN SUB-ISU KRISIS) -->
         <div id="tab-tone" class="tab-panel space-y-6">
             <div class="grid grid-cols-12 gap-6">
+                <!-- Donut Chart Tone -->
                 <div class="col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <h2 class="text-lg font-bold text-slate-800 mb-1">Proporsi Tone Pemberitaan</h2>
                     <p class="text-xs text-slate-500 mb-4">Grafik donat persentase persepsi publik</p>
                     <div class="h-64 flex justify-center"><canvas id="toneChart"></canvas></div>
                 </div>
 
+                <!-- Sub-Isu Krisis Chart -->
                 <div class="col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center mb-1">
@@ -181,17 +241,65 @@ def generate_dashboard():
         const rawData = {df.to_json(orient='records')};
 
         function openTab(tabId) {{
-            const panels = document.querySelectorAll('.tab-panel');
-            const buttons = document.querySelectorAll('.tab-btn');
-            
-            panels.forEach(p => p.classList.remove('active'));
-            buttons.forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             
             document.getElementById('tab-' + tabId).classList.add('active');
             document.getElementById('btn-' + tabId).classList.add('active');
         }}
 
-        // Donut Chart Tone
+        // 1. Volume Bulanan Chart (Tampilan Awal Warna-Warni)
+        const monthlyValues = {json.dumps(list(monthly_data.values()))};
+        new Chart(document.getElementById('volumeMonthlyChart'), {{
+            type: 'bar',
+            data: {{
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep'],
+                datasets: [{{
+                    label: 'Jumlah Berita',
+                    data: monthlyValues,
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#a855f7', '#14b8a6'],
+                    borderRadius: 6
+                }}]
+            }},
+            options: {{ responsive: true, maintainAspectRatio: false, plugins: {{ legend: {{ display: false }} }} }}
+        }});
+
+        // 2. Proporsi Tema Donut (Tampilan Awal)
+        const katData = {json.dumps(kat_counts)};
+        new Chart(document.getElementById('proporsiTemaChart'), {{
+            type: 'doughnut',
+            data: {{
+                labels: Object.keys(katData),
+                datasets: [{{
+                    data: Object.values(katData),
+                    backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#8b5cf6', '#06b6d4', '#ec4899', '#64748b', '#f43f5e']
+                }}]
+            }},
+            options: {{ responsive: true, maintainAspectRatio: false, plugins: {{ legend: {{ position: 'bottom', labels: {{ boxWidth: 10, font: {{ size: 9 }} }} }} }} }}
+        }});
+
+        // 3. Tema Full Chart
+        new Chart(document.getElementById('temaFullChart'), {{
+            type: 'bar',
+            data: {{
+                labels: Object.keys(katData),
+                datasets: [{{ label: 'Total Publikasi', data: Object.values(katData), backgroundColor: '#1d4ed8', borderRadius: 6 }}]
+            }},
+            options: {{ indexAxis: 'y', responsive: true, maintainAspectRatio: false }}
+        }});
+
+        // 4. Tier Full Chart
+        const tierData = {json.dumps(tier_counts)};
+        new Chart(document.getElementById('tierFullChart'), {{
+            type: 'bar',
+            data: {{
+                labels: Object.keys(tierData),
+                datasets: [{{ label: 'Jumlah Media', data: Object.values(tierData), backgroundColor: '#059669', borderRadius: 6 }}]
+            }},
+            options: {{ responsive: true, maintainAspectRatio: false }}
+        }});
+
+        // 5. Tone Donut Chart
         new Chart(document.getElementById('toneChart'), {{
             type: 'doughnut',
             data: {{
@@ -204,49 +312,7 @@ def generate_dashboard():
             options: {{ responsive: true, maintainAspectRatio: false }}
         }});
 
-        // Kategori Chart
-        const katData = {json.dumps(kat_counts)};
-        new Chart(document.getElementById('kategoriChart'), {{
-            type: 'bar',
-            data: {{
-                labels: Object.keys(katData),
-                datasets: [{{ label: 'Jumlah Berita', data: Object.values(katData), backgroundColor: '#3b82f6', borderRadius: 6 }}]
-            }},
-            options: {{ responsive: true, maintainAspectRatio: false, plugins: {{ legend: {{ display: false }} }} }}
-        }});
-
-        // Tier Overview Chart
-        const tierData = {json.dumps(tier_counts)};
-        new Chart(document.getElementById('tierOverviewChart'), {{
-            type: 'pie',
-            data: {{
-                labels: Object.keys(tierData),
-                datasets: [{{ data: Object.values(tierData), backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#64748b'] }}]
-            }},
-            options: {{ responsive: true, maintainAspectRatio: false }}
-        }});
-
-        // Tema Full Chart
-        new Chart(document.getElementById('temaFullChart'), {{
-            type: 'bar',
-            data: {{
-                labels: Object.keys(katData),
-                datasets: [{{ label: 'Total Publikasi', data: Object.values(katData), backgroundColor: '#1d4ed8', borderRadius: 6 }}]
-            }},
-            options: {{ indexAxis: 'y', responsive: true, maintainAspectRatio: false }}
-        }});
-
-        // Tier Full Chart
-        new Chart(document.getElementById('tierFullChart'), {{
-            type: 'bar',
-            data: {{
-                labels: Object.keys(tierData),
-                datasets: [{{ label: 'Jumlah Media', data: Object.values(tierData), backgroundColor: '#059669', borderRadius: 6 }}]
-            }},
-            options: {{ responsive: true, maintainAspectRatio: false }}
-        }});
-
-        // Sub-Isu Bar Chart
+        // 6. Sub-Isu Krisis Chart
         const subIsuData = {json.dumps(sub_isu_counts)};
         new Chart(document.getElementById('subIsuChart'), {{
             type: 'bar',
@@ -268,11 +334,34 @@ def generate_dashboard():
             }}
         }});
 
+        // Render Table Ikhtisar Utama
+        const ikhtisarTbody = document.getElementById('table-ikhtisar-body');
+        ikhtisarTbody.innerHTML = rawData.slice(0, 15).map(item => `
+            <tr class="hover:bg-slate-50 transition">
+                <td class="p-4 text-slate-400 font-medium">${{item.tanggal || '-'}}</td>
+                <td class="p-4 font-medium text-slate-700">${{item.nama_media || item.sumber}}</td>
+                <td class="p-4">
+                    <span class="bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded font-medium text-[11px]">
+                        ${{item.kategori || 'Akademik & Umum'}}
+                    </span>
+                </td>
+                <td class="p-4 font-semibold text-slate-800">${{item.judul}}</td>
+                <td class="p-4 text-center">
+                    <span class="${{item.sentimen === 'Positif' ? 'bg-emerald-100 text-emerald-700' : (item.sentimen === 'Negatif' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-600')}} text-[10px] font-bold px-2 py-0.5 rounded">
+                        ${{item.sentimen}}
+                    </span>
+                </td>
+                <td class="p-4 text-right">
+                    <a href="${{item.link}}" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
+                </td>
+            </tr>
+        `).join('');
+
         // Render Table Negatif
-        const tbody = document.getElementById('table-negatif-body');
+        const negatifTbody = document.getElementById('table-negatif-body');
         const listNegatif = rawData.filter(d => d.sentimen === 'Negatif');
         
-        tbody.innerHTML = listNegatif.map(item => `
+        negatifTbody.innerHTML = listNegatif.map(item => `
             <tr class="hover:bg-rose-50/30 transition">
                 <td class="p-4 text-xs font-medium text-slate-500 whitespace-nowrap">${{item.tanggal || '-'}}</td>
                 <td class="p-4 font-semibold text-slate-800">${{item.judul}}</td>
@@ -298,7 +387,7 @@ def generate_dashboard():
 
     with open(OUTPUT_HTML, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print("Dashboard HTML berhasil dipulihkan secara penuh!")
+    print("Dashboard HTML berhasil dipulihkan presisi 100%!")
 
 if __name__ == "__main__":
     generate_dashboard()
