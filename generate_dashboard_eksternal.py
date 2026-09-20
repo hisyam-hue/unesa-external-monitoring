@@ -13,20 +13,27 @@ def generate_dashboard():
 
     # Hitung ringkasan utama
     total_publikasi = len(df)
-    total_media = len(df[df['tier_media'].isin(['Tier 1 (Nasional)', 'Tier 2 (Regional)'])])
+    df_pers = df[df['tier_media'].isin(['Tier 1 (Nasional)', 'Tier 2 (Regional)'])]
+    total_media = len(df_pers)
     
     positif_count = len(df[df['sentimen'] == 'Positif'])
     netral_count = len(df[df['sentimen'] == 'Netral'])
     negatif_count = len(df[df['sentimen'] == 'Negatif'])
     
+    # Kategori Terpopuler
+    kat_counts = df['kategori'].value_counts().to_dict()
+    tema_terpopuler = list(kat_counts.keys())[0] if kat_counts else "Akademik & Umum"
+    tema_count = list(kat_counts.values())[0] if kat_counts else 0
+
+    # Hitung Tier Media
+    tier_counts = df['tier_media'].value_counts().to_dict()
+
     # Hitung Sub-Isu Krisis untuk berita negatif
     df_negatif = df[df['sentimen'] == 'Negatif'].copy()
-    
-    # Menjamin kolom sub_isu terisi
     if 'sub_isu' not in df_negatif.columns:
         df_negatif['sub_isu'] = 'Kekerasan Seksual & PPKS'
     else:
-        df_negatif['sub_isu'] = df_negatif['sub_isu'].fillna('Isu Krisis Lainnya')
+        df_negatif['sub_isu'] = df_negatif['sub_isu'].fillna('Tindak Kriminal & Hukum')
         
     sub_isu_counts = df_negatif['sub_isu'].value_counts().to_dict()
 
@@ -42,6 +49,8 @@ def generate_dashboard():
     <style>
         body {{ font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }}
         .tab-btn.active {{ background-color: #2563eb; color: white; }}
+        .tab-content {{ display: none; }}
+        .tab-content.active {{ display: block; }}
     </style>
 </head>
 <body class="p-6">
@@ -54,8 +63,10 @@ def generate_dashboard():
                 <p class="text-slate-400 text-sm">Analisis Media Massa Digital, Sentiment Tracking & Detector Isu (2026)</p>
             </div>
             <div class="flex gap-2 bg-slate-800 p-1.5 rounded-xl text-xs font-semibold text-slate-300">
-                <button onclick="switchTab('ikhtisar')" id="btn-ikhtisar" class="tab-btn px-4 py-2 rounded-lg transition">📊 Ikhtisar</button>
-                <button onclick="switchTab('tone')" id="btn-tone" class="tab-btn active px-4 py-2 rounded-lg transition">🚨 Analisis Tone Pemberitaan</button>
+                <button onclick="switchTab('ikhtisar')" id="btn-ikhtisar" class="tab-btn active px-4 py-2 rounded-lg transition">📊 Ikhtisar</button>
+                <button onclick="switchTab('tema')" id="btn-tema" class="tab-btn px-4 py-2 rounded-lg transition">📊 Analisis Tren Tema</button>
+                <button onclick="switchTab('tier')" id="btn-tier" class="tab-btn px-4 py-2 rounded-lg transition">📊 Analisis Tier Media</button>
+                <button onclick="switchTab('tone')" id="btn-tone" class="tab-btn px-4 py-2 rounded-lg transition">🚨 Analisis Tone Pemberitaan</button>
             </div>
         </div>
 
@@ -72,14 +83,14 @@ def generate_dashboard():
                 <span class="text-xs text-emerald-600 font-medium">{round(total_media/total_publikasi*100, 1) if total_publikasi else 0}% dari Total</span>
             </div>
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <p class="text-xs font-semibold text-slate-500 uppercase">Tema Terpopuler</p>
+                <h3 class="text-xl font-bold text-blue-600 mt-2 truncate">{tema_terpopuler}</h3>
+                <span class="text-xs text-slate-500 font-medium">{tema_count} Berita</span>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-xs font-semibold text-slate-500 uppercase">Sentimen Positif</p>
                 <h3 class="text-3xl font-bold text-emerald-600 mt-2">{positif_count}</h3>
                 <span class="text-xs text-emerald-600 font-medium">{round(positif_count/total_publikasi*100, 1) if total_publikasi else 0}% Tone Positif</span>
-            </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                <p class="text-xs font-semibold text-slate-500 uppercase">Tone Netral</p>
-                <h3 class="text-3xl font-bold text-slate-600 mt-2">{netral_count}</h3>
-                <span class="text-xs text-slate-500 font-medium">{round(netral_count/total_publikasi*100, 1) if total_publikasi else 0}% Tone Netral</span>
             </div>
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-rose-500">
                 <p class="text-xs font-semibold text-slate-500 uppercase">Isu / Tone Negatif</p>
@@ -88,20 +99,47 @@ def generate_dashboard():
             </div>
         </div>
 
-        <!-- TAB TONE PEMBERITAAN -->
-        <div id="tab-tone" class="space-y-6">
-            <!-- Row Grafik Donat & Grafik Batang Sub-Isu -->
+        <!-- TAB 1: IKHTISAR -->
+        <div id="tab-ikhtisar" class="tab-content active space-y-6">
+            <div class="grid grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <h2 class="text-lg font-bold text-slate-800 mb-4">Sebaran Kategori Berita</h2>
+                    <div class="h-64"><canvas id="kategoriChart"></canvas></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <h2 class="text-lg font-bold text-slate-800 mb-4">Sebaran Tier Media</h2>
+                    <div class="h-64"><canvas id="tierOverviewChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: ANALISIS TREN TEMA -->
+        <div id="tab-tema" class="tab-content space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h2 class="text-lg font-bold text-slate-800 mb-4">Analisis Tren Tema Pemberitaan</h2>
+                <div class="h-80"><canvas id="temaFullChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- TAB 3: ANALISIS TIER MEDIA -->
+        <div id="tab-tier" class="tab-content space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h2 class="text-lg font-bold text-slate-800 mb-4">Distribusi Media Berdasarkan Tier</h2>
+                <div class="h-80"><canvas id="tierFullChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- TAB 4: ANALISIS TONE PEMBERITAAN -->
+        <div id="tab-tone" class="tab-content space-y-6">
             <div class="grid grid-cols-12 gap-6">
                 <!-- Donut Chart -->
                 <div class="col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <h2 class="text-lg font-bold text-slate-800 mb-1">Proporsi Tone Pemberitaan</h2>
                     <p class="text-xs text-slate-500 mb-4">Grafik donat persentase persepsi publik</p>
-                    <div class="h-64 flex justify-center">
-                        <canvas id="toneChart"></canvas>
-                    </div>
+                    <div class="h-64 flex justify-center"><canvas id="toneChart"></canvas></div>
                 </div>
 
-                <!-- Horizontal Bar Chart Sub-Isu Krisis (GRAFIK BARU) -->
+                <!-- Horizontal Bar Chart Sub-Isu Krisis -->
                 <div class="col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center mb-1">
@@ -110,9 +148,7 @@ def generate_dashboard():
                         </div>
                         <p class="text-xs text-slate-500 mb-4">Pengelompokan berita bernada negatif berdasarkan topik spesifik</p>
                     </div>
-                    <div class="h-56">
-                        <canvas id="subIsuChart"></canvas>
-                    </div>
+                    <div class="h-56"><canvas id="subIsuChart"></canvas></div>
                 </div>
             </div>
 
@@ -140,8 +176,7 @@ def generate_dashboard():
                                 <th class="p-4 w-28 text-right">Link Berita</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100" id="table-negatif-body">
-                        </tbody>
+                        <tbody class="divide-y divide-slate-100" id="table-negatif-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -151,53 +186,88 @@ def generate_dashboard():
     <script>
         const rawData = {df.to_json(orient='records')};
 
-        // Render Donut Chart
+        function switchTab(tabName) {{
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabName).classList.add('active');
+            document.getElementById('btn-' + tabName).classList.add('active');
+        }}
+
+        // Donut Chart Tone
         new Chart(document.getElementById('toneChart'), {{
             type: 'doughnut',
             data: {{
                 labels: ['Positif', 'Netral', 'Negatif'],
                 datasets: [{{
                     data: [{positif_count}, {netral_count}, {negatif_count}],
-                    backgroundColor: ['#10b981', '#cbd5e1', '#f43f5e'],
-                    borderWidth: 2
+                    backgroundColor: ['#10b981', '#cbd5e1', '#f43f5e']
                 }}]
             }},
             options: {{ responsive: true, maintainAspectRatio: false }}
         }});
 
-        // Render Sub-Isu Bar Chart
-        const subIsuData = {json.dumps(sub_isu_counts)};
-        const labels = Object.keys(subIsuData);
-        const dataValues = Object.values(subIsuData);
+        // Kategori Chart
+        const katData = {json.dumps(kat_counts)};
+        new Chart(document.getElementById('kategoriChart'), {{
+            type: 'bar',
+            data: {{
+                labels: Object.keys(katData),
+                datasets: [{{ label: 'Jumlah Berita', data: Object.values(katData), backgroundColor: '#3b82f6', borderRadius: 6 }}]
+            }},
+            options: {{ responsive: true, maintainAspectRatio: false, plugins: {{ legend: {{ display: false }} }} }}
+        }});
 
+        // Tier Overview Chart
+        const tierData = {json.dumps(tier_counts)};
+        new Chart(document.getElementById('tierOverviewChart'), {{
+            type: 'pie',
+            data: {{
+                labels: Object.keys(tierData),
+                datasets: [{{ data: Object.values(tierData), backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#64748b'] }}]
+            }},
+            options: {{ responsive: true, maintainAspectRatio: false }}
+        }});
+
+        // Tema Full Chart
+        new Chart(document.getElementById('temaFullChart'), {{
+            type: 'bar',
+            data: {{
+                labels: Object.keys(katData),
+                datasets: [{{ label: 'Total Publikasi', data: Object.values(katData), backgroundColor: '#1d4ed8', borderRadius: 6 }}]
+            }},
+            options: {{ indexAxis: 'y', responsive: true, maintainAspectRatio: false }}
+        }});
+
+        // Tier Full Chart
+        new Chart(document.getElementById('tierFullChart'), {{
+            type: 'bar',
+            data: {{
+                labels: Object.keys(tierData),
+                datasets: [{{ label: 'Jumlah Media', data: Object.values(tierData), backgroundColor: '#059669', borderRadius: 6 }}]
+            }},
+            options: {{ responsive: true, maintainAspectRatio: false }}
+        }});
+
+        // Sub-Isu Bar Chart
+        const subIsuData = {json.dumps(sub_isu_counts)};
         new Chart(document.getElementById('subIsuChart'), {{
             type: 'bar',
             data: {{
-                labels: labels.length ? labels : ['Kekerasan Seksual & PPKS'],
+                labels: Object.keys(subIsuData),
                 datasets: [{{
                     label: 'Jumlah Berita',
-                    data: dataValues.length ? dataValues : [{negatif_count}],
-                    backgroundColor: ['#e11d48', '#f43f5e', '#fb7185', '#fda4af', '#fecdd3'],
+                    data: Object.values(subIsuData),
+                    backgroundColor: ['#e11d48', '#f43f5e', '#fb7185', '#fda4af'],
                     borderRadius: 8,
-                    barThickness: 24
+                    barThickness: 22
                 }}]
             }},
             options: {{
                 indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {{
-                    legend: {{ display: false }}
-                }},
-                scales: {{
-                    x: {{
-                        grid: {{ display: false }},
-                        ticks: {{ stepSize: 1 }}
-                    }},
-                    y: {{
-                        grid: {{ display: false }}
-                    }}
-                }}
+                plugins: {{ legend: {{ display: false }} }}
             }}
         }});
 
@@ -211,7 +281,7 @@ def generate_dashboard():
                 <td class="p-4 font-semibold text-slate-800">${{item.judul}}</td>
                 <td class="p-4">
                     <span class="bg-rose-100 text-rose-800 border border-rose-200 text-xs px-2.5 py-1 rounded-md font-medium inline-block">
-                        ${{item.sub_isu || 'Kekerasan Seksual & PPKS'}}
+                        ${{item.sub_isu || 'Tindak Kriminal & Hukum'}}
                     </span>
                 </td>
                 <td class="p-4 text-xs font-medium text-slate-600">${{item.nama_media || item.sumber}}</td>
@@ -231,7 +301,7 @@ def generate_dashboard():
 
     with open(OUTPUT_HTML, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print("Dashboard HTML dengan Grafik Sub-Isu berhasil dibuat!")
+    print("Dashboard HTML berhasil dibuat lengkap dengan semua Tab!")
 
 if __name__ == "__main__":
     generate_dashboard()
