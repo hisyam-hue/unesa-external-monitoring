@@ -644,16 +644,3 @@ def build_dashboard():
 
 if __name__ == "__main__":
     build_dashboard()
-```
-
----
-
-### **Langkah Selanjutnya di GitHub:**
-
-1. Buka file **`generate_dashboard_eksternal.py`** di repositori GitHub Anda.
-2. Klik tombol pensil **Edit this file**.
-3. Hapus seluruh isi lama, tempel (*paste*) kode perbaikan di atas.
-4. Klik **Commit changes...**.
-5. Buka tab **Actions** di GitHub, pilih **Automated External News Scraper**, lalu klik **Run workflow**.
-
-Proses eksekusi akan langsung berjalan lancar dan berstatus centang hijau (Success)!
