@@ -11,52 +11,62 @@ def generate_dashboard():
 
     df.fillna('', inplace=True)
     
+    # Deteksi nama kolom secara dinamis
+    col_tgl = 'tanggal' if 'tanggal' in df.columns else df.columns[0]
+    col_media = 'media' if 'media' in df.columns else ('sumber' if 'sumber' in df.columns else df.columns[1])
+    col_judul = 'judul' if 'judul' in df.columns else df.columns[2]
+    col_kat = 'kategori' if 'kategori' in df.columns else 'Akademik & Umum'
+    col_sent = 'sentimen' if 'sentimen' in df.columns else 'Netral'
+    col_url = 'url' if 'url' in df.columns else ('link' if 'link' in df.columns else '#')
+
+    # Convert tanggal ke format datetime agar sorting akurat
+    df['dt_temp'] = pd.to_datetime(df[col_tgl], errors='coerce')
+    df = df.sort_values(by='dt_temp', ascending=False) # Urutkan dari TERBARU
+
     # Hitung Statistik
     total_berita = len(df)
-    media_pers = len(df[df['sumber'].str.contains('Media Pers|Pers', case=False, na=False)]) if 'sumber' in df.columns else total_berita
+    media_pers = len(df[df[col_media].str.contains('Media|Pers|Portal|Kompas|Detik|Surabaya|Tribun', case=False, na=False)]) if col_media in df.columns else total_berita
     persen_pers = round((media_pers / total_berita * 100), 1) if total_berita > 0 else 0
     
-    positif = len(df[df['sentimen'].str.lower() == 'positif']) if 'sentimen' in df.columns else 0
-    negatif = len(df[df['sentimen'].str.lower() == 'negatif']) if 'sentimen' in df.columns else 0
+    positif = len(df[df[col_sent].astype(str).str.lower() == 'positif']) if col_sent in df.columns else 0
+    negatif = len(df[df[col_sent].astype(str).str.lower() == 'negatif']) if col_sent in df.columns else 0
     netral = total_berita - (positif + negatif)
     
     persen_pos = round((positif / total_berita * 100), 1) if total_berita > 0 else 0
 
-    # Data Chart Tren Bulanan
+    # Data Chart Tren Bulanan (Ekstraksi Bulan Lebih Fleksibel)
     bulan_list = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
     monthly_counts = [0] * 12
-    if 'tanggal' in df.columns:
-        for tgl in df['tanggal']:
-            try:
-                m = int(tgl.split('-')[1]) - 1
-                if 0 <= m < 12:
-                    monthly_counts[m] += 1
-            except:
-                pass
+    
+    for dt in df['dt_temp']:
+        if pd.notnull(dt):
+            m = dt.month - 1
+            if 0 <= m < 12:
+                monthly_counts[m] += 1
 
-    # Ambil 100 berita terbaru untuk tabel
+    # Ambil 100 berita TERBARU untuk tabel
     top_df = df.head(100)
     table_rows = ""
     for idx, row in top_df.iterrows():
-        tgl = row.get('tanggal', '-')
-        med = row.get('media', '-')
-        kat = row.get('kategori', 'Akademik & Umum')
-        jdl = row.get('judul', '-')
-        snt = row.get('sentimen', 'Netral')
-        url = row.get('url', '#')
+        tgl = row.get(col_tgl, '-')
+        med = row.get(col_media, '-') if row.get(col_media, '-') != '' else 'Media Pers'
+        kat = row.get(col_kat, 'Akademik & Umum') if row.get(col_kat, '') != '' else 'Akademik & Umum'
+        jdl = row.get(col_judul, '-')
+        snt = row.get(col_sent, 'Netral') if row.get(col_sent, '') != '' else 'Netral'
+        url = row.get(col_url, '#')
         
-        badge_cls = 'bg-gray-100 text-gray-700'
-        if snt.lower() == 'positif':
-            badge_cls = 'bg-green-100 text-green-700 font-semibold'
-        elif snt.lower() == 'negatif':
-            badge_cls = 'bg-red-100 text-red-700 font-semibold'
+        badge_cls = 'bg-slate-100 text-slate-700'
+        if str(snt).lower() == 'positif':
+            badge_cls = 'bg-emerald-100 text-emerald-700 font-semibold'
+        elif str(snt).lower() == 'negatif':
+            badge_cls = 'bg-rose-100 text-rose-700 font-semibold'
 
         table_rows += f"""
-        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
-            <td class="py-3 px-4 whitespace-nowrap text-gray-500">{tgl}</td>
-            <td class="py-3 px-4 font-medium text-gray-800">{med}</td>
-            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">{kat}</span></td>
-            <td class="py-3 px-4 text-gray-900 font-medium">{jdl}</td>
+        <tr class="hover:bg-slate-50 border-b border-slate-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-slate-500">{tgl}</td>
+            <td class="py-3 px-4 font-semibold text-slate-800">{med}</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">{kat}</span></td>
+            <td class="py-3 px-4 text-slate-900 font-medium">{jdl}</td>
             <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs {badge_cls}">{snt}</span></td>
             <td class="py-3 px-4 text-right"><a href="{url}" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
         </tr>
