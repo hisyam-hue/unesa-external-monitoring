@@ -24,7 +24,7 @@ BLOCKLIST_KEYWORDS = [
 # Domain non-media & iklan properti yang diblokir
 BLOCKLIST_DOMAINS = [
     "rumah123.com", "olx.co.id", "lamudi.co.id", "propertyguru", "mitula",
-    "sibiti.co.id", "unesa.ac.id" # Memblokir domain sistem/lomba/internal non-pers
+    "sibiti.co.id", "unesa.ac.id"
 ]
 
 HEADERS = {
@@ -39,29 +39,24 @@ def clean_text(text):
     return text.strip()
 
 def clean_title(title):
-    """Membersihkan judul dari nama penulis atau akhiran portal yang janggal."""
+    """Membersihkan judul dari nama penulis atau pemisah media di akhir."""
     if not title:
         return ""
-    
-    # Potong jika ada pemisah nama media/penulis di akhir judul
     parts = title.split(' - ')
-    if len(parts) > 1:
-        # Jika bagian terakhir terlihat seperti nama media atau penulis pendek
-        if len(parts[-1]) < 30:
-            title = ' - '.join(parts[:-1])
-            
+    if len(parts) > 1 and len(parts[-1]) < 30:
+        title = ' - '.join(parts[:-1])
     return clean_text(title)
 
 def fetch_article_body_text(url):
     """Mengambil teks paragraf utama artikel & membersihkan elemen sidebar/baca juga."""
     try:
-        response = requests.get(url, headers=HEADERS, timeout=6, verify=False)
+        response = requests.get(url, headers=HEADERS, timeout=4, verify=False)
         if response.status_code != 200:
             return ""
         
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # Hapus elemen pengganggu (sidebar, footer, ad, widget)
+        # Hapus elemen pengganggu
         for element in soup(["aside", "footer", "nav", "script", "style", "form"]):
             element.extract()
             
@@ -74,12 +69,12 @@ def fetch_article_body_text(url):
     except Exception:
         return ""
 
-def classify_news(title, body_text):
+def classify_news(title, body_text=""):
     """Menentukan kategori dan sentimen secara akurat."""
     text_to_check = (title + " " + body_text).lower()
     
     # 1. Klasifikasi Kategori Tema
-    if any(k in text_to_check for k in ['pakar', 'akademisi', 'dosen', 'pengamat', 'peneliti', 'tanggapan', 'dorong', 'soroti']):
+    if any(k in text_to_check for k in ['pakar', 'akademisi', 'dosen', 'pengamat', 'peneliti', 'tanggapan', 'dorong', 'soroti', 'pakar unesa']):
         kategori = "Pikiran Pakar"
     elif any(k in text_to_check for k in ['prestasi', 'juara', 'medali', 'penghargaan', 'beasiswa']):
         kategori = "Prestasi & Penghargaan"
@@ -98,7 +93,6 @@ def classify_news(title, body_text):
 
     # 2. Klasifikasi Sentimen
     if kategori == "Pikiran Pakar":
-        # Opini/analisis akademisi UNESA selalu dianggap Positif/Netral
         sentimen = "Positif" if any(k in text_to_check for k in ['solusi', 'dorong', 'inovasi', 'bantu', 'mekanisme']) else "Netral"
     elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa']):
         sentimen = "Negatif"
@@ -109,62 +103,43 @@ def classify_news(title, body_text):
 
     return kategori, sentimen
 
-def filter_row_validity(row):
-    """Menyaring baris data apakah valid sebagai berita UNESA."""
-    title = str(row.get('judul', '')).lower()
-    link = str(row.get('link', '')).lower()
-    
-    # Cek Blocklist Domain & Kata Kunci
-    if any(dom in link for dom in BLOCKLIST_DOMAINS):
-        return False
-    if any(kw in title for kw in BLOCKLIST_KEYWORDS):
-        return False
-    if len(title) < 15: # Filter judul terlalu pendek / nama penulis
-        return False
+def filter_and_clean_existing_csv():
+    """Membersihkan file CSV lama secara kilat tanpa melakukan HTTP request ulang."""
+    try:
+        df = pd.read_csv(CSV_FILE)
+        initial_len = len(df)
         
-    return True
-
-def clean_and_reclassify_dataframe(df):
-    """Membersihkan dan mengklasifikasi ulang seluruh isi dataframe."""
-    cleaned_rows = []
-    
-    for _, row in df.iterrows():
-        if not filter_row_validity(row):
-            continue
-            
-        title = clean_title(str(row.get('judul', '')))
-        link = str(row.get('link', ''))
-        body_text = fetch_article_body_text(link)
+        # 1. Hapus domain & kata kunci terlarang
+        pattern_domains = '|'.join([re.escape(d) for d in BLOCKLIST_DOMAINS])
+        pattern_keywords = '|'.join([re.escape(k) for k in BLOCKLIST_KEYWORDS])
         
-        # Verifikasi ulang keberadaan kata UNESA
-        contains_unesa_title = bool(re.search(r'\b(unesa|universitas negeri surabaya)\b', title, re.I))
-        contains_unesa_body = bool(re.search(r'\b(unesa|universitas negeri surabaya)\b', body_text, re.I))
-
-        if not (contains_unesa_title or contains_unesa_body):
-            continue
-
-        kategori, sentimen = classify_news(title, body_text)
+        df = df[~df['link'].astype(str).str.contains(pattern_domains, case=False, na=False)]
+        df = df[~df['judul'].astype(str).str.contains(pattern_keywords, case=False, na=False)]
         
-        row_dict = row.to_dict()
-        row_dict['judul'] = title
-        row_dict['kategori'] = kategori
-        row_dict['sentimen'] = sentimen
-        cleaned_rows.append(row_dict)
+        # 2. Hapus judul terlalu pendek (nama penulis)
+        df = df[df['judul'].astype(str).str.len() > 15]
+        
+        # 3. Perbaiki kategori & sentimen untuk pakar
+        for idx, row in df.iterrows():
+            title = str(row['judul'])
+            kat, sen = classify_news(title, "")
+            df.at[idx, 'kategori'] = kat
+            if kat == "Pikiran Pakar" and row['sentimen'] == "Negatif":
+                df.at[idx, 'sentimen'] = "Netral"
 
-    return pd.DataFrame(cleaned_rows)
+        print(f"[CLEANUP] Berhasil membersihkan CSV lama: dari {initial_len} menjadi {len(df)} berita.")
+        return df
+    except Exception as e:
+        print(f"[WARN] Gagal membersihkan CSV lama: {e}")
+        return pd.DataFrame()
 
 def fetch_external_news():
-    print("=== MENGAMBIL BERITA EKSTERNAL & MEMBERSIHKAN DATABASE CSV ===")
+    print("=== MENGAMBIL BERITA EKSTERNAL UNESA (FAST SCRAPER) ===")
     
-    # 1. Bersihkan Data Lama di CSV Terlebih Dahulu
-    try:
-        df_old = pd.read_csv(CSV_FILE)
-        print(f"[INFO] Memuat {len(df_old)} data lama dari CSV untuk dibersihkan...")
-        df_old_clean = clean_and_reclassify_dataframe(df_old)
-    except Exception:
-        df_old_clean = pd.DataFrame()
+    # 1. Clean CSV lama
+    df_old_clean = filter_and_clean_existing_csv()
 
-    # 2. Ambil Berita Baru dari Feed
+    # 2. Fetch RSS Baru
     news_list = []
     for url in RSS_URLS:
         feed = feedparser.parse(url)
@@ -179,10 +154,11 @@ def fetch_external_news():
             elif '-' in entry.get('title', ''):
                 source_name = entry.get('title', '').split('-')[-1].strip()
 
-            row_tmp = {'judul': title, 'link': link}
-            if not filter_row_validity(row_tmp):
+            # Filter cepat
+            if any(dom in link.lower() for dom in BLOCKLIST_DOMAINS) or any(kw in title.lower() for kw in BLOCKLIST_KEYWORDS):
                 continue
 
+            # Fetch bodi artikel baru saja
             body_text = fetch_article_body_text(link)
             contains_unesa_title = bool(re.search(r'\b(unesa|universitas negeri surabaya)\b', title, re.I))
             contains_unesa_body = bool(re.search(r'\b(unesa|universitas negeri surabaya)\b', body_text, re.I))
@@ -194,9 +170,9 @@ def fetch_external_news():
 
             try:
                 dt = datetime.strptime(pub_date[:16], "%a, %d %b %Y")
-                formatted_date = dt.strftime("%d %B %Y")
+                formatted_date = dt.strftime("%Y-%m-%d") # Format baku ISO
             except Exception:
-                formatted_date = datetime.now().strftime("%d %B %Y")
+                formatted_date = datetime.now().strftime("%Y-%m-%d")
 
             news_list.append({
                 'tanggal': formatted_date,
