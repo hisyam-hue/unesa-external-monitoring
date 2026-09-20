@@ -14,11 +14,12 @@ RSS_URLS = [
 
 CSV_FILE = "rekap_berita_eksternal.csv"
 
-# Blocklist Kata Kunci Iklan & Sistem
+# Blocklist Kata Kunci Iklan, Sistem, & Himbauan Umum Non-Kampus
 BLOCKLIST_KEYWORDS = [
     "disewakan", "dijual", "siap huni", "kost", "kontrakan", 
     "tanah dijual", "rumah dijual", "over kredit", "shm",
-    "login", "reset password", "email reset", "portal mahasiswa"
+    "login", "reset password", "email reset", "portal mahasiswa",
+    "pencurian dan perusakan fasilitas umum", "wali kota ajak warga"
 ]
 
 # Blocklist Domain Non-Media
@@ -106,32 +107,31 @@ def classify_news(title, body_text=""):
     return kategori, sentimen
 
 def filter_and_clean_existing_csv():
-    """Membersihkan CSV secara radikal dari noise kriminal luar daerah & iklan."""
+    """Membersihkan CSV secara total dari noise kriminal luar daerah, himbauan pemkot, & iklan."""
     try:
         df = pd.read_csv(CSV_FILE)
         initial_len = len(df)
         
-        # 1. Hapus domain & kata kunci iklan
+        # 1. Hapus domain & kata kunci iklan / himbauan umum
         pattern_domains = '|'.join([re.escape(d) for d in BLOCKLIST_DOMAINS])
         pattern_keywords = '|'.join([re.escape(k) for k in BLOCKLIST_KEYWORDS])
         
         df = df[~df['link'].astype(str).str.contains(pattern_domains, case=False, na=False)]
         df = df[~df['judul'].astype(str).str.contains(pattern_keywords, case=False, na=False)]
         
-        # 2. FILTER RADIKAL: Hapus berita kriminal luar daerah (Bulukumba, Bogor, Sidoarjo) jika TIDAK menyebutkan UNESA pada judulnya
-        noise_locations = ['bulukumba', 'bogor', 'sidoarjo', 'kapolrestabes surabaya']
-        pattern_noise = '|'.join(noise_locations)
+        # 2. FILTER KETAT: Hapus berita kriminal/isu umum jika TIDAK ada kata UNESA di judulnya
+        noise_keywords = ['bulukumba', 'bogor', 'sidoarjo', 'kapolrestabes surabaya', 'wali kota ajak warga', 'pencurian dan perusakan']
+        pattern_noise = '|'.join(noise_keywords)
         
         rows_to_keep = []
         for idx, row in df.iterrows():
             title = str(row['judul']).lower()
-            sentimen = str(row['sentimen'])
             
-            # Jika mengandung lokasi noise dan tidak ada kata unesa di judul, buang!
+            # Jika mengandung kata noise dan tidak ada kata unesa di judul, buang!
             if re.search(pattern_noise, title) and not re.search(r'\b(unesa|universitas negeri surabaya)\b', title):
                 continue
                 
-            # Jika berita Pakar, pastikan tidak negatif
+            # Jika berita Pakar, pastikan tidak masuk Negatif
             kat, sen = classify_news(row['judul'], "")
             row_dict = row.to_dict()
             row_dict['kategori'] = kat
@@ -148,7 +148,7 @@ def filter_and_clean_existing_csv():
         return pd.DataFrame()
 
 def fetch_external_news():
-    print("=== MENGAMBIL BERITA EKSTERNAL UNESA & PURGING NOISE ===")
+    print("=== MENGAMBIL BERITA EKSTERNAL UNESA (FINAL PURGING) ===")
     
     df_old_clean = filter_and_clean_existing_csv()
 
