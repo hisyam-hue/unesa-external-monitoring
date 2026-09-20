@@ -13,6 +13,7 @@ RSS_URLS = [
 
 CSV_FILE = "rekap_berita_eksternal.csv"
 
+# Keyword iklan & noise non-kampus
 BLOCKLIST_KEYWORDS = [
     "disewakan", "dijual", "siap huni", "kost", "kontrakan", 
     "tanah dijual", "rumah dijual", "over kredit", "shm",
@@ -21,13 +22,14 @@ BLOCKLIST_KEYWORDS = [
     "kebun binatang surabaya", "pemkot surabaya gandeng kejati"
 ]
 
+# Blocklist domain & media internal (DIBUANG DARI MONITORING EKSTERNAL)
 BLOCKLIST_DOMAINS = [
     "rumah123.com", "olx.co.id", "lamudi.co.id", "propertyguru", "mitula",
-    "sibiti.co.id", "unesa.ac.id"
+    "sibiti.co.id", "unesa.ac.id", "kecemedia", "kece media", "humas unesa"
 ]
 
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
 }
 
 def clean_text(text):
@@ -73,7 +75,7 @@ def fetch_article_body_text(url):
 def classify_news(title, body_text=""):
     text_to_check = (title + " " + body_text).lower()
     
-    # Kategori
+    # 1. Klasifikasi Kategori Utama
     if any(k in text_to_check for k in ['pakar', 'akademisi', 'dosen', 'pengamat', 'peneliti', 'tanggapan', 'dorong', 'soroti', 'pakar unesa']):
         kategori = "Pikiran Pakar"
     elif any(k in text_to_check for k in ['prestasi', 'juara', 'medali', 'penghargaan', 'beasiswa']):
@@ -91,7 +93,7 @@ def classify_news(title, body_text=""):
     else:
         kategori = "Akademik & Umum"
 
-    # Sentimen (Baksos Tim Dokter UNESA WAJIB POSITIF)
+    # 2. Sentimen (Baksos/Tim Dokter UNESA WAJIB POSITIF)
     if any(k in text_to_check for k in ['kesehatan gratis', 'bantuan bencana', 'tim dokter unesa', 'pemeriksaan gratis', 'layani pemeriksaan']):
         sentimen = "Positif"
     elif kategori == "Pikiran Pakar":
@@ -103,7 +105,7 @@ def classify_news(title, body_text=""):
     else:
         sentimen = "Netral"
 
-    # Sub-Isu Krisis
+    # 3. Sub-Isu Krisis (Khusus Negatif)
     sub_isu = "-"
     if sentimen == "Negatif":
         if any(k in text_to_check for k in ['pelecehan', 'kekerasan seksual', 'kejahatan seksual', 'diskors', 'persekusi', 'ppks', 'wa diskors']):
@@ -125,10 +127,14 @@ def filter_and_clean_existing_csv():
         pattern_domains = '|'.join([re.escape(d) for d in BLOCKLIST_DOMAINS])
         pattern_keywords = '|'.join([re.escape(k) for k in BLOCKLIST_KEYWORDS])
         
+        # 1. Hapus Domain & Sumber Media Internal
         df = df[~df['link'].astype(str).str.contains(pattern_domains, case=False, na=False)]
+        df = df[~df['sumber'].astype(str).str.contains(pattern_domains, case=False, na=False)]
+        df = df[~df['nama_media'].astype(str).str.contains(pattern_domains, case=False, na=False)]
+        
+        # 2. Hapus Iklan & Noise
         df = df[~df['judul'].astype(str).str.contains(pattern_keywords, case=False, na=False)]
         
-        # Hapus berita Pemkot/KBS jika tidak menyebutkan UNESA
         noise_keywords = ['bulukumba', 'bogor', 'sidoarjo', 'kapolrestabes surabaya', 'wali kota ajak warga', 'pencurian dan perusakan', 'kebun binatang surabaya', 'pemkot surabaya gandeng kejati']
         pattern_noise = '|'.join(noise_keywords)
         
@@ -148,14 +154,14 @@ def filter_and_clean_existing_csv():
             rows_to_keep.append(row_dict)
             
         df_clean = pd.DataFrame(rows_to_keep)
-        print(f"[CLEANUP] Berhasil membersihkan CSV lama: dari {initial_len} menjadi {len(df_clean)} berita.")
+        print(f"[CLEANUP] Membersihkan CSV lama dari internal & noise: dari {initial_len} menjadi {len(df_clean)} berita.")
         return df_clean
     except Exception as e:
         print(f"[WARN] Gagal membersihkan CSV lama: {e}")
         return pd.DataFrame()
 
 def fetch_external_news():
-    print("=== SCRAPING & CLEANING FINAL ===")
+    print("=== SCRAPING BERITA EKSTERNAL MURNI ===")
     
     df_old_clean = filter_and_clean_existing_csv()
 
@@ -173,7 +179,8 @@ def fetch_external_news():
             elif '-' in entry.get('title', ''):
                 source_name = entry.get('title', '').split('-')[-1].strip()
 
-            if any(dom in link.lower() for dom in BLOCKLIST_DOMAINS) or any(kw in title.lower() for kw in BLOCKLIST_KEYWORDS):
+            # Filter Ketat Media & Domain Internal
+            if any(dom in link.lower() for dom in BLOCKLIST_DOMAINS) or any(dom in source_name.lower() for dom in BLOCKLIST_DOMAINS) or any(kw in title.lower() for kw in BLOCKLIST_KEYWORDS):
                 continue
 
             body_text = fetch_article_body_text(link)
@@ -208,7 +215,7 @@ def fetch_external_news():
     
     if not df_combined.empty:
         df_combined.to_csv(CSV_FILE, index=False)
-        print(f"[SUKSES] Saved {len(df_combined)} items to '{CSV_FILE}'.")
+        print(f"[SUKSES] Berhasil menyimpan {len(df_combined)} berita eksternal murni ke '{CSV_FILE}'.")
 
 if __name__ == "__main__":
     fetch_external_news()
