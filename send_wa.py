@@ -6,8 +6,8 @@ def send_wa_notification():
     # Ambil token dari GitHub Secrets
     token = os.environ.get('FONNTE_TOKEN')
     
-    # Masukkan nomor WA tujuan (Format: 08xx atau 628xx)
-    target_number = '082333029803' 
+    # Target dikirim langsung ke Grup WA "Monitoring Publikasi Unesa"
+    target_number = '120363430947326532@g.us' 
     
     if not token:
         print("FONNTE_TOKEN tidak ditemukan di environment!")
@@ -50,7 +50,6 @@ def send_wa_notification():
     data = {
         'target': target_number,
         'message': pesan,
-        'countryCode': '62'
     }
 
     response = requests.post(url, headers=headers, data=data)
