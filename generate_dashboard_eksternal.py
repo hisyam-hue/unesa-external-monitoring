@@ -6,13 +6,22 @@ CSV_FILE = "rekap_berita_eksternal.csv"
 HTML_OUTPUT = "dashboard_eksternal.html"
 
 def build_dashboard():
-    print("=== MENGUPDATE DASHBOARD DENGAN TAB INTERAKTIF SESUAI PPT UNESA ===")
+    print("=== MENGUPDATE DASHBOARD DENGAN OPTIMASI SORTING TANGGAL TERBARU ===")
     
     try:
         df = pd.read_csv(CSV_FILE)
         df = df.fillna('')
+
+        # Deteksi nama kolom tanggal
+        col_tgl = 'tanggal' if 'tanggal' in df.columns else df.columns[0]
+
+        # Konversi tanggal ke datetime & urutkan dari yang TERBARU (Descending)
+        df['dt_temp'] = pd.to_datetime(df[col_tgl], errors='coerce')
+        df = df.sort_values(by='dt_temp', ascending=False)
+        df = df.drop(columns=['dt_temp'])
+
         data_json = json.dumps(df.to_dict(orient='records'), ensure_ascii=False)
-        print(f"[+] Berhasil memuat {len(df)} data dari '{CSV_FILE}'.")
+        print(f"[+] Berhasil memuat & mengurutkan {len(df)} data berita dari yang terbaru.")
     except Exception as e:
         print(f"[ERROR] Gagal membaca CSV: {e}")
         return
@@ -36,7 +45,7 @@ def build_dashboard():
 <body class="p-4 md:p-8">
     <div class="max-w-7xl mx-auto space-y-6">
         
-        <!-- Header Navigasi Tab Utama (Sesuai PPT UNESA) -->
+        <!-- Header Navigasi Tab Utama -->
         <header class="bg-slate-900 text-white rounded-2xl p-6 shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-4">
                 <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-extrabold px-4 py-2 rounded-xl text-xl tracking-wider shadow-lg">
@@ -340,7 +349,12 @@ def build_dashboard():
     <script>
         const rawData = {data_json};
 
-        let barIkhtisarInst, donutIkhtisarInst, barTemaInst, donutTemaInst, donutTierInst, donutToneInst;
+        // Urutkan rawData berdasarkan tanggal terbaru (Fallback JS)
+        rawData.sort(function(a, b) {{
+            const dateA = new Date(a.tanggal || 0);
+            const dateB = new Date(b.tanggal || 0);
+            return dateB - dateA;
+        }});
 
         function switchTab(tabName) {{
             ['ikhtisar', 'tema', 'tier', 'tone'].forEach(function(t) {{
@@ -425,7 +439,7 @@ def build_dashboard():
 
         function renderCharts(monthly, categories, pos, net, neg, mediaMap) {{
             const ctxBar1 = document.getElementById('barChartIkhtisar').getContext('2d');
-            barIkhtisarInst = new Chart(ctxBar1, {{
+            new Chart(ctxBar1, {{
                 type: 'bar',
                 data: {{
                     labels: Object.keys(monthly),
@@ -439,7 +453,7 @@ def build_dashboard():
             }});
 
             const ctxDonut1 = document.getElementById('donutChartIkhtisar').getContext('2d');
-            donutIkhtisarInst = new Chart(ctxDonut1, {{
+            new Chart(ctxDonut1, {{
                 type: 'doughnut',
                 data: {{
                     labels: Object.keys(categories),
@@ -453,7 +467,7 @@ def build_dashboard():
 
             const ctxBar2 = document.getElementById('barChartTema').getContext('2d');
             const sortedCat = Object.entries(categories).sort(function(a,b) {{ return b[1] - a[1]; }});
-            barTemaInst = new Chart(ctxBar2, {{
+            new Chart(ctxBar2, {{
                 type: 'bar',
                 data: {{
                     labels: sortedCat.map(function(x) {{ return x[0]; }}),
@@ -468,7 +482,7 @@ def build_dashboard():
             }});
 
             const ctxDonut2 = document.getElementById('donutChartTema').getContext('2d');
-            donutTemaInst = new Chart(ctxDonut2, {{
+            new Chart(ctxDonut2, {{
                 type: 'doughnut',
                 data: {{
                     labels: sortedCat.map(function(x) {{ return x[0]; }}),
@@ -485,7 +499,7 @@ def build_dashboard():
             const othSum = Object.values(mediaMap.other).reduce(function(a,b){{ return a+b; }}, 0);
 
             const ctxDonut3 = document.getElementById('donutChartTier').getContext('2d');
-            donutTierInst = new Chart(ctxDonut3, {{
+            new Chart(ctxDonut3, {{
                 type: 'doughnut',
                 data: {{
                     labels: ['Tier 1 Nasional', 'Tier 2 Regional', 'Portal Kampus/Lain'],
@@ -498,7 +512,7 @@ def build_dashboard():
             }});
 
             const ctxDonut4 = document.getElementById('donutChartTone').getContext('2d');
-            donutToneInst = new Chart(ctxDonut4, {{
+            new Chart(ctxDonut4, {{
                 type: 'doughnut',
                 data: {{
                     labels: ['Positif', 'Netral', 'Negatif'],
@@ -513,20 +527,20 @@ def build_dashboard():
 
         function renderTables(categories, mediaMap) {{
             const select = document.getElementById('filter-tema-select');
-            select.innerHTML = '<option value="">Semua Tema & Kategori</option>';
+            let selectHtml = '<option value="">Semua Tema & Kategori</option>';
             Object.keys(categories).sort().forEach(function(k) {{
-                select.innerHTML += '<option value="' + k + '">' + k + ' (' + categories[k] + ')</option>';
+                selectHtml += '<option value="' + k + '">' + k + ' (' + categories[k] + ')</option>';
             }});
+            select.innerHTML = selectHtml;
 
-            const ikhtisarBody = document.getElementById('table-ikhtisar-body');
-            ikhtisarBody.innerHTML = '';
+            let ikhtisarHtml = '';
             rawData.slice(0, 10).forEach(function(row) {{
                 const med = row.nama_media || row.media || row.sumber || '-';
                 const kat = row.kategori || 'Akademik';
                 const jdl = row.judul || '-';
                 const tgl = row.tanggal || '-';
                 const lnk = row.link || row.url || '#';
-                ikhtisarBody.innerHTML += '<tr class="border-b border-slate-100 hover:bg-slate-50">' +
+                ikhtisarHtml += '<tr class="border-b border-slate-100 hover:bg-slate-50">' +
                     '<td class="p-3 text-xs text-slate-400 font-medium">' + tgl + '</td>' +
                     '<td class="p-3 font-semibold text-slate-700 text-xs">' + med + '</td>' +
                     '<td class="p-3"><span class="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-md text-xs font-semibold">' + kat + '</span></td>' +
@@ -535,12 +549,13 @@ def build_dashboard():
                     '<td class="p-3 text-right"><a href="' + lnk + '" target="_blank" class="text-blue-600 font-bold text-xs hover:underline">Buka ↗</a></td>' +
                 '</tr>';
             }});
+            document.getElementById('table-ikhtisar-body').innerHTML = ikhtisarHtml;
 
             renderTableTema(rawData);
 
             const ul1 = document.getElementById('list-tier1');
             const ul2 = document.getElementById('list-tier2');
-            ul1.innerHTML = ''; ul2.innerHTML = '';
+            let ul1Html = '', ul2Html = '';
 
             const t1Sorted = Object.entries(mediaMap.tier1).sort(function(a,b){{ return b[1]-a[1]; }});
             const t2Sorted = Object.entries(mediaMap.tier2).sort(function(a,b){{ return b[1]-a[1]; }});
@@ -549,41 +564,42 @@ def build_dashboard():
             document.getElementById('cnt-tier2').innerText = t2Sorted.reduce(function(a,b){{ return a+b[1]; }},0) + ' Berita';
 
             t1Sorted.slice(0, 6).forEach(function(item) {{
-                ul1.innerHTML += '<li class="flex justify-between"><span>▫️ ' + item[0] + '</span><span class="font-bold text-blue-700">' + item[1] + ' berita</span></li>';
+                ul1Html += '<li class="flex justify-between"><span>▫️ ' + item[0] + '</span><span class="font-bold text-blue-700">' + item[1] + ' berita</span></li>';
             }});
             t2Sorted.slice(0, 6).forEach(function(item) {{
-                ul2.innerHTML += '<li class="flex justify-between"><span>▫️ ' + item[0] + '</span><span class="font-bold text-emerald-700">' + item[1] + ' berita</span></li>';
+                ul2Html += '<li class="flex justify-between"><span>▫️ ' + item[0] + '</span><span class="font-bold text-emerald-700">' + item[1] + ' berita</span></li>';
             }});
+            ul1.innerHTML = ul1Html;
+            ul2.innerHTML = ul2Html;
 
-            const mediaBody = document.getElementById('table-media-list-body');
-            mediaBody.innerHTML = '';
+            let mediaHtml = '';
             const allMediaCombined = [];
             Object.entries(mediaMap.tier1).forEach(function(item) {{ allMediaCombined.push({{ media: item[0], count: item[1], tier:'Tier 1 (Nasional)' }}); }});
             Object.entries(mediaMap.tier2).forEach(function(item) {{ allMediaCombined.push({{ media: item[0], count: item[1], tier:'Tier 2 (Regional)' }}); }});
             Object.entries(mediaMap.other).forEach(function(item) {{ allMediaCombined.push({{ media: item[0], count: item[1], tier:'Portal Kampus/Lain' }}); }});
 
-            allMediaCombined.sort(function(a,b){{ return b.count - a.count; }}).forEach(function(item) {{
-                mediaBody.innerHTML += '<tr class="border-b border-slate-100 hover:bg-slate-50">' +
+            allMediaCombined.sort(function(a,b){{ return b.count - a.count; }}).slice(0, 100).forEach(function(item) {{
+                mediaHtml += '<tr class="border-b border-slate-100 hover:bg-slate-50">' +
                     '<td class="p-3 font-bold text-slate-800 text-xs">' + item.media + '</td>' +
                     '<td class="p-3 text-xs"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold text-[11px]">' + item.tier + '</span></td>' +
                     '<td class="p-3 font-semibold text-blue-600 text-xs">' + item.count + ' Berita</td>' +
                     '<td class="p-3 text-xs text-slate-500">Liputan Umum & Akademik UNESA</td>' +
                 '</tr>';
             }});
+            document.getElementById('table-media-list-body').innerHTML = mediaHtml;
 
-            const negBody = document.getElementById('table-tone-negative-body');
-            negBody.innerHTML = '';
             const negData = rawData.filter(function(r) {{ return (r.sentimen || '').toLowerCase() === 'negatif'; }});
+            let negHtml = '';
 
             if (negData.length === 0) {{
-                negBody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400">Tidak ada pemberitaan ber-tone negatif/isu pada periode ini. 🎉</td></tr>';
+                negHtml = '<tr><td colspan="5" class="p-4 text-center text-slate-400">Tidak ada pemberitaan ber-tone negatif/isu pada periode ini. 🎉</td></tr>';
             }} else {{
-                negData.forEach(function(row) {{
+                negData.slice(0, 100).forEach(function(row) {{
                     const med = row.nama_media || row.media || row.sumber || '-';
                     const jdl = row.judul || '-';
                     const tgl = row.tanggal || '-';
                     const lnk = row.link || row.url || '#';
-                    negBody.innerHTML += '<tr class="border-b border-slate-100 hover:bg-rose-50/50">' +
+                    negHtml += '<tr class="border-b border-slate-100 hover:bg-rose-50/50">' +
                         '<td class="p-3 text-xs text-slate-500 font-medium">' + tgl + '</td>' +
                         '<td class="p-3 font-semibold text-slate-900">' + jdl + '</td>' +
                         '<td class="p-3 font-semibold text-slate-700 text-xs">' + med + '</td>' +
@@ -592,6 +608,7 @@ def build_dashboard():
                     '</tr>';
                 }});
             }}
+            document.getElementById('table-tone-negative-body').innerHTML = negHtml;
         }}
 
         function getBadgeTone(snt) {{
@@ -603,14 +620,14 @@ def build_dashboard():
 
         function renderTableTema(data) {{
             const temaBody = document.getElementById('table-tema-body');
-            temaBody.innerHTML = '';
-            data.forEach(function(row) {{
+            let html = '';
+            data.slice(0, 100).forEach(function(row) {{
                 const med = row.nama_media || row.media || row.sumber || '-';
                 const kat = row.kategori || 'Akademik';
                 const jdl = row.judul || '-';
                 const tgl = row.tanggal || '-';
                 const lnk = row.link || row.url || '#';
-                temaBody.innerHTML += '<tr class="border-b border-slate-100 hover:bg-slate-50">' +
+                html += '<tr class="border-b border-slate-100 hover:bg-slate-50">' +
                     '<td class="p-3 text-xs text-slate-400 font-medium">' + tgl + '</td>' +
                     '<td class="p-3 font-medium text-slate-800">' + jdl + '</td>' +
                     '<td class="p-3"><span class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md text-xs font-semibold">' + kat + '</span></td>' +
@@ -618,6 +635,7 @@ def build_dashboard():
                     '<td class="p-3 text-right"><a href="' + lnk + '" target="_blank" class="text-blue-600 font-bold text-xs hover:underline">Buka ↗</a></td>' +
                 '</tr>';
             }});
+            temaBody.innerHTML = html;
         }}
 
         function filterTableTema() {{
@@ -640,7 +658,7 @@ def build_dashboard():
         f.write(html_template)
         
     shutil.copy(HTML_OUTPUT, 'index.html')
-    print(f"[SUKSES] File '{HTML_OUTPUT}' & 'index.html' diperbarui dengan 4 Tab Interaktif PPT!")
+    print(f"[SUKSES] File '{HTML_OUTPUT}' & 'index.html' diperbarui dengan sorting tanggal terbaru!")
 
 if __name__ == "__main__":
     build_dashboard()
