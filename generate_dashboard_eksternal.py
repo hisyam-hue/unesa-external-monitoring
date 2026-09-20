@@ -11,7 +11,7 @@ def generate_dashboard():
         print(f"Error loading CSV: {e}")
         return
 
-    # Hitung ringkasan utama
+    # Metrics
     total_publikasi = len(df)
     df_pers = df[df['tier_media'].isin(['Tier 1 (Nasional)', 'Tier 2 (Regional)'])]
     total_media = len(df_pers)
@@ -20,22 +20,18 @@ def generate_dashboard():
     netral_count = len(df[df['sentimen'] == 'Netral'])
     negatif_count = len(df[df['sentimen'] == 'Negatif'])
     
-    # Kategori Terpopuler
     kat_counts = df['kategori'].value_counts().to_dict()
     tema_terpopuler = list(kat_counts.keys())[0] if kat_counts else "Akademik & Umum"
     tema_count = list(kat_counts.values())[0] if kat_counts else 0
 
-    # Hitung Tier Media
     tier_counts = df['tier_media'].value_counts().to_dict()
 
-    # Hitung Sub-Isu Krisis untuk berita negatif
+    # Sub-isu krisis
     df_negatif = df[df['sentimen'] == 'Negatif'].copy()
-    if 'sub_isu' not in df_negatif.columns:
-        df_negatif['sub_isu'] = 'Kekerasan Seksual & PPKS'
+    if not df_negatif.empty and 'sub_isu' in df_negatif.columns:
+        sub_isu_counts = df_negatif['sub_isu'].value_counts().to_dict()
     else:
-        df_negatif['sub_isu'] = df_negatif['sub_isu'].fillna('Tindak Kriminal & Hukum')
-        
-    sub_isu_counts = df_negatif['sub_isu'].value_counts().to_dict()
+        sub_isu_counts = {"Kekerasan Seksual & PPKS": negatif_count}
 
     html_content = f"""<!DOCTYPE html>
 <html lang="id">
@@ -49,8 +45,8 @@ def generate_dashboard():
     <style>
         body {{ font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }}
         .tab-btn.active {{ background-color: #2563eb; color: white; }}
-        .tab-content {{ display: none; }}
-        .tab-content.active {{ display: block; }}
+        .tab-panel {{ display: none; }}
+        .tab-panel.active {{ display: block; }}
     </style>
 </head>
 <body class="p-6">
@@ -63,14 +59,14 @@ def generate_dashboard():
                 <p class="text-slate-400 text-sm">Analisis Media Massa Digital, Sentiment Tracking & Detector Isu (2026)</p>
             </div>
             <div class="flex gap-2 bg-slate-800 p-1.5 rounded-xl text-xs font-semibold text-slate-300">
-                <button onclick="switchTab('ikhtisar')" id="btn-ikhtisar" class="tab-btn active px-4 py-2 rounded-lg transition">📊 Ikhtisar</button>
-                <button onclick="switchTab('tema')" id="btn-tema" class="tab-btn px-4 py-2 rounded-lg transition">📊 Analisis Tren Tema</button>
-                <button onclick="switchTab('tier')" id="btn-tier" class="tab-btn px-4 py-2 rounded-lg transition">📊 Analisis Tier Media</button>
-                <button onclick="switchTab('tone')" id="btn-tone" class="tab-btn px-4 py-2 rounded-lg transition">🚨 Analisis Tone Pemberitaan</button>
+                <button onclick="openTab('ikhtisar')" id="btn-ikhtisar" class="tab-btn active px-4 py-2 rounded-lg transition">📊 Ikhtisar</button>
+                <button onclick="openTab('tema')" id="btn-tema" class="tab-btn px-4 py-2 rounded-lg transition">📊 Analisis Tren Tema</button>
+                <button onclick="openTab('tier')" id="btn-tier" class="tab-btn px-4 py-2 rounded-lg transition">📊 Analisis Tier Media</button>
+                <button onclick="openTab('tone')" id="btn-tone" class="tab-btn px-4 py-2 rounded-lg transition">🚨 Analisis Tone Pemberitaan</button>
             </div>
         </div>
 
-        <!-- Metric Cards Top -->
+        <!-- Metric Cards -->
         <div class="grid grid-cols-5 gap-4">
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-xs font-semibold text-slate-500 uppercase">Total Publikasi</p>
@@ -84,7 +80,7 @@ def generate_dashboard():
             </div>
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-xs font-semibold text-slate-500 uppercase">Tema Terpopuler</p>
-                <h3 class="text-xl font-bold text-blue-600 mt-2 truncate">{tema_terpopuler}</h3>
+                <h3 class="text-lg font-bold text-blue-600 mt-2 truncate">{tema_terpopuler}</h3>
                 <span class="text-xs text-slate-500 font-medium">{tema_count} Berita</span>
             </div>
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
@@ -100,7 +96,7 @@ def generate_dashboard():
         </div>
 
         <!-- TAB 1: IKHTISAR -->
-        <div id="tab-ikhtisar" class="tab-content active space-y-6">
+        <div id="tab-ikhtisar" class="tab-panel active space-y-6">
             <div class="grid grid-cols-2 gap-6">
                 <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <h2 class="text-lg font-bold text-slate-800 mb-4">Sebaran Kategori Berita</h2>
@@ -113,33 +109,31 @@ def generate_dashboard():
             </div>
         </div>
 
-        <!-- TAB 2: ANALISIS TREN TEMA -->
-        <div id="tab-tema" class="tab-content space-y-6">
+        <!-- TAB 2: TEMA -->
+        <div id="tab-tema" class="tab-panel space-y-6">
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                 <h2 class="text-lg font-bold text-slate-800 mb-4">Analisis Tren Tema Pemberitaan</h2>
                 <div class="h-80"><canvas id="temaFullChart"></canvas></div>
             </div>
         </div>
 
-        <!-- TAB 3: ANALISIS TIER MEDIA -->
-        <div id="tab-tier" class="tab-content space-y-6">
+        <!-- TAB 3: TIER MEDIA -->
+        <div id="tab-tier" class="tab-panel space-y-6">
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                 <h2 class="text-lg font-bold text-slate-800 mb-4">Distribusi Media Berdasarkan Tier</h2>
                 <div class="h-80"><canvas id="tierFullChart"></canvas></div>
             </div>
         </div>
 
-        <!-- TAB 4: ANALISIS TONE PEMBERITAAN -->
-        <div id="tab-tone" class="tab-content space-y-6">
+        <!-- TAB 4: TONE -->
+        <div id="tab-tone" class="tab-panel space-y-6">
             <div class="grid grid-cols-12 gap-6">
-                <!-- Donut Chart -->
                 <div class="col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <h2 class="text-lg font-bold text-slate-800 mb-1">Proporsi Tone Pemberitaan</h2>
                     <p class="text-xs text-slate-500 mb-4">Grafik donat persentase persepsi publik</p>
                     <div class="h-64 flex justify-center"><canvas id="toneChart"></canvas></div>
                 </div>
 
-                <!-- Horizontal Bar Chart Sub-Isu Krisis -->
                 <div class="col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center mb-1">
@@ -152,7 +146,7 @@ def generate_dashboard():
                 </div>
             </div>
 
-            <!-- Tabel Berita Negatif -->
+            <!-- Tabel Negatif -->
             <div class="bg-white rounded-2xl border border-rose-200 shadow-sm overflow-hidden">
                 <div class="bg-rose-50/50 p-5 border-b border-rose-100 flex justify-between items-center">
                     <div>
@@ -186,12 +180,15 @@ def generate_dashboard():
     <script>
         const rawData = {df.to_json(orient='records')};
 
-        function switchTab(tabName) {{
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        function openTab(tabId) {{
+            const panels = document.querySelectorAll('.tab-panel');
+            const buttons = document.querySelectorAll('.tab-btn');
             
-            document.getElementById('tab-' + tabName).classList.add('active');
-            document.getElementById('btn-' + tabName).classList.add('active');
+            panels.forEach(p => p.classList.remove('active'));
+            buttons.forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
         }}
 
         // Donut Chart Tone
@@ -281,7 +278,7 @@ def generate_dashboard():
                 <td class="p-4 font-semibold text-slate-800">${{item.judul}}</td>
                 <td class="p-4">
                     <span class="bg-rose-100 text-rose-800 border border-rose-200 text-xs px-2.5 py-1 rounded-md font-medium inline-block">
-                        ${{item.sub_isu || 'Tindak Kriminal & Hukum'}}
+                        ${{item.sub_isu || 'Kekerasan Seksual & PPKS'}}
                     </span>
                 </td>
                 <td class="p-4 text-xs font-medium text-slate-600">${{item.nama_media || item.sumber}}</td>
@@ -301,7 +298,7 @@ def generate_dashboard():
 
     with open(OUTPUT_HTML, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print("Dashboard HTML berhasil dibuat lengkap dengan semua Tab!")
+    print("Dashboard HTML berhasil dipulihkan secara penuh!")
 
 if __name__ == "__main__":
     generate_dashboard()
