@@ -343,13 +343,13 @@ def build_dashboard():
         let barIkhtisarInst, donutIkhtisarInst, barTemaInst, donutTemaInst, donutTierInst, donutToneInst;
 
         function switchTab(tabName) {{
-            ['ikhtisar', 'tema', 'tier', 'tone'].forEach(t => {{
-                document.getElementById(`tab-content-${{t}}`).classList.add('hidden');
-                document.getElementById(`tab-btn-${{t}}`).className = 'tab-btn-inactive text-xs px-3.5 py-2 rounded-lg transition flex items-center gap-1.5';
+            ['ikhtisar', 'tema', 'tier', 'tone'].forEach(function(t) {{
+                document.getElementById('tab-content-' + t).classList.add('hidden');
+                document.getElementById('tab-btn-' + t).className = 'tab-btn-inactive text-xs px-3.5 py-2 rounded-lg transition flex items-center gap-1.5';
             }});
 
-            document.getElementById(`tab-content-${{tabName}}`).classList.remove('hidden');
-            document.getElementById(`tab-btn-${{tabName}}`).className = 'tab-btn-active text-xs px-3.5 py-2 rounded-lg transition flex items-center gap-1.5';
+            document.getElementById('tab-content-' + tabName).classList.remove('hidden');
+            document.getElementById('tab-btn-' + tabName).className = 'tab-btn-active text-xs px-3.5 py-2 rounded-lg transition flex items-center gap-1.5';
         }}
 
         function initDashboard() {{
@@ -361,7 +361,7 @@ def build_dashboard():
             const categoryCounts = {{}};
             const mediaTierMap = {{ tier1: {{}}, tier2: {{}}, other: {{}} }};
 
-            rawData.forEach(row => {{
+            rawData.forEach(function(row) {{
                 const snt = (row.sentimen || 'Netral').toLowerCase();
                 if (snt === 'positif') posCnt++;
                 else if (snt === 'negatif') negCnt++;
@@ -370,7 +370,7 @@ def build_dashboard():
                 const kat = row.kategori || 'Akademik & Umum';
                 categoryCounts[kat] = (categoryCounts[kat] || 0) + 1;
 
-                const med = row.nama_media || 'Media Online';
+                const med = row.nama_media || row.media || row.sumber || 'Media Online';
                 const tier = row.tier_media || 'Tier 3 (Lokal)';
                 if (tier.includes('Tier 1')) {{
                     persCnt++;
@@ -405,8 +405,8 @@ def build_dashboard():
             document.getElementById('stat-negative-pct').innerText = ((negCnt/total)*100).toFixed(1) + '% Perlu Atensi';
 
             let topKat = '-', maxKat = 0;
-            Object.entries(categoryCounts).forEach(([k,v]) => {{
-                if (v > maxKat) {{ maxKat = v; topKat = k; }}
+            Object.entries(categoryCounts).forEach(function(item) {{
+                if (item[1] > maxKat) {{ maxKat = item[1]; topKat = item[0]; }}
             }});
             document.getElementById('stat-top-theme').innerText = topKat;
             document.getElementById('stat-top-theme-cnt').innerText = maxKat + ' Berita';
@@ -452,14 +452,14 @@ def build_dashboard():
             }});
 
             const ctxBar2 = document.getElementById('barChartTema').getContext('2d');
-            const sortedCat = Object.entries(categories).sort((a,b) => b[1] - a[1]);
+            const sortedCat = Object.entries(categories).sort(function(a,b) {{ return b[1] - a[1]; }});
             barTemaInst = new Chart(ctxBar2, {{
                 type: 'bar',
                 data: {{
-                    labels: sortedCat.map(x => x[0]),
+                    labels: sortedCat.map(function(x) {{ return x[0]; }}),
                     datasets: [{{
                         label: 'Jumlah Berita',
-                        data: sortedCat.map(x => x[1]),
+                        data: sortedCat.map(function(x) {{ return x[1]; }}),
                         backgroundColor: '#6366f1',
                         borderRadius: 6
                     }}]
@@ -471,18 +471,18 @@ def build_dashboard():
             donutTemaInst = new Chart(ctxDonut2, {{
                 type: 'doughnut',
                 data: {{
-                    labels: sortedCat.map(x => x[0]),
+                    labels: sortedCat.map(function(x) {{ return x[0]; }}),
                     datasets: [{{
-                        data: sortedCat.map(x => x[1]),
+                        data: sortedCat.map(function(x) {{ return x[1]; }}),
                         backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#06b6d4', '#64748b']
                     }}]
                 }},
                 options: {{ responsive: true, maintainAspectRatio: false, plugins: {{ legend: {{ position: 'bottom' }} }} }}
             }});
 
-            const t1Sum = Object.values(mediaMap.tier1).reduce((a,b)=>a+b,0);
-            const t2Sum = Object.values(mediaMap.tier2).reduce((a,b)=>a+b,0);
-            const othSum = Object.values(mediaMap.other).reduce((a,b)=>a+b,0);
+            const t1Sum = Object.values(mediaMap.tier1).reduce(function(a,b){{ return a+b; }}, 0);
+            const t2Sum = Object.values(mediaMap.tier2).reduce(function(a,b){{ return a+b; }}, 0);
+            const othSum = Object.values(mediaMap.other).reduce(function(a,b){{ return a+b; }}, 0);
 
             const ctxDonut3 = document.getElementById('donutChartTier').getContext('2d');
             donutTierInst = new Chart(ctxDonut3, {{
@@ -514,23 +514,26 @@ def build_dashboard():
         function renderTables(categories, mediaMap) {{
             const select = document.getElementById('filter-tema-select');
             select.innerHTML = '<option value="">Semua Tema & Kategori</option>';
-            Object.keys(categories).sort().forEach(k => {{
-                select.innerHTML += `<option value="${{k}}">${{k}} (${{categories[k]}})</option>`;
+            Object.keys(categories).sort().forEach(function(k) {{
+                select.innerHTML += '<option value="' + k + '">' + k + ' (' + categories[k] + ')</option>';
             }});
 
             const ikhtisarBody = document.getElementById('table-ikhtisar-body');
             ikhtisarBody.innerHTML = '';
-            rawData.slice(0, 10).forEach(row => {{
-                ikhtisarBody.innerHTML += `
-                    <tr class="border-b border-slate-100 hover:bg-slate-50">
-                        <td class="p-3 text-xs text-slate-400 font-medium">${{row.tanggal || '-'}}</td>
-                        <td class="p-3 font-semibold text-slate-700 text-xs">${{row.nama_media || '-'}}</td>
-                        <td class="p-3"><span class="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-md text-xs font-semibold">${{row.kategori || 'Akademik'}}</span></td>
-                        <td class="p-3 font-medium text-slate-800">${{row.judul || '-'}}</td>
-                        <td class="p-3">${{getBadgeTone(row.sentimen)}}</td>
-                        <td class="p-3 text-right"><a href="${{row.link}}" target="_blank" class="text-blue-600 font-bold text-xs hover:underline">Buka ↗</a></td>
-                    </tr>
-                `;
+            rawData.slice(0, 10).forEach(function(row) {{
+                const med = row.nama_media || row.media || row.sumber || '-';
+                const kat = row.kategori || 'Akademik';
+                const jdl = row.judul || '-';
+                const tgl = row.tanggal || '-';
+                const lnk = row.link || row.url || '#';
+                ikhtisarBody.innerHTML += '<tr class="border-b border-slate-100 hover:bg-slate-50">' +
+                    '<td class="p-3 text-xs text-slate-400 font-medium">' + tgl + '</td>' +
+                    '<td class="p-3 font-semibold text-slate-700 text-xs">' + med + '</td>' +
+                    '<td class="p-3"><span class="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-md text-xs font-semibold">' + kat + '</span></td>' +
+                    '<td class="p-3 font-medium text-slate-800">' + jdl + '</td>' +
+                    '<td class="p-3">' + getBadgeTone(row.sentimen) + '</td>' +
+                    '<td class="p-3 text-right"><a href="' + lnk + '" target="_blank" class="text-blue-600 font-bold text-xs hover:underline">Buka ↗</a></td>' +
+                '</tr>';
             }});
 
             renderTableTema(rawData);
@@ -539,54 +542,54 @@ def build_dashboard():
             const ul2 = document.getElementById('list-tier2');
             ul1.innerHTML = ''; ul2.innerHTML = '';
 
-            const t1Sorted = Object.entries(mediaMap.tier1).sort((a,b)=>b[1]-a[1]);
-            const t2Sorted = Object.entries(mediaMap.tier2).sort((a,b)=>b[1]-a[1]);
+            const t1Sorted = Object.entries(mediaMap.tier1).sort(function(a,b){{ return b[1]-a[1]; }});
+            const t2Sorted = Object.entries(mediaMap.tier2).sort(function(a,b){{ return b[1]-a[1]; }});
 
-            document.getElementById('cnt-tier1').innerText = t1Sorted.reduce((a,b)=>a+b[1],0) + ' Berita';
-            document.getElementById('cnt-tier2').innerText = t2Sorted.reduce((a,b)=>a+b[1],0) + ' Berita';
+            document.getElementById('cnt-tier1').innerText = t1Sorted.reduce(function(a,b){{ return a+b[1]; }},0) + ' Berita';
+            document.getElementById('cnt-tier2').innerText = t2Sorted.reduce(function(a,b){{ return a+b[1]; }},0) + ' Berita';
 
-            t1Sorted.slice(0, 6).forEach(([med, cnt]) => {{
-                ul1.innerHTML += `<li class="flex justify-between"><span>▫️ ${med}</span><span class="font-bold text-blue-700">${cnt} berita</span></li>`;
+            t1Sorted.slice(0, 6).forEach(function(item) {{
+                ul1.innerHTML += '<li class="flex justify-between"><span>▫️ ' + item[0] + '</span><span class="font-bold text-blue-700">' + item[1] + ' berita</span></li>';
             }});
-            t2Sorted.slice(0, 6).forEach(([med, cnt]) => {{
-                ul2.innerHTML += `<li class="flex justify-between"><span>▫️ ${med}</span><span class="font-bold text-emerald-700">${cnt} berita</span></li>`;
+            t2Sorted.slice(0, 6).forEach(function(item) {{
+                ul2.innerHTML += '<li class="flex justify-between"><span>▫️ ' + item[0] + '</span><span class="font-bold text-emerald-700">' + item[1] + ' berita</span></li>';
             }});
 
             const mediaBody = document.getElementById('table-media-list-body');
             mediaBody.innerHTML = '';
             const allMediaCombined = [];
-            Object.entries(mediaMap.tier1).forEach(([m,c]) => allMediaCombined.push({{ media:m, count:c, tier:'Tier 1 (Nasional)' }}));
-            Object.entries(mediaMap.tier2).forEach(([m,c]) => allMediaCombined.push({{ media:m, count:c, tier:'Tier 2 (Regional)' }}));
-            Object.entries(mediaMap.other).forEach(([m,c]) => allMediaCombined.push({{ media:m, count:c, tier:'Portal Kampus/Lain' }}));
+            Object.entries(mediaMap.tier1).forEach(function(item) {{ allMediaCombined.push({{ media: item[0], count: item[1], tier:'Tier 1 (Nasional)' }}); }});
+            Object.entries(mediaMap.tier2).forEach(function(item) {{ allMediaCombined.push({{ media: item[0], count: item[1], tier:'Tier 2 (Regional)' }}); }});
+            Object.entries(mediaMap.other).forEach(function(item) {{ allMediaCombined.push({{ media: item[0], count: item[1], tier:'Portal Kampus/Lain' }}); }});
 
-            allMediaCombined.sort((a,b)=>b.count - a.count).forEach(item => {{
-                mediaBody.innerHTML += `
-                    <tr class="border-b border-slate-100 hover:bg-slate-50">
-                        <td class="p-3 font-bold text-slate-800 text-xs">${{item.media}}</td>
-                        <td class="p-3 text-xs"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold text-[11px]">${{item.tier}}</span></td>
-                        <td class="p-3 font-semibold text-blue-600 text-xs">${{item.count}} Berita</td>
-                        <td class="p-3 text-xs text-slate-500">Liputan Umum & Akademik UNESA</td>
-                    </tr>
-                `;
+            allMediaCombined.sort(function(a,b){{ return b.count - a.count; }}).forEach(function(item) {{
+                mediaBody.innerHTML += '<tr class="border-b border-slate-100 hover:bg-slate-50">' +
+                    '<td class="p-3 font-bold text-slate-800 text-xs">' + item.media + '</td>' +
+                    '<td class="p-3 text-xs"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold text-[11px]">' + item.tier + '</span></td>' +
+                    '<td class="p-3 font-semibold text-blue-600 text-xs">' + item.count + ' Berita</td>' +
+                    '<td class="p-3 text-xs text-slate-500">Liputan Umum & Akademik UNESA</td>' +
+                '</tr>';
             }});
 
             const negBody = document.getElementById('table-tone-negative-body');
             negBody.innerHTML = '';
-            const negData = rawData.filter(r => (r.sentimen || '').toLowerCase() === 'negatif');
+            const negData = rawData.filter(function(r) {{ return (r.sentimen || '').toLowerCase() === 'negatif'; }});
 
             if (negData.length === 0) {{
                 negBody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400">Tidak ada pemberitaan ber-tone negatif/isu pada periode ini. 🎉</td></tr>';
             }} else {{
-                negData.forEach(row => {{
-                    negBody.innerHTML += `
-                        <tr class="border-b border-slate-100 hover:bg-rose-50/50">
-                            <td class="p-3 text-xs text-slate-500 font-medium">${{row.tanggal || '-'}}</td>
-                            <td class="p-3 font-semibold text-slate-900">${{row.judul || '-'}}</td>
-                            <td class="p-3 font-semibold text-slate-700 text-xs">${{row.nama_media || '-'}}</td>
-                            <td class="p-3"><span class="bg-rose-100 text-rose-700 px-2 py-0.5 rounded text-[10px] font-bold">Negatif</span></td>
-                            <td class="p-3 text-right"><a href="${{row.link}}" target="_blank" class="text-rose-600 font-bold text-xs hover:underline">Buka Isu ↗</a></td>
-                        </tr>
-                    `;
+                negData.forEach(function(row) {{
+                    const med = row.nama_media || row.media || row.sumber || '-';
+                    const jdl = row.judul || '-';
+                    const tgl = row.tanggal || '-';
+                    const lnk = row.link || row.url || '#';
+                    negBody.innerHTML += '<tr class="border-b border-slate-100 hover:bg-rose-50/50">' +
+                        '<td class="p-3 text-xs text-slate-500 font-medium">' + tgl + '</td>' +
+                        '<td class="p-3 font-semibold text-slate-900">' + jdl + '</td>' +
+                        '<td class="p-3 font-semibold text-slate-700 text-xs">' + med + '</td>' +
+                        '<td class="p-3"><span class="bg-rose-100 text-rose-700 px-2 py-0.5 rounded text-[10px] font-bold">Negatif</span></td>' +
+                        '<td class="p-3 text-right"><a href="' + lnk + '" target="_blank" class="text-rose-600 font-bold text-xs hover:underline">Buka Isu ↗</a></td>' +
+                    '</tr>';
                 }});
             }}
         }}
@@ -601,16 +604,19 @@ def build_dashboard():
         function renderTableTema(data) {{
             const temaBody = document.getElementById('table-tema-body');
             temaBody.innerHTML = '';
-            data.forEach(row => {{
-                temaBody.innerHTML += `
-                    <tr class="border-b border-slate-100 hover:bg-slate-50">
-                        <td class="p-3 text-xs text-slate-400 font-medium">${{row.tanggal || '-'}}</td>
-                        <td class="p-3 font-medium text-slate-800">${{row.judul || '-'}}</td>
-                        <td class="p-3"><span class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md text-xs font-semibold">${{row.kategori || 'Akademik'}}</span></td>
-                        <td class="p-3 font-semibold text-slate-700 text-xs">${{row.nama_media || '-'}}</td>
-                        <td class="p-3 text-right"><a href="${{row.link}}" target="_blank" class="text-blue-600 font-bold text-xs hover:underline">Buka ↗</a></td>
-                    </tr>
-                `;
+            data.forEach(function(row) {{
+                const med = row.nama_media || row.media || row.sumber || '-';
+                const kat = row.kategori || 'Akademik';
+                const jdl = row.judul || '-';
+                const tgl = row.tanggal || '-';
+                const lnk = row.link || row.url || '#';
+                temaBody.innerHTML += '<tr class="border-b border-slate-100 hover:bg-slate-50">' +
+                    '<td class="p-3 text-xs text-slate-400 font-medium">' + tgl + '</td>' +
+                    '<td class="p-3 font-medium text-slate-800">' + jdl + '</td>' +
+                    '<td class="p-3"><span class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md text-xs font-semibold">' + kat + '</span></td>' +
+                    '<td class="p-3 font-semibold text-slate-700 text-xs">' + med + '</td>' +
+                    '<td class="p-3 text-right"><a href="' + lnk + '" target="_blank" class="text-blue-600 font-bold text-xs hover:underline">Buka ↗</a></td>' +
+                '</tr>';
             }});
         }}
 
@@ -619,7 +625,7 @@ def build_dashboard():
             if (!selected) {{
                 renderTableTema(rawData);
             }} else {{
-                const filtered = rawData.filter(r => (r.kategori || '') === selected);
+                const filtered = rawData.filter(function(r) {{ return (r.kategori || '') === selected; }});
                 renderTableTema(filtered);
             }}
         }}
@@ -638,3 +644,16 @@ def build_dashboard():
 
 if __name__ == "__main__":
     build_dashboard()
+```
+
+---
+
+### **Langkah Selanjutnya di GitHub:**
+
+1. Buka file **`generate_dashboard_eksternal.py`** di repositori GitHub Anda.
+2. Klik tombol pensil **Edit this file**.
+3. Hapus seluruh isi lama, tempel (*paste*) kode perbaikan di atas.
+4. Klik **Commit changes...**.
+5. Buka tab **Actions** di GitHub, pilih **Automated External News Scraper**, lalu klik **Run workflow**.
+
+Proses eksekusi akan langsung berjalan lancar dan berstatus centang hijau (Success)!
