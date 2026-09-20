@@ -27,6 +27,14 @@ BLOCKLIST_DOMAINS = [
     "sibiti.co.id", "unesa.ac.id"
 ]
 
+# Daftar berita negatif palsu / noise dari data lama yang wajib dibuang
+INVALID_TITLES = [
+    "Kapolrestabes Surabaya Minta Maaf",
+    "Polisi di Bulukumba Ditangkap",
+    "Diduga Lecehkan 7 Anak Laki-laki",
+    "Siap Huni 45jt/th Disewakan"
+]
+
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
 }
@@ -39,7 +47,6 @@ def clean_text(text):
     return text.strip()
 
 def clean_title(title):
-    """Membersihkan judul dari nama penulis atau pemisah media di akhir."""
     if not title:
         return ""
     parts = title.split(' - ')
@@ -48,20 +55,27 @@ def clean_title(title):
     return clean_text(title)
 
 def fetch_article_body_text(url):
-    """Mengambil teks paragraf utama artikel & membersihkan elemen sidebar/baca juga."""
+    """Mengambil teks paragraf utama artikel & membuang box sisipan Pilihan Redaksi/Baca Juga."""
     try:
-        response = requests.get(url, headers=HEADERS, timeout=4, verify=False)
+        response = requests.get(url, headers=HEADERS, timeout=5, verify=False)
         if response.status_code != 200:
             return ""
         
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # Hapus elemen pengganggu
+        # 1. Hapus elemen tag umum
         for element in soup(["aside", "footer", "nav", "script", "style", "form"]):
             element.extract()
             
-        for div in soup.find_all(["div", "section"], class_=re.compile(r'(sidebar|related|baca-juga|ad-|recommendation|widget)', re.I)):
+        # 2. Hapus spesifik box "Pilihan Redaksi", "Baca Juga", "Berita Terkait", Iklan
+        for div in soup.find_all(["div", "section", "article", "blockquote"], class_=re.compile(r'(sidebar|related|baca-juga|ad-|recommendation|widget|pilihan-redaksi|detail-tag|insert|multi-link)', re.I)):
             div.extract()
+
+        # 3. Hapus paragraf yang berawalan "Lihat Juga:", "Baca juga:", "Pilihan Redaksi:"
+        for p in soup.find_all('p'):
+            p_text = p.get_text().strip().lower()
+            if p_text.startswith(('baca juga', 'lihat juga', 'pilihan redaksi', 'simak juga', 'baca selengkapnya')):
+                p.extract()
             
         paragraphs = soup.find_all('p')
         body_text = ' '.join([clean_text(p.get_text()) for p in paragraphs])
@@ -73,7 +87,7 @@ def classify_news(title, body_text=""):
     """Menentukan kategori dan sentimen secara akurat."""
     text_to_check = (title + " " + body_text).lower()
     
-    # 1. Klasifikasi Kategori Tema
+    # Kategori Pakar
     if any(k in text_to_check for k in ['pakar', 'akademisi', 'dosen', 'pengamat', 'peneliti', 'tanggapan', 'dorong', 'soroti', 'pakar unesa']):
         kategori = "Pikiran Pakar"
     elif any(k in text_to_check for k in ['prestasi', 'juara', 'medali', 'penghargaan', 'beasiswa']):
@@ -91,7 +105,7 @@ def classify_news(title, body_text=""):
     else:
         kategori = "Akademik & Umum"
 
-    # 2. Klasifikasi Sentimen
+    # Sentimen
     if kategori == "Pikiran Pakar":
         sentimen = "Positif" if any(k in text_to_check for k in ['solusi', 'dorong', 'inovasi', 'bantu', 'mekanisme']) else "Netral"
     elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa']):
@@ -104,7 +118,7 @@ def classify_news(title, body_text=""):
     return kategori, sentimen
 
 def filter_and_clean_existing_csv():
-    """Membersihkan file CSV lama secara kilat tanpa melakukan HTTP request ulang."""
+    """Membersihkan file CSV lama dari berita sampah/noise secara instan."""
     try:
         df = pd.read_csv(CSV_FILE)
         initial_len = len(df)
@@ -116,16 +130,21 @@ def filter_and_clean_existing_csv():
         df = df[~df['link'].astype(str).str.contains(pattern_domains, case=False, na=False)]
         df = df[~df['judul'].astype(str).str.contains(pattern_keywords, case=False, na=False)]
         
-        # 2. Hapus judul terlalu pendek (nama penulis)
+        # 2. Hapus judul sampah spesifik (Bulukumba, Rumah123, Pungli Sidoarjo, Bogor)
+        pattern_invalid = '|'.join([re.escape(t) for t in INVALID_TITLES])
+        df = df[~df['judul'].astype(str).str.contains(pattern_invalid, case=False, na=False)]
+        
+        # 3. Hapus judul terlalu pendek
         df = df[df['judul'].astype(str).str.len() > 15]
         
-        # 3. Perbaiki kategori & sentimen untuk pakar
+        # 4. Perbaiki berita Pakar (seperti Sita Aset Suara.com) agar tidak Negatif
         for idx, row in df.iterrows():
             title = str(row['judul'])
             kat, sen = classify_news(title, "")
             df.at[idx, 'kategori'] = kat
-            if kat == "Pikiran Pakar" and row['sentimen'] == "Negatif":
-                df.at[idx, 'sentimen'] = "Netral"
+            if kat == "Pikiran Pakar" or "akademisi unesa" in title.lower() or "pakar" in title.lower():
+                df.at[idx, 'kategori'] = "Pikiran Pakar"
+                df.at[idx, 'sentimen'] = "Positif" if "dorong" in title.lower() else "Netral"
 
         print(f"[CLEANUP] Berhasil membersihkan CSV lama: dari {initial_len} menjadi {len(df)} berita.")
         return df
@@ -134,12 +153,12 @@ def filter_and_clean_existing_csv():
         return pd.DataFrame()
 
 def fetch_external_news():
-    print("=== MENGAMBIL BERITA EKSTERNAL UNESA (FAST SCRAPER) ===")
+    print("=== MENGAMBIL BERITA EKSTERNAL UNESA (ENHANCED NOISE FILTER) ===")
     
-    # 1. Clean CSV lama
+    # Clean CSV lama
     df_old_clean = filter_and_clean_existing_csv()
 
-    # 2. Fetch RSS Baru
+    # Fetch RSS Baru
     news_list = []
     for url in RSS_URLS:
         feed = feedparser.parse(url)
@@ -154,11 +173,9 @@ def fetch_external_news():
             elif '-' in entry.get('title', ''):
                 source_name = entry.get('title', '').split('-')[-1].strip()
 
-            # Filter cepat
             if any(dom in link.lower() for dom in BLOCKLIST_DOMAINS) or any(kw in title.lower() for kw in BLOCKLIST_KEYWORDS):
                 continue
 
-            # Fetch bodi artikel baru saja
             body_text = fetch_article_body_text(link)
             contains_unesa_title = bool(re.search(r'\b(unesa|universitas negeri surabaya)\b', title, re.I))
             contains_unesa_body = bool(re.search(r'\b(unesa|universitas negeri surabaya)\b', body_text, re.I))
@@ -170,7 +187,7 @@ def fetch_external_news():
 
             try:
                 dt = datetime.strptime(pub_date[:16], "%a, %d %b %Y")
-                formatted_date = dt.strftime("%Y-%m-%d") # Format baku ISO
+                formatted_date = dt.strftime("%Y-%m-%d")
             except Exception:
                 formatted_date = datetime.now().strftime("%Y-%m-%d")
 
@@ -181,7 +198,7 @@ def fetch_external_news():
                 'kategori': kategori,
                 'judul': title,
                 'sentimen': sentimen,
-                'tier_media': "Tier 1 (Nasional)" if any(m in source_name.lower() for m in ['kompas','detik','antara']) else "Tier 2 (Regional)",
+                'tier_media': "Tier 1 (Nasional)" if any(m in source_name.lower() for m in ['kompas','detik','antara','cnn']) else "Tier 2 (Regional)",
                 'link': link
             })
 
