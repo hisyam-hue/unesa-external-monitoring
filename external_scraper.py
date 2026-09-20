@@ -5,7 +5,6 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-# URL RSS Feed Berita Eksternal UNESA
 RSS_URLS = [
     "https://news.google.com/rss/search?q=UNESA&hl=id&gl=ID&ceid=ID:id",
     "https://news.google.com/rss/search?q=Universitas+Negeri+Surabaya&hl=id&gl=ID&ceid=ID:id",
@@ -14,7 +13,6 @@ RSS_URLS = [
 
 CSV_FILE = "rekap_berita_eksternal.csv"
 
-# Blocklist Kata Kunci Iklan, Sistem, & Himbauan Umum Non-Kampus
 BLOCKLIST_KEYWORDS = [
     "disewakan", "dijual", "siap huni", "kost", "kontrakan", 
     "tanah dijual", "rumah dijual", "over kredit", "shm",
@@ -22,7 +20,6 @@ BLOCKLIST_KEYWORDS = [
     "pencurian dan perusakan fasilitas umum", "wali kota ajak warga"
 ]
 
-# Blocklist Domain Non-Media
 BLOCKLIST_DOMAINS = [
     "rumah123.com", "olx.co.id", "lamudi.co.id", "propertyguru", "mitula",
     "sibiti.co.id", "unesa.ac.id"
@@ -48,7 +45,6 @@ def clean_title(title):
     return clean_text(title)
 
 def fetch_article_body_text(url):
-    """Mengambil teks paragraf utama artikel & membuang box sisipan Pilihan Redaksi/Baca Juga."""
     try:
         response = requests.get(url, headers=HEADERS, timeout=5, verify=False)
         if response.status_code != 200:
@@ -76,7 +72,7 @@ def fetch_article_body_text(url):
 def classify_news(title, body_text=""):
     text_to_check = (title + " " + body_text).lower()
     
-    # 1. Kategori Pakar
+    # 1. Kategori Utama
     if any(k in text_to_check for k in ['pakar', 'akademisi', 'dosen', 'pengamat', 'peneliti', 'tanggapan', 'dorong', 'soroti', 'pakar unesa']):
         kategori = "Pikiran Pakar"
     elif any(k in text_to_check for k in ['prestasi', 'juara', 'medali', 'penghargaan', 'beasiswa']):
@@ -94,32 +90,43 @@ def classify_news(title, body_text=""):
     else:
         kategori = "Akademik & Umum"
 
-    # 2. Sentimen
+    # 2. Sentimen & Sub-Isu Krisis
+    sub_isu = "Non-Krisis"
     if kategori == "Pikiran Pakar":
         sentimen = "Positif" if any(k in text_to_check for k in ['solusi', 'dorong', 'inovasi', 'bantu', 'mekanisme']) else "Netral"
-    elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa', 'pelecehan seksual di unesa']):
+    elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa', 'pelecehan seksual', 'kekerasan seksual']):
         sentimen = "Negatif"
     elif any(k in text_to_check for k in ['juara', 'unggul', 'sukses', 'bangga', 'resmi', 'apresiasi']):
         sentimen = "Positif"
     else:
         sentimen = "Netral"
 
-    return kategori, sentimen
+    # Klasifikasi Spesifik Sub-Isu Krisis (Khusus Berita Negatif)
+    if sentimen == "Negatif":
+        if any(k in text_to_check for k in ['pelecehan', 'kekerasan seksual', 'diskors', 'persekusi', 'ppks', 'wa diskors']):
+            sub_isu = "Kekerasan Seksual & PPKS"
+        elif any(k in text_to_check for k in ['pencurian', 'mencuri', 'korupsi', 'pungli', 'narkoba', 'polisi', 'ditangkap']):
+            sub_isu = "Tindak Kriminal & Hukum"
+        elif any(k in text_to_check for k in ['bunuh diri', 'tewas', 'gantung diri', 'tenggelam', 'kecelakaan']):
+            sub_isu = "Insiden & Kesehatan Mental"
+        elif any(k in text_to_check for k in ['demonstrasi', 'sengketa', 'sanksi', 'dikeluarkan', 'protes']):
+            sub_isu = "Isu Akademik & Kemahasiswaan"
+        else:
+            sub_isu = "Isu Krisis Lainnya"
+
+    return kategori, sentimen, sub_isu
 
 def filter_and_clean_existing_csv():
-    """Membersihkan CSV secara total dari noise kriminal luar daerah, himbauan pemkot, & iklan."""
     try:
         df = pd.read_csv(CSV_FILE)
         initial_len = len(df)
         
-        # 1. Hapus domain & kata kunci iklan / himbauan umum
         pattern_domains = '|'.join([re.escape(d) for d in BLOCKLIST_DOMAINS])
         pattern_keywords = '|'.join([re.escape(k) for k in BLOCKLIST_KEYWORDS])
         
         df = df[~df['link'].astype(str).str.contains(pattern_domains, case=False, na=False)]
         df = df[~df['judul'].astype(str).str.contains(pattern_keywords, case=False, na=False)]
         
-        # 2. FILTER KETAT: Hapus berita kriminal/isu umum jika TIDAK ada kata UNESA di judulnya
         noise_keywords = ['bulukumba', 'bogor', 'sidoarjo', 'kapolrestabes surabaya', 'wali kota ajak warga', 'pencurian dan perusakan']
         pattern_noise = '|'.join(noise_keywords)
         
@@ -127,16 +134,16 @@ def filter_and_clean_existing_csv():
         for idx, row in df.iterrows():
             title = str(row['judul']).lower()
             
-            # Jika mengandung kata noise dan tidak ada kata unesa di judul, buang!
             if re.search(pattern_noise, title) and not re.search(r'\b(unesa|universitas negeri surabaya)\b', title):
                 continue
                 
-            # Jika berita Pakar, pastikan tidak masuk Negatif
-            kat, sen = classify_news(row['judul'], "")
+            kat, sen, sub = classify_news(row['judul'], "")
             row_dict = row.to_dict()
             row_dict['kategori'] = kat
+            row_dict['sub_isu'] = sub
             if kat == "Pikiran Pakar":
                 row_dict['sentimen'] = "Positif" if "dorong" in title else "Netral"
+                row_dict['sub_isu'] = "Non-Krisis"
                 
             rows_to_keep.append(row_dict)
             
@@ -148,7 +155,7 @@ def filter_and_clean_existing_csv():
         return pd.DataFrame()
 
 def fetch_external_news():
-    print("=== MENGAMBIL BERITA EKSTERNAL UNESA (FINAL PURGING) ===")
+    print("=== MENGAMBIL BERITA EKSTERNAL UNESA & SUB-ISU KRISIS ===")
     
     df_old_clean = filter_and_clean_existing_csv()
 
@@ -176,7 +183,7 @@ def fetch_external_news():
             if not (contains_unesa_title or contains_unesa_body):
                 continue
 
-            kategori, sentimen = classify_news(title, body_text)
+            kategori, sentimen, sub_isu = classify_news(title, body_text)
 
             try:
                 dt = datetime.strptime(pub_date[:16], "%a, %d %b %Y")
@@ -191,6 +198,7 @@ def fetch_external_news():
                 'kategori': kategori,
                 'judul': title,
                 'sentimen': sentimen,
+                'sub_isu': sub_isu,
                 'tier_media': "Tier 1 (Nasional)" if any(m in source_name.lower() for m in ['kompas','detik','antara','cnn']) else "Tier 2 (Regional)",
                 'link': link
             })
