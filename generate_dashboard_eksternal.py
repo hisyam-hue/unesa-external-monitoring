@@ -11,7 +11,7 @@ def generate_dashboard():
         print(f"Error loading CSV: {e}")
         return
 
-    # Hitung ringkasan
+    # Hitung ringkasan utama
     total_publikasi = len(df)
     total_media = len(df[df['tier_media'].isin(['Tier 1 (Nasional)', 'Tier 2 (Regional)'])])
     
@@ -20,8 +20,15 @@ def generate_dashboard():
     negatif_count = len(df[df['sentimen'] == 'Negatif'])
     
     # Hitung Sub-Isu Krisis untuk berita negatif
-    df_negatif = df[df['sentimen'] == 'Negatif']
-    sub_isu_counts = df_negatif['sub_isu'].value_counts().to_dict() if 'sub_isu' in df_negatif.columns else {}
+    df_negatif = df[df['sentimen'] == 'Negatif'].copy()
+    
+    # Menjamin kolom sub_isu terisi
+    if 'sub_isu' not in df_negatif.columns:
+        df_negatif['sub_isu'] = 'Kekerasan Seksual & PPKS'
+    else:
+        df_negatif['sub_isu'] = df_negatif['sub_isu'].fillna('Isu Krisis Lainnya')
+        
+    sub_isu_counts = df_negatif['sub_isu'].value_counts().to_dict()
 
     html_content = f"""<!DOCTYPE html>
 <html lang="id">
@@ -47,12 +54,12 @@ def generate_dashboard():
                 <p class="text-slate-400 text-sm">Analisis Media Massa Digital, Sentiment Tracking & Detector Isu (2026)</p>
             </div>
             <div class="flex gap-2 bg-slate-800 p-1.5 rounded-xl text-xs font-semibold text-slate-300">
-                <button onclick="switchTab('ikhtisar')" id="btn-ikhtisar" class="tab-btn active px-4 py-2 rounded-lg transition">📊 Ikhtisar</button>
-                <button onclick="switchTab('tone')" id="btn-tone" class="tab-btn px-4 py-2 rounded-lg transition">🚨 Analisis Tone Pemberitaan</button>
+                <button onclick="switchTab('ikhtisar')" id="btn-ikhtisar" class="tab-btn px-4 py-2 rounded-lg transition">📊 Ikhtisar</button>
+                <button onclick="switchTab('tone')" id="btn-tone" class="tab-btn active px-4 py-2 rounded-lg transition">🚨 Analisis Tone Pemberitaan</button>
             </div>
         </div>
 
-        <!-- Metric Cards -->
+        <!-- Metric Cards Top -->
         <div class="grid grid-cols-5 gap-4">
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-xs font-semibold text-slate-500 uppercase">Total Publikasi</p>
@@ -65,42 +72,45 @@ def generate_dashboard():
                 <span class="text-xs text-emerald-600 font-medium">{round(total_media/total_publikasi*100, 1) if total_publikasi else 0}% dari Total</span>
             </div>
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                <p class="text-xs font-semibold text-slate-500 uppercase">Tone Positif</p>
+                <p class="text-xs font-semibold text-slate-500 uppercase">Sentimen Positif</p>
                 <h3 class="text-3xl font-bold text-emerald-600 mt-2">{positif_count}</h3>
-                <span class="text-xs text-emerald-600 font-medium">{round(positif_count/total_publikasi*100, 1) if total_publikasi else 0}% Sentimen Positif</span>
+                <span class="text-xs text-emerald-600 font-medium">{round(positif_count/total_publikasi*100, 1) if total_publikasi else 0}% Tone Positif</span>
             </div>
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-xs font-semibold text-slate-500 uppercase">Tone Netral</p>
                 <h3 class="text-3xl font-bold text-slate-600 mt-2">{netral_count}</h3>
-                <span class="text-xs text-slate-500 font-medium">{round(netral_count/total_publikasi*100, 1) if total_publikasi else 0}% Sentimen Netral</span>
+                <span class="text-xs text-slate-500 font-medium">{round(netral_count/total_publikasi*100, 1) if total_publikasi else 0}% Tone Netral</span>
             </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-rose-500">
                 <p class="text-xs font-semibold text-slate-500 uppercase">Isu / Tone Negatif</p>
                 <h3 class="text-3xl font-bold text-rose-600 mt-2">{negatif_count}</h3>
-                <span class="text-xs text-rose-600 font-medium">{round(negatif_count/total_publikasi*100, 1) if total_publikasi else 0}% Perlu Atensi Humas</span>
+                <span class="text-xs text-rose-600 font-medium">{round(negatif_count/total_publikasi*100, 1) if total_publikasi else 0}% Perlu Atensi</span>
             </div>
         </div>
 
         <!-- TAB TONE PEMBERITAAN -->
         <div id="tab-tone" class="space-y-6">
-            <div class="grid grid-cols-2 gap-6">
-                <!-- Donut Chart Tone -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <!-- Row Grafik Donat & Grafik Batang Sub-Isu -->
+            <div class="grid grid-cols-12 gap-6">
+                <!-- Donut Chart -->
+                <div class="col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <h2 class="text-lg font-bold text-slate-800 mb-1">Proporsi Tone Pemberitaan</h2>
-                    <p class="text-xs text-slate-500 mb-4">Grafik persentase persepsi publik pada berita eksternal</p>
+                    <p class="text-xs text-slate-500 mb-4">Grafik donat persentase persepsi publik</p>
                     <div class="h-64 flex justify-center">
                         <canvas id="toneChart"></canvas>
                     </div>
                 </div>
 
-                <!-- Bar Chart Sub-Isu Krisis (BARU) -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                    <div class="flex justify-between items-center mb-1">
-                        <h2 class="text-lg font-bold text-slate-800">Rincian Sub-Isu Krisis (Tone Negatif)</h2>
-                        <span class="bg-rose-100 text-rose-700 text-xs px-2.5 py-1 rounded-full font-bold">{negatif_count} Isu</span>
+                <!-- Horizontal Bar Chart Sub-Isu Krisis (GRAFIK BARU) -->
+                <div class="col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <h2 class="text-lg font-bold text-slate-800">Distribusi Kategori Sub-Isu Krisis</h2>
+                            <span class="bg-rose-100 text-rose-700 text-xs px-3 py-1 rounded-full font-bold">{negatif_count} Total Isu</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">Pengelompokan berita bernada negatif berdasarkan topik spesifik</p>
                     </div>
-                    <p class="text-xs text-slate-500 mb-4">Distribusi klaster topik berita bernada negatif yang memerlukan mitigasi Humas</p>
-                    <div class="h-64">
+                    <div class="h-56">
                         <canvas id="subIsuChart"></canvas>
                     </div>
                 </div>
@@ -108,21 +118,26 @@ def generate_dashboard():
 
             <!-- Tabel Berita Negatif -->
             <div class="bg-white rounded-2xl border border-rose-200 shadow-sm overflow-hidden">
-                <div class="bg-rose-50/50 p-6 border-b border-rose-100 flex justify-between items-center">
+                <div class="bg-rose-50/50 p-5 border-b border-rose-100 flex justify-between items-center">
                     <div>
-                        <h2 class="text-lg font-bold text-rose-900 flex items-center gap-2">🚨 Daftar Berita Tone Negatif & Isu Atensi Humas</h2>
-                        <p class="text-xs text-rose-600">Pemberitaan eksternal yang memerlukan klarifikasi atau strategi penanganan krisis</p>
+                        <h2 class="text-lg font-bold text-rose-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-600 animate-pulse"></span>
+                            Daftar Berita Tone Negatif & Isu Atensi Humas
+                        </h2>
+                        <p class="text-xs text-rose-600">Pemberitaan eksternal yang memerlukan mitigasi atau klarifikasi isu</p>
                     </div>
+                    <span class="bg-rose-600 text-white text-xs px-3 py-1 rounded-full font-bold">{negatif_count} Isu</span>
                 </div>
                 <div class="overflow-x-auto max-h-[500px]">
                     <table class="w-full text-left text-sm text-slate-600">
                         <thead class="bg-slate-50 text-xs uppercase text-slate-500 sticky top-0 border-b border-slate-200">
                             <tr>
-                                <th class="p-4">Tanggal</th>
+                                <th class="p-4 w-32">Tanggal</th>
                                 <th class="p-4">Judul Berita</th>
-                                <th class="p-4">Sub-Isu Krisis</th>
-                                <th class="p-4">Nama Media</th>
-                                <th class="p-4">Aksi</th>
+                                <th class="p-4 w-52">Sub-Isu Krisis</th>
+                                <th class="p-4 w-44">Nama Media</th>
+                                <th class="p-4 w-24 text-center">Tone</th>
+                                <th class="p-4 w-28 text-right">Link Berita</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100" id="table-negatif-body">
@@ -143,30 +158,46 @@ def generate_dashboard():
                 labels: ['Positif', 'Netral', 'Negatif'],
                 datasets: [{{
                     data: [{positif_count}, {netral_count}, {negatif_count}],
-                    backgroundColor: ['#10b981', '#cbd5e1', '#f43f5e']
+                    backgroundColor: ['#10b981', '#cbd5e1', '#f43f5e'],
+                    borderWidth: 2
                 }}]
             }},
             options: {{ responsive: true, maintainAspectRatio: false }}
         }});
 
-        // Render Sub-Isu Bar Chart (BARU)
+        // Render Sub-Isu Bar Chart
         const subIsuData = {json.dumps(sub_isu_counts)};
+        const labels = Object.keys(subIsuData);
+        const dataValues = Object.values(subIsuData);
+
         new Chart(document.getElementById('subIsuChart'), {{
             type: 'bar',
             data: {{
-                labels: Object.keys(subIsuData),
+                labels: labels.length ? labels : ['Kekerasan Seksual & PPKS'],
                 datasets: [{{
                     label: 'Jumlah Berita',
-                    data: Object.values(subIsuData),
-                    backgroundColor: '#e11d48',
-                    borderRadius: 6
+                    data: dataValues.length ? dataValues : [{negatif_count}],
+                    backgroundColor: ['#e11d48', '#f43f5e', '#fb7185', '#fda4af', '#fecdd3'],
+                    borderRadius: 8,
+                    barThickness: 24
                 }}]
             }},
             options: {{
                 indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {{ legend: {{ display: false }} }}
+                plugins: {{
+                    legend: {{ display: false }}
+                }},
+                scales: {{
+                    x: {{
+                        grid: {{ display: false }},
+                        ticks: {{ stepSize: 1 }}
+                    }},
+                    y: {{
+                        grid: {{ display: false }}
+                    }}
+                }}
             }}
         }});
 
@@ -175,12 +206,23 @@ def generate_dashboard():
         const listNegatif = rawData.filter(d => d.sentimen === 'Negatif');
         
         tbody.innerHTML = listNegatif.map(item => `
-            <tr class="hover:bg-slate-50 transition">
-                <td class="p-4 whitespace-nowrap text-xs text-slate-500">${{item.tanggal || '-'}}</td>
+            <tr class="hover:bg-rose-50/30 transition">
+                <td class="p-4 text-xs font-medium text-slate-500 whitespace-nowrap">${{item.tanggal || '-'}}</td>
                 <td class="p-4 font-semibold text-slate-800">${{item.judul}}</td>
-                <td class="p-4"><span class="bg-rose-100 text-rose-700 text-xs px-2.5 py-1 rounded-full font-medium">${{item.sub_isu || 'Isu Krisis'}}</span></td>
-                <td class="p-4 text-xs text-slate-600">${{item.nama_media || item.sumber}}</td>
-                <td class="p-4"><a href="${{item.link}}" target="_blank" class="text-blue-600 hover:underline text-xs font-semibold">Buka Isu ↗</a></td>
+                <td class="p-4">
+                    <span class="bg-rose-100 text-rose-800 border border-rose-200 text-xs px-2.5 py-1 rounded-md font-medium inline-block">
+                        ${{item.sub_isu || 'Kekerasan Seksual & PPKS'}}
+                    </span>
+                </td>
+                <td class="p-4 text-xs font-medium text-slate-600">${{item.nama_media || item.sumber}}</td>
+                <td class="p-4 text-center">
+                    <span class="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Negatif</span>
+                </td>
+                <td class="p-4 text-right">
+                    <a href="${{item.link}}" target="_blank" class="text-blue-600 hover:text-blue-800 hover:underline text-xs font-semibold inline-flex items-center gap-1">
+                        Buka Isu ↗
+                    </a>
+                </td>
             </tr>
         `).join('');
     </script>
@@ -189,7 +231,7 @@ def generate_dashboard():
 
     with open(OUTPUT_HTML, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print("Dashboard HTML berhasil dibuat!")
+    print("Dashboard HTML dengan Grafik Sub-Isu berhasil dibuat!")
 
 if __name__ == "__main__":
     generate_dashboard()
