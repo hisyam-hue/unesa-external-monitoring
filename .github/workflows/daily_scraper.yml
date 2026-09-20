@@ -4,17 +4,17 @@ on:
   schedule:
     # Berjalan otomatis setiap hari pukul 00:00 UTC (07:00 WIB)
     - cron: '0 0 * * *'
-  workflow_dispatch: # Tombol pemicu manual di tab Actions
+  workflow_dispatch: # Pemicu tombol manual
 
 jobs:
   run-monitoring:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -24,15 +24,19 @@ jobs:
           pip install pandas feedparser beautifulsoup4 requests
 
       - name: Step 1 - Run Scraper
-        run: python external_scraper.py
+        run: |
+          python external_scraper.py
 
       - name: Step 2 - Generate Dashboard
-        run: python generate_dashboard_eksternal.py
+        run: |
+          python generate_dashboard_eksternal.py
 
-      - name: Step 3 - Send WhatsApp Report
+      - name: Step 3 - Send WhatsApp Notification
+        continue-on-error: true
         env:
-          FONNTE_TOKEN: ${{ secrets.FONNTE_TOKEN }} # Atau token API WA yang digunakan
-        run: python send_wa.py || echo "Peringatan: Gagal mengirim WA, namun scraping & dashboard tetap aman."
+          FONNTE_TOKEN: ${{ secrets.FONNTE_TOKEN }}
+        run: |
+          python send_wa.py
 
       - name: Step 4 - Commit & Push Updates
         run: |
