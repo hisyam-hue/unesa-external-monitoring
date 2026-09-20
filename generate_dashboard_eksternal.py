@@ -4,11 +4,14 @@ import shutil
 import os
 import re
 
-# 1. KATALOG KATA KUNCI PENGECEUALIAN (BERITA TIDAK RELEVAN / LIFESTYLE GENERAL)
+# 1. KATALOG KATA KUNCI PENGECEUALIAN PERKETAT (IRRELEVANT / LIFESTYLE / PROPERTI)
 KATA_KUNCI_IRRELEVAN = [
-    'kalender jawa', 'weton', 'neptu', 'zodiak', 'ramalan', 'horoskop', 
-    'resep', 'sinopsis', 'prakiraan cuaca', 'jadwal tv', 'sejarah singkat',
-    'lirik lagu', 'kunci gitar', 'chord'
+    # General / Lifestyle / Entertainment
+    'kalender jawa', 'weton', 'neptu', 'pasaran', 'zodiak', 'ramalan', 'horoskop', 
+    'resep', 'sinopsis', 'prakiraan cuaca', 'jadwal tv', 'lirik lagu', 'kunci gitar', 'chord',
+    # Properti / Iklan / Commercial
+    'kos', 'kost', 'kontrakan', 'sewa kos', 'kos putra', 'kos putri', 'dijual', 'tanah dijual', 
+    'rumah dijual', 'loker', 'lowongan kerja', 'promo'
 ]
 
 # 2. KAMUS KATA KUNCI DETEKSI ISU & SENTIMEN
@@ -25,12 +28,17 @@ KATA_KUNCI_POSITIF = [
     'terbaik', 'sanjungan', 'apresiasi', 'mencapai', 'unggul', 'bonus'
 ]
 
-def Cek_relevansi_berita(judul):
-    text = str(judul).lower()
+def cek_relevansi_berita(judul):
+    if not judul or pd.isna(judul):
+        return False
+    text = str(judul).lower().strip()
+    
+    # Periksa apakah ada kata kunci yang dilarang/tidak relevan
     for kw in KATA_KUNCI_IRRELEVAN:
         if kw in text:
-            return False # Berita dianggap tidak relevan
-    return True # Berita relevan
+            return False  # Buang berita dari dashboard
+            
+    return True  # Berita relevan
 
 def deteksi_sentimen_dan_isu(judul, ringkasan=""):
     text = (str(judul) + " " + str(ringkasan)).lower()
@@ -87,9 +95,9 @@ def generate_dashboard_eksternal():
     col_url = 'url' if 'url' in df.columns else ('link' if 'link' in df.columns else '#')
 
     # =========================================================================
-    # FILTERING 1: APATKAN HANYA BERITA YANG RELEVAN
+    # FILTERING PERKETAT: HANYA BERITA YANG RELEVAN
     # =========================================================================
-    df['is_relevan'] = df[col_judul].apply(Cek_relevansi_berita)
+    df['is_relevan'] = df[col_judul].apply(cek_relevansi_berita)
     df = df[df['is_relevan'] == True].copy()
     
     total_berita = len(df)
@@ -275,8 +283,9 @@ def generate_dashboard_eksternal():
                         </tr>"""
 
     html_content += f"""
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -335,7 +344,7 @@ def generate_dashboard_eksternal():
         f.write(html_content)
         
     shutil.copy('dashboard_eksternal.html', 'index.html')
-    print("Dashboard eksternal berhasil diperbarui dengan Filter Relevansi Topik!")
+    print("Dashboard eksternal berhasil diperbarui, iklan kos & artikel gaya hidup berhasil dibuang!")
 
 if __name__ == '__main__':
     generate_dashboard_eksternal()
