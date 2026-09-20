@@ -2,7 +2,7 @@ import pandas as pd
 import json
 
 CSV_FILE = "rekap_berita_eksternal.csv"
-HTML_OUTPUT = "dashboard_eksternal.html"
+HTML_OUTPUT = "index.html"
 
 def build_dashboard():
     print("=== MENGUPDATE DASHBOARD DENGAN ANALISIS TEMA/KATEGORI BERITA ===")
