@@ -17,7 +17,8 @@ BLOCKLIST_KEYWORDS = [
     "disewakan", "dijual", "siap huni", "kost", "kontrakan", 
     "tanah dijual", "rumah dijual", "over kredit", "shm",
     "login", "reset password", "email reset", "portal mahasiswa",
-    "pencurian dan perusakan fasilitas umum", "wali kota ajak warga"
+    "pencurian dan perusakan fasilitas umum", "wali kota ajak warga",
+    "kebun binatang surabaya", "pemkot surabaya gandeng kejati"
 ]
 
 BLOCKLIST_DOMAINS = [
@@ -72,7 +73,7 @@ def fetch_article_body_text(url):
 def classify_news(title, body_text=""):
     text_to_check = (title + " " + body_text).lower()
     
-    # 1. Kategori Utama
+    # Kategori
     if any(k in text_to_check for k in ['pakar', 'akademisi', 'dosen', 'pengamat', 'peneliti', 'tanggapan', 'dorong', 'soroti', 'pakar unesa']):
         kategori = "Pikiran Pakar"
     elif any(k in text_to_check for k in ['prestasi', 'juara', 'medali', 'penghargaan', 'beasiswa']):
@@ -81,38 +82,38 @@ def classify_news(title, body_text=""):
         kategori = "Riset & Inovasi"
     elif any(k in text_to_check for k in ['mahasiswa', 'ukm', 'pemira', 'bem', 'kkn', 'magang']):
         kategori = "Kemahasiswaan"
-    elif any(k in text_to_check for k in ['pengabdian', 'masyarakat', 'binaan', 'desa']):
+    elif any(k in text_to_check for k in ['pengabdian', 'masyarakat', 'binaan', 'desa', 'layani pemeriksaan', 'kesehatan gratis', 'turun ke wilayah bencana', 'tim dokter']):
         kategori = "Pengabdian Masyarakat"
     elif any(k in text_to_check for k in ['kerjasama', 'mou', 'kunjungan', 'mitra']):
         kategori = "Kerjasama & Internasional"
-    elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa', 'pelecehan seksual']):
+    elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa', 'pelecehan seksual', 'kejahatan seksual']):
         kategori = "Isu Hukum & PPKS"
     else:
         kategori = "Akademik & Umum"
 
-    # 2. Sentimen & Sub-Isu Krisis
-    sub_isu = "Non-Krisis"
-    if kategori == "Pikiran Pakar":
+    # Sentimen (Baksos Tim Dokter UNESA WAJIB POSITIF)
+    if any(k in text_to_check for k in ['kesehatan gratis', 'bantuan bencana', 'tim dokter unesa', 'pemeriksaan gratis', 'layani pemeriksaan']):
+        sentimen = "Positif"
+    elif kategori == "Pikiran Pakar":
         sentimen = "Positif" if any(k in text_to_check for k in ['solusi', 'dorong', 'inovasi', 'bantu', 'mekanisme']) else "Netral"
-    elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa', 'pelecehan seksual', 'kekerasan seksual']):
+    elif any(k in text_to_check for k in ['dugaan persekusi', 'kasus kekerasan', 'korupsi unesa', 'pungli unesa', 'pelecehan seksual', 'kejahatan seksual', 'kekerasan seksual']):
         sentimen = "Negatif"
     elif any(k in text_to_check for k in ['juara', 'unggul', 'sukses', 'bangga', 'resmi', 'apresiasi']):
         sentimen = "Positif"
     else:
         sentimen = "Netral"
 
-    # Klasifikasi Spesifik Sub-Isu Krisis (Khusus Berita Negatif)
+    # Sub-Isu Krisis
+    sub_isu = "-"
     if sentimen == "Negatif":
-        if any(k in text_to_check for k in ['pelecehan', 'kekerasan seksual', 'diskors', 'persekusi', 'ppks', 'wa diskors']):
+        if any(k in text_to_check for k in ['pelecehan', 'kekerasan seksual', 'kejahatan seksual', 'diskors', 'persekusi', 'ppks', 'wa diskors']):
             sub_isu = "Kekerasan Seksual & PPKS"
-        elif any(k in text_to_check for k in ['pencurian', 'mencuri', 'korupsi', 'pungli', 'narkoba', 'polisi', 'ditangkap']):
+        elif any(k in text_to_check for k in ['pencurian', 'mencuri', 'korupsi', 'pungli', 'narkoba', 'polisi', 'ditangkap', 'sengketa', 'hukum']):
             sub_isu = "Tindak Kriminal & Hukum"
-        elif any(k in text_to_check for k in ['bunuh diri', 'tewas', 'gantung diri', 'tenggelam', 'kecelakaan']):
+        elif any(k in text_to_check for k in ['bunuh diri', 'tewas', 'gantung diri', 'tenggelam', 'kecelakaan', 'korban']):
             sub_isu = "Insiden & Kesehatan Mental"
-        elif any(k in text_to_check for k in ['demonstrasi', 'sengketa', 'sanksi', 'dikeluarkan', 'protes']):
-            sub_isu = "Isu Akademik & Kemahasiswaan"
         else:
-            sub_isu = "Isu Krisis Lainnya"
+            sub_isu = "Isu Akademik & Kemahasiswaan"
 
     return kategori, sentimen, sub_isu
 
@@ -127,7 +128,8 @@ def filter_and_clean_existing_csv():
         df = df[~df['link'].astype(str).str.contains(pattern_domains, case=False, na=False)]
         df = df[~df['judul'].astype(str).str.contains(pattern_keywords, case=False, na=False)]
         
-        noise_keywords = ['bulukumba', 'bogor', 'sidoarjo', 'kapolrestabes surabaya', 'wali kota ajak warga', 'pencurian dan perusakan']
+        # Hapus berita Pemkot/KBS jika tidak menyebutkan UNESA
+        noise_keywords = ['bulukumba', 'bogor', 'sidoarjo', 'kapolrestabes surabaya', 'wali kota ajak warga', 'pencurian dan perusakan', 'kebun binatang surabaya', 'pemkot surabaya gandeng kejati']
         pattern_noise = '|'.join(noise_keywords)
         
         rows_to_keep = []
@@ -140,11 +142,9 @@ def filter_and_clean_existing_csv():
             kat, sen, sub = classify_news(row['judul'], "")
             row_dict = row.to_dict()
             row_dict['kategori'] = kat
+            row_dict['sentimen'] = sen
             row_dict['sub_isu'] = sub
-            if kat == "Pikiran Pakar":
-                row_dict['sentimen'] = "Positif" if "dorong" in title else "Netral"
-                row_dict['sub_isu'] = "Non-Krisis"
-                
+            
             rows_to_keep.append(row_dict)
             
         df_clean = pd.DataFrame(rows_to_keep)
@@ -155,7 +155,7 @@ def filter_and_clean_existing_csv():
         return pd.DataFrame()
 
 def fetch_external_news():
-    print("=== MENGAMBIL BERITA EKSTERNAL UNESA & SUB-ISU KRISIS ===")
+    print("=== SCRAPING & CLEANING FINAL ===")
     
     df_old_clean = filter_and_clean_existing_csv()
 
@@ -208,7 +208,7 @@ def fetch_external_news():
     
     if not df_combined.empty:
         df_combined.to_csv(CSV_FILE, index=False)
-        print(f"[SUKSES] Total {len(df_combined)} berita bersih berhasil disimpan di '{CSV_FILE}'.")
+        print(f"[SUKSES] Saved {len(df_combined)} items to '{CSV_FILE}'.")
 
 if __name__ == "__main__":
     fetch_external_news()
