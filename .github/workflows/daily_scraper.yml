@@ -1,20 +1,20 @@
-name: Automated External News Scraper
+name: Daily Media Monitoring Scraper & WA Notifier
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Jalan otomatis setiap hari jam 00:00 UTC
-  workflow_dispatch: # Memungkinkan tombol 'Run workflow' manual
+    # Berjalan otomatis setiap hari pukul 00:00 UTC (07:00 WIB)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Tombol pemicu manual di tab Actions
 
 jobs:
-  build-and-update:
+  run-monitoring:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
@@ -23,18 +23,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas feedparser beautifulsoup4 requests
 
-      - name: Run External Scraper
-        run: |
-          python external_scraper.py
+      - name: Step 1 - Run Scraper
+        run: python external_scraper.py
 
-      - name: Generate Interactive Dashboard
-        run: |
-          python generate_dashboard_eksternal.py
+      - name: Step 2 - Generate Dashboard
+        run: python generate_dashboard_eksternal.py
 
-      - name: Commit and Push Changes
+      - name: Step 3 - Send WhatsApp Report
+        env:
+          FONNTE_TOKEN: ${{ secrets.FONNTE_TOKEN }} # Atau token API WA yang digunakan
+        run: python send_wa.py || echo "Peringatan: Gagal mengirim WA, namun scraping & dashboard tetap aman."
+
+      - name: Step 4 - Commit & Push Updates
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action Bot"
-          git add .
-          git diff-index --quiet HEAD || git commit -m "Auto-update external news & dashboard [skip ci]"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add rekap_berita_eksternal.csv index.html
+          git diff-index --quiet HEAD || git commit -m "Auto-update data berita, dashboard & notifikasi [skip ci]"
           git push
