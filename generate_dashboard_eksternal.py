@@ -23,9 +23,9 @@ def generate_dashboard():
     df['dt_temp'] = pd.to_datetime(df[col_tgl], errors='coerce')
     df = df.sort_values(by='dt_temp', ascending=False)
 
-    # Hitung Statistik utama
+    # Hitung Statistik Utama
     total_berita = len(df)
-    media_pers = len(df[df[col_media].astype(str).str.contains('Media|Pers|Portal|Kompas|Detik|Surabaya|Tribun', case=False, na=False)]) if col_media in df.columns else total_berita
+    media_pers = len(df[df[col_media].astype(str).str.contains('Media|Pers|Portal|Kompas|Detik|Surabaya|Tribun|Jawa|Disway|iNews|Antara', case=False, na=False)]) if col_media in df.columns else total_berita
     persen_pers = round((media_pers / total_berita * 100), 1) if total_berita > 0 else 0
     
     positif = len(df[df[col_sent].astype(str).str.lower() == 'positif']) if col_sent in df.columns else 0
@@ -33,6 +33,7 @@ def generate_dashboard():
     netral = total_berita - (positif + negatif)
     
     persen_pos = round((positif / total_berita * 100), 1) if total_berita > 0 else 0
+    persen_neg = round((negatif / total_berita * 100), 1) if total_berita > 0 else 0
 
     # Data Chart Tren Bulanan
     bulan_list = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
@@ -43,6 +44,29 @@ def generate_dashboard():
             m = dt.month - 1
             if 0 <= m < 12:
                 monthly_counts[m] += 1
+
+    # Breakdown Tier Media (Estimasi Berdasarkan Publisher)
+    tier1_count = len(df[df[col_media].astype(str).str.contains('Kompas|Detik|Antara|CNN|iNews|Tempo|Liputan6|Republika|Sindonews|Merdeka', case=False, na=False)])
+    tier2_count = media_pers - tier1_count if media_pers > tier1_count else 0
+    tier_akademik = total_berita - media_pers
+
+    # Breakdown Tema/Kategori
+    kat_counts = df[col_kat].value_counts().to_dict() if col_kat in df.columns else {}
+    top_kat_html = ""
+    for k, v in list(kat_counts.items())[:5]:
+        if not k: k = "Akademik & Umum"
+        pct = round((v / total_berita * 100), 1) if total_berita > 0 else 0
+        top_kat_html += f"""
+        <div class="space-y-1">
+            <div class="flex justify-between text-xs font-semibold">
+                <span class="text-slate-700">{k}</span>
+                <span class="text-slate-500">{v} Berita ({pct}%)</span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: {pct}%"></div>
+            </div>
+        </div>
+        """
 
     # Ambil 100 berita TERBARU untuk tabel
     top_df = df.head(100)
@@ -139,11 +163,86 @@ def generate_dashboard():
             </div>
         </section>
 
-        <!-- SECTION 2: ANALISIS TREN & DISTRIBUSI SENTIMEN -->
+        <!-- SECTION 2: ANALISIS DETAIL (TEMA, TIER MEDIA & SENTIMEN) -->
+        <section>
+            <div class="flex items-center space-x-2 mb-4">
+                <div class="w-1.5 h-5 bg-purple-600 rounded-full"></div>
+                <h2 class="text-lg font-bold text-slate-900 uppercase tracking-wide">Analisis Tema, Tier Media & Sentimen</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Box 1: Analisis Tema & Kategori -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="border-b border-slate-100 pb-3">
+                        <h3 class="text-base font-bold text-slate-900">Distribusi Kategori Tema</h3>
+                        <p class="text-xs text-slate-500">Topik berita paling banyak dipublikasikan</p>
+                    </div>
+                    <div class="space-y-3">
+                        {top_kat_html}
+                    </div>
+                </div>
+
+                <!-- Box 2: Analisis Tier Media -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="border-b border-slate-100 pb-3">
+                        <h3 class="text-base font-bold text-slate-900">Analisis Tier Media Massa</h3>
+                        <p class="text-xs text-slate-500">Klasifikasi kredibilitas & jangkauan penerbit</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-blue-50/60 rounded-lg border border-blue-100 flex justify-between items-center">
+                            <div>
+                                <p class="text-xs font-bold text-blue-900">Tier 1: Media Nasional Utama</p>
+                                <p class="text-[11px] text-blue-600">Kompas, Detik, Antara, Tempo, dll</p>
+                            </div>
+                            <span class="text-base font-extrabold text-blue-700">{tier1_count}</span>
+                        </div>
+                        <div class="p-3 bg-emerald-50/60 rounded-lg border border-emerald-100 flex justify-between items-center">
+                            <div>
+                                <p class="text-xs font-bold text-emerald-900">Tier 2: Media Regional & Disway</p>
+                                <p class="text-[11px] text-emerald-600">Surabaya Pagi, Disway, JatimNet, dll</p>
+                            </div>
+                            <span class="text-base font-extrabold text-emerald-700">{tier2_count}</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center">
+                            <div>
+                                <p class="text-xs font-bold text-slate-800">Portal Akademik & Lainnya</p>
+                                <p class="text-[11px] text-slate-500">Blog kampus & rilis publik</p>
+                            </div>
+                            <span class="text-base font-extrabold text-slate-700">{tier_akademik}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Box 3: Analisis Ringkasan Sentimen -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="border-b border-slate-100 pb-3">
+                        <h3 class="text-base font-bold text-slate-900">Analisis Sentimen Berita</h3>
+                        <p class="text-xs text-slate-500">Kondisi persepsi publik terhadap UNESA</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-emerald-50/80 rounded-lg border border-emerald-200 flex justify-between items-center">
+                            <span class="text-xs font-bold text-emerald-800">Tone Positif (Apresiasi/Prestasi)</span>
+                            <span class="text-sm font-extrabold text-emerald-700">{positif} ({persen_pos}%)</span>
+                        </div>
+                        <div class="p-3 bg-slate-100 rounded-lg border border-slate-200 flex justify-between items-center">
+                            <span class="text-xs font-bold text-slate-700">Tone Netral (Informatif)</span>
+                            <span class="text-sm font-extrabold text-slate-700">{netral}</span>
+                        </div>
+                        <div class="p-3 bg-rose-50/80 rounded-lg border border-rose-200 flex justify-between items-center">
+                            <span class="text-xs font-bold text-rose-800">Tone Negatif / Potensi Isu</span>
+                            <span class="text-sm font-extrabold text-rose-700">{negatif} ({persen_neg}%)</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: ANALISIS TREN BULANAN & DISTRIBUSI GRAPH -->
         <section>
             <div class="flex items-center space-x-2 mb-4">
                 <div class="w-1.5 h-5 bg-indigo-600 rounded-full"></div>
-                <h2 class="text-lg font-bold text-slate-900 uppercase tracking-wide">Analisis Tren Bulanan & Sentimen</h2>
+                <h2 class="text-lg font-bold text-slate-900 uppercase tracking-wide">Grafik Volume & Proporsi Sentimen</h2>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
@@ -163,7 +262,7 @@ def generate_dashboard():
             </div>
         </section>
 
-        <!-- SECTION 3: REKAP DATA BERITA TERKINI -->
+        <!-- SECTION 4: REKAP DATA BERITA TERKINI -->
         <section>
             <div class="flex items-center space-x-2 mb-4">
                 <div class="w-1.5 h-5 bg-emerald-600 rounded-full"></div>
@@ -196,7 +295,7 @@ def generate_dashboard():
     </main>
 
     <script>
-        // Tren Chart (Warna-warni tiap bulan)
+        // Tren Chart (Warna-warni)
         const ctxTrend = document.getElementById('trendChart').getContext('2d');
         new Chart(ctxTrend, {{
             type: 'bar',
