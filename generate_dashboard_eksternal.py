@@ -19,13 +19,13 @@ def generate_dashboard():
     col_sent = 'sentimen' if 'sentimen' in df.columns else 'Netral'
     col_url = 'url' if 'url' in df.columns else ('link' if 'link' in df.columns else '#')
 
-    # Convert tanggal ke format datetime agar sorting akurat
+    # Sorting berdasarkan tanggal terbaru
     df['dt_temp'] = pd.to_datetime(df[col_tgl], errors='coerce')
-    df = df.sort_values(by='dt_temp', ascending=False) # Urutkan dari TERBARU
+    df = df.sort_values(by='dt_temp', ascending=False)
 
-    # Hitung Statistik
+    # Hitung Statistik utama
     total_berita = len(df)
-    media_pers = len(df[df[col_media].str.contains('Media|Pers|Portal|Kompas|Detik|Surabaya|Tribun', case=False, na=False)]) if col_media in df.columns else total_berita
+    media_pers = len(df[df[col_media].astype(str).str.contains('Media|Pers|Portal|Kompas|Detik|Surabaya|Tribun', case=False, na=False)]) if col_media in df.columns else total_berita
     persen_pers = round((media_pers / total_berita * 100), 1) if total_berita > 0 else 0
     
     positif = len(df[df[col_sent].astype(str).str.lower() == 'positif']) if col_sent in df.columns else 0
@@ -34,7 +34,7 @@ def generate_dashboard():
     
     persen_pos = round((positif / total_berita * 100), 1) if total_berita > 0 else 0
 
-    # Data Chart Tren Bulanan (Ekstraksi Bulan Lebih Fleksibel)
+    # Data Chart Tren Bulanan
     bulan_list = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
     monthly_counts = [0] * 12
     
@@ -102,86 +102,101 @@ def generate_dashboard():
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-10">
 
-        <!-- Stat Cards (Ikhtisar & Key Metrics) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-blue-600">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Publikasi</p>
-                <h3 class="text-2xl font-bold text-slate-900 mt-1">{total_berita}</h3>
-                <p class="text-xs text-slate-500 mt-1">Januari - September 2026</p>
+        <!-- SECTION 1: IKHTISAR & KEY METRICS -->
+        <section>
+            <div class="flex items-center space-x-2 mb-4">
+                <div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
+                <h2 class="text-lg font-bold text-slate-900 uppercase tracking-wide">Ikhtisar & Key Metrics</h2>
             </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-emerald-500">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Publikasi Media Pers</p>
-                <h3 class="text-2xl font-bold text-slate-900 mt-1">{media_pers}</h3>
-                <p class="text-xs text-emerald-600 font-medium mt-1">{persen_pers}% dari Total Data</p>
-            </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-purple-500">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tema Terpopuler</p>
-                <h3 class="text-lg font-bold text-slate-900 mt-1 truncate">Akademik & Inovasi</h3>
-                <p class="text-xs text-slate-500 mt-1">Dominasi Publikasi</p>
-            </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-teal-500">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sentimen Positif</p>
-                <h3 class="text-2xl font-bold text-slate-900 mt-1">{positif}</h3>
-                <p class="text-xs text-teal-600 font-medium mt-1">{persen_pos}% Tone Positif</p>
-            </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-rose-500">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Isu / Tone Negatif</p>
-                <h3 class="text-2xl font-bold text-slate-900 mt-1">{negatif}</h3>
-                <p class="text-xs text-rose-600 font-semibold mt-1">⚠️ Perlu Atensi Humas</p>
-            </div>
-        </div>
-
-        <!-- Charts Row 1: Volume Tren & Sentimen Breakdown -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
-                <h3 class="text-base font-bold text-slate-900 mb-1">Volume Pemberitaan per Bulan (2026)</h3>
-                <p class="text-xs text-slate-500 mb-4">Tren jumlah publikasi media eksternal harian/bulanan</p>
-                <div class="h-64">
-                    <canvas id="trendChart"></canvas>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-blue-600">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Publikasi</p>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1">{total_berita}</h3>
+                    <p class="text-xs text-slate-500 mt-1">Januari - September 2026</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-emerald-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Publikasi Media Pers</p>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1">{media_pers}</h3>
+                    <p class="text-xs text-emerald-600 font-medium mt-1">{persen_pers}% dari Total Data</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-purple-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tema Terpopuler</p>
+                    <h3 class="text-lg font-bold text-slate-900 mt-1 truncate">Akademik & Inovasi</h3>
+                    <p class="text-xs text-slate-500 mt-1">Dominasi Publikasi</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-teal-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sentimen Positif</p>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1">{positif}</h3>
+                    <p class="text-xs text-teal-600 font-medium mt-1">{persen_pos}% Tone Positif</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-rose-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Isu / Tone Negatif</p>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1">{negatif}</h3>
+                    <p class="text-xs text-rose-600 font-semibold mt-1">⚠️ Perlu Atensi Humas</p>
                 </div>
             </div>
-            <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
-                <h3 class="text-base font-bold text-slate-900 mb-1">Distribusi Sentimen Berita</h3>
-                <p class="text-xs text-slate-500 mb-4">Proporsi Tone Positif, Netral & Negatif</p>
-                <div class="h-64 flex justify-center items-center">
-                    <canvas id="sentimentChart"></canvas>
-                </div>
-            </div>
-        </div>
+        </section>
 
-        <!-- Tabel Rekap Data Berita -->
-        <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
-            <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                <div>
-                    <h3 class="text-base font-bold text-slate-900">Rekap Pemberitaan Eksternal Terkini</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Disaring berdasarkan kriteria relevansi pemberitaan akademik UNESA</p>
+        <!-- SECTION 2: ANALISIS TREN & DISTRIBUSI SENTIMEN -->
+        <section>
+            <div class="flex items-center space-x-2 mb-4">
+                <div class="w-1.5 h-5 bg-indigo-600 rounded-full"></div>
+                <h2 class="text-lg font-bold text-slate-900 uppercase tracking-wide">Analisis Tren Bulanan & Sentimen</h2>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-900 mb-1">Volume Pemberitaan per Bulan (2026)</h3>
+                    <p class="text-xs text-slate-500 mb-4">Tren jumlah publikasi berita eksternal harian/bulanan</p>
+                    <div class="h-64">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-900 mb-1">Distribusi Sentimen Berita</h3>
+                    <p class="text-xs text-slate-500 mb-4">Proporsi Tone Positif, Netral & Negatif</p>
+                    <div class="h-64 flex justify-center items-center">
+                        <canvas id="sentimentChart"></canvas>
+                    </div>
                 </div>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                            <th class="py-3 px-4">Tanggal</th>
-                            <th class="py-3 px-4">Media / Sumber</th>
-                            <th class="py-3 px-4">Kategori Tema</th>
-                            <th class="py-3 px-4">Judul Berita</th>
-                            <th class="py-3 px-4">Sentimen</th>
-                            <th class="py-3 px-4 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        {table_rows}
-                    </tbody>
-                </table>
+        </section>
+
+        <!-- SECTION 3: REKAP DATA BERITA TERKINI -->
+        <section>
+            <div class="flex items-center space-x-2 mb-4">
+                <div class="w-1.5 h-5 bg-emerald-600 rounded-full"></div>
+                <h2 class="text-lg font-bold text-slate-900 uppercase tracking-wide">Rekap Pemberitaan Eksternal Terkini</h2>
             </div>
-        </div>
+            <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100">
+                    <p class="text-xs text-slate-500">Disaring berdasarkan kriteria relevansi pemberitaan akademik UNESA & diurutkan dari yang terbaru</p>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th class="py-3 px-4">Tanggal</th>
+                                <th class="py-3 px-4">Media / Sumber</th>
+                                <th class="py-3 px-4">Kategori Tema</th>
+                                <th class="py-3 px-4">Judul Berita</th>
+                                <th class="py-3 px-4">Sentimen</th>
+                                <th class="py-3 px-4 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            {table_rows}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
 
     </main>
 
     <script>
-        // Tren Chart
+        // Tren Chart (Warna-warni tiap bulan)
         const ctxTrend = document.getElementById('trendChart').getContext('2d');
         new Chart(ctxTrend, {{
             type: 'bar',
@@ -190,7 +205,11 @@ def generate_dashboard():
                 datasets: [{{
                     label: 'Jumlah Berita',
                     data: {json.dumps(monthly_counts)},
-                    backgroundColor: '#2563eb',
+                    backgroundColor: [
+                        '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', 
+                        '#ec4899', '#06b6d4', '#84cc16', '#6366f1', 
+                        '#14b8a6', '#f97316', '#a855f7', '#64748b'
+                    ],
                     borderRadius: 6
                 }}]
             }},
@@ -224,14 +243,13 @@ def generate_dashboard():
 </html>
 """
 
-    # Simpan ke dashboard_eksternal.html DAN index.html
     with open('dashboard_eksternal.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
         
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
         
-    print("Dashboard HTML berhasil diperbarui ke index.html!")
+    print("Dashboard HTML berhasil diperbarui!")
 
 if __name__ == '__main__':
     generate_dashboard()
