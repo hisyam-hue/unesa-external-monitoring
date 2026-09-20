@@ -4,12 +4,19 @@ import shutil
 import os
 import re
 
-# KAMUS KATA KUNCI DETEKSI ISU & SENTIMEN
+# 1. KATALOG KATA KUNCI PENGECEUALIAN (BERITA TIDAK RELEVAN / LIFESTYLE GENERAL)
+KATA_KUNCI_IRRELEVAN = [
+    'kalender jawa', 'weton', 'neptu', 'zodiak', 'ramalan', 'horoskop', 
+    'resep', 'sinopsis', 'prakiraan cuaca', 'jadwal tv', 'sejarah singkat',
+    'lirik lagu', 'kunci gitar', 'chord'
+]
+
+# 2. KAMUS KATA KUNCI DETEKSI ISU & SENTIMEN
 KATA_KUNCI_NEGATIF = [
     'korupsi', 'dugaan', 'kasus', 'sengketa', 'demonstrasi', 'demo', 
     'pencabulan', 'kekerasan', 'penganiayaan', 'kecelakaan', 'keluhan',
     'sanksi', 'pelanggaran', 'masalah', 'polemik', 'viral', 'kecewa',
-    'protes', 'dikecam', 'ditangkap', 'polisi', 'tersangka', 'kritis', 'kecewa'
+    'protes', 'dikecam', 'ditangkap', 'polisi', 'tersangka', 'kritis'
 ]
 
 KATA_KUNCI_POSITIF = [
@@ -17,6 +24,13 @@ KATA_KUNCI_POSITIF = [
     'sertifikasi', 'keberhasilan', 'meraih', 'pemenang', 'diakui',
     'terbaik', 'sanjungan', 'apresiasi', 'mencapai', 'unggul', 'bonus'
 ]
+
+def Cek_relevansi_berita(judul):
+    text = str(judul).lower()
+    for kw in KATA_KUNCI_IRRELEVAN:
+        if kw in text:
+            return False # Berita dianggap tidak relevan
+    return True # Berita relevan
 
 def deteksi_sentimen_dan_isu(judul, ringkasan=""):
     text = (str(judul) + " " + str(ringkasan)).lower()
@@ -65,15 +79,22 @@ def generate_dashboard_eksternal():
 
     df = pd.read_csv(csv_file)
     df.fillna('', inplace=True)
-    total_berita = len(df)
-
+    
     col_tanggal = 'tanggal' if 'tanggal' in df.columns else df.columns[0]
     col_media = 'media' if 'media' in df.columns else ('sumber' if 'sumber' in df.columns else df.columns[1])
     col_judul = 'judul' if 'judul' in df.columns else df.columns[2]
     col_kategori = 'kategori' if 'kategori' in df.columns else ('tema' if 'tema' in df.columns else None)
     col_url = 'url' if 'url' in df.columns else ('link' if 'link' in df.columns else '#')
 
-    # 1. Parsing Sentimen & Deteksi Isu Otomatis
+    # =========================================================================
+    # FILTERING 1: APATKAN HANYA BERITA YANG RELEVAN
+    # =========================================================================
+    df['is_relevan'] = df[col_judul].apply(Cek_relevansi_berita)
+    df = df[df['is_relevan'] == True].copy()
+    
+    total_berita = len(df)
+
+    # 2. Parsing Sentimen & Deteksi Isu Otomatis
     sentimen_list = []
     perlu_perhatian_list = []
     for idx, row in df.iterrows():
@@ -84,11 +105,11 @@ def generate_dashboard_eksternal():
     df['sentimen_auto'] = sentimen_list
     df['perlu_perhatian'] = perlu_perhatian_list
 
-    # 2. Sorting Tanggal Terbaru -> Terlama
+    # 3. Sorting Tanggal Terbaru -> Terlama
     df['parsed_date'] = df[col_tanggal].apply(parse_indonesian_date)
     df = df.sort_values(by='parsed_date', ascending=False)
 
-    # 3. Hitung Agregasi
+    # 4. Hitung Agregasi
     count_positif = len(df[df['sentimen_auto'] == 'Positif'])
     count_negatif = len(df[df['sentimen_auto'] == 'Negatif'])
     pct_positif = round((count_positif / total_berita) * 100, 1) if total_berita > 0 else 0
@@ -142,7 +163,7 @@ def generate_dashboard_eksternal():
             </div>
             
             <div class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center">
-                <span class="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></span> {total_berita} Data Terintegrasi
+                <span class="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></span> {total_berita} Data Relevan Loaded
             </div>
         </div>
 
@@ -172,7 +193,6 @@ def generate_dashboard_eksternal():
                 <p class="text-[11px] font-semibold text-purple-600 mt-1">{pct_positif}% Tone Positif</p>
             </div>
 
-            <!-- CARD ISU NEGATIF DENGAN KONDISI WARNA -->
             <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 {'border-l-rose-600 bg-rose-50/20' if count_negatif > 0 else 'border-l-slate-300'}">
                 <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">ISU / TONE NEGATIF</p>
                 <h3 class="text-2xl font-extrabold {'text-rose-600' if count_negatif > 0 else 'text-slate-400'} mt-1">{count_negatif}</h3>
@@ -205,7 +225,7 @@ def generate_dashboard_eksternal():
         <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-base font-bold text-slate-900">Sample Pemberitaan Eksternal Terkini</h3>
-                <span class="text-xs font-medium text-slate-400">Diurutkan dari yang terbaru</span>
+                <span class="text-xs font-medium text-slate-400">Diurutkan dari yang terbaru & disaring relevansinya</span>
             </div>
             
             <div class="overflow-x-auto">
@@ -315,7 +335,7 @@ def generate_dashboard_eksternal():
         f.write(html_content)
         
     shutil.copy('dashboard_eksternal.html', 'index.html')
-    print("Dashboard eksternal berhasil diperbarui dengan Detektor Isu & Tone!")
+    print("Dashboard eksternal berhasil diperbarui dengan Filter Relevansi Topik!")
 
 if __name__ == '__main__':
     generate_dashboard_eksternal()
