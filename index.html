@@ -6,367 +6,1043 @@
     <title>Monitoring Pemberitaan Eksternal UNESA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Inter', sans-serif; } </style>
 </head>
-<body class="text-slate-800 antialiased p-4 md:p-6">
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
 
-    <div class="max-w-7xl mx-auto space-y-6">
-
-        <!-- HEADER -->
-        <div class="bg-[#0f172a] rounded-2xl p-4 md:p-6 text-white flex flex-col md:flex-row justify-between items-center shadow-lg gap-4">
-            <div class="flex items-center space-x-4">
-                <div class="bg-blue-600 text-white font-extrabold px-3.5 py-1.5 rounded-xl text-xs tracking-wider uppercase">
-                    EXTERNAL
-                </div>
+    <!-- Header / Navbar -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="bg-blue-600 text-xs font-bold px-2.5 py-1 rounded-md tracking-wide uppercase">EKSTERNAL</span>
                 <div>
-                    <h1 class="text-xl md:text-2xl font-bold">Monitoring Pemberitaan Eksternal UNESA</h1>
-                    <p class="text-xs md:text-sm text-slate-400">Analisis Tema Berita, Media Massa Digital & Detektor Isu (2026)</p>
+                    <h1 class="text-xl font-bold tracking-tight">Monitoring Pemberitaan Eksternal UNESA</h1>
+                    <p class="text-xs text-slate-400">Analisis Media Massa Digital, Sentiment Tracking & Detektor Isu (2026)</p>
                 </div>
             </div>
-            
-            <div class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center">
-                <span class="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></span> 1722 Data Relevan Loaded
+            <div class="bg-slate-800 border border-slate-700 text-emerald-400 text-xs font-semibold px-3 py-1.5 rounded-full flex items-center space-x-2">
+                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                <span>1738 Data Relevan Loaded</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
+
+        <!-- Stat Cards (Ikhtisar & Key Metrics) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-blue-600">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Publikasi</p>
+                <h3 class="text-2xl font-bold text-slate-900 mt-1">1738</h3>
+                <p class="text-xs text-slate-500 mt-1">Januari - September 2026</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-emerald-500">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Publikasi Media Pers</p>
+                <h3 class="text-2xl font-bold text-slate-900 mt-1">1738</h3>
+                <p class="text-xs text-emerald-600 font-medium mt-1">100.0% dari Total Data</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-purple-500">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tema Terpopuler</p>
+                <h3 class="text-lg font-bold text-slate-900 mt-1 truncate">Akademik & Inovasi</h3>
+                <p class="text-xs text-slate-500 mt-1">Dominasi Publikasi</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-teal-500">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sentimen Positif</p>
+                <h3 class="text-2xl font-bold text-slate-900 mt-1">365</h3>
+                <p class="text-xs text-teal-600 font-medium mt-1">21.0% Tone Positif</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm border-l-4 border-l-rose-500">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Isu / Tone Negatif</p>
+                <h3 class="text-2xl font-bold text-slate-900 mt-1">85</h3>
+                <p class="text-xs text-rose-600 font-semibold mt-1">⚠️ Perlu Atensi Humas</p>
             </div>
         </div>
 
-        <!-- 5 METRIC CARDS -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-blue-600">
-                <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">TOTAL PUBLIKASI</p>
-                <h3 class="text-2xl font-extrabold text-slate-900 mt-1">1722</h3>
-                <p class="text-[11px] font-semibold text-slate-400 mt-1">Januari - September 2026</p>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-emerald-500">
-                <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">PUBLIKASI MEDIA PERS</p>
-                <h3 class="text-2xl font-extrabold text-slate-900 mt-1">1570</h3>
-                <p class="text-[11px] font-semibold text-emerald-600 mt-1">91.2% dari Total</p>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-indigo-500">
-                <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">TEMA TERPOPULER</p>
-                <h3 class="text-base font-bold text-indigo-700 mt-1 truncate">Akademik & Umum</h3>
-                <p class="text-[11px] font-medium text-slate-400 mt-1">1022 Berita</p>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-purple-500">
-                <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">SENTIMEN POSITIF</p>
-                <h3 class="text-2xl font-extrabold text-purple-700 mt-1">152</h3>
-                <p class="text-[11px] font-semibold text-purple-600 mt-1">8.8% Tone Positif</p>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm border-l-4 border-l-rose-600 bg-rose-50/20">
-                <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">ISU / TONE NEGATIF</p>
-                <h3 class="text-2xl font-extrabold text-rose-600 mt-1">78</h3>
-                <p class="text-[11px] font-semibold text-rose-600 mt-1">
-                    🚨 Perlu Atensi Humas
-                </p>
-            </div>
-        </div>
-
-        <!-- CHARTS SECTION -->
+        <!-- Charts Row 1: Volume Tren & Sentimen Breakdown -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                <h3 class="text-base font-bold text-slate-900">Volume Pemberitaan per Bulan (2026)</h3>
-                <p class="text-xs text-slate-400 mb-4">Jumlah publikasi berita eksternal dari Januari s.d September 2026</p>
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
+                <h3 class="text-base font-bold text-slate-900 mb-1">Volume Pemberitaan per Bulan (2026)</h3>
+                <p class="text-xs text-slate-500 mb-4">Tren jumlah publikasi media eksternal harian/bulanan</p>
                 <div class="h-64">
-                    <canvas id="barChart"></canvas>
+                    <canvas id="trendChart"></canvas>
                 </div>
             </div>
-
-            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                <h3 class="text-base font-bold text-slate-900">Komposisi Sumber Data</h3>
-                <p class="text-xs text-slate-400 mb-4">Perbandingan Media Pers vs Kampus Lain</p>
-                <div class="h-64 flex items-center justify-center">
-                    <canvas id="donutChart"></canvas>
+            <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
+                <h3 class="text-base font-bold text-slate-900 mb-1">Distribusi Sentimen Berita</h3>
+                <p class="text-xs text-slate-500 mb-4">Proporsi Tone Positif, Netral & Negatif</p>
+                <div class="h-64 flex justify-center items-center">
+                    <canvas id="sentimentChart"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- TABLE SAMPLE PEMBERITAAN -->
-        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-base font-bold text-slate-900">Sample Pemberitaan Eksternal Terkini</h3>
-                <span class="text-xs font-medium text-slate-400">Diurutkan dari yang terbaru & disaring relevansinya</span>
+        <!-- Tabel Rekap Data Berita -->
+        <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                <div>
+                    <h3 class="text-base font-bold text-slate-900">Rekap Pemberitaan Eksternal Terkini</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Disaring berdasarkan kriteria relevansi pemberitaan akademik UNESA</p>
+                </div>
             </div>
-            
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
+                <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
-                            <th class="py-3 px-4">TANGGAL</th>
-                            <th class="py-3 px-4">MEDIA / WEBSITE</th>
-                            <th class="py-3 px-4">KATEGORI TEMA</th>
-                            <th class="py-3 px-4">JUDUL BERITA</th>
-                            <th class="py-3 px-4 text-center">DETEKSI TONE</th>
-                            <th class="py-3 px-4 text-right">AKSI</th>
+                        <tr class="bg-slate-50 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                            <th class="py-3 px-4">Tanggal</th>
+                            <th class="py-3 px-4">Media / Sumber</th>
+                            <th class="py-3 px-4">Kategori Tema</th>
+                            <th class="py-3 px-4">Judul Berita</th>
+                            <th class="py-3 px-4">Sentimen</th>
+                            <th class="py-3 px-4 text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
-
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">Suara Merdeka Surabaya</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Apryanto Catur Irawan</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMigwFBVV95cUxOWWZUenFnMXY4RnU2ZE1Hb0l6cXR1WlVmWFZ3OUJ4aWlvNVJuUnp6dkt1QnVlZi1OQUx3UFhIQVVkc3FlcUlnZlE5OVI0bzh3WkdsMDh3d04weU53RmViNVR6dmxZZnppSWdmZDJhUTZJNkpfa1F3VHNaeUZiVmpteGZLVQ?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">HARIAN DISWAY</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">EducationUSA Indonesia Fall Fair 2026 Bawa Informasi Kampus dan Beasiswa untuk Pelajar Surabaya - harian.disway.id</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMi0AFBVV95cUxOazdQbXhoeU90aFRIakI0S3hMTGlnSDRZMjRjVDdaQnJSTHVLc3ZhcC01U2pSTDBXeEw2NDZaZFkxNDl5LUNrbUl5bTZuR1NyRHJyWkdYbW9mT2VWMXdQdGw1QzIxdE9XaTZub1BSRFFmUmhyN1NwQkVjS181eVFuc0c1aXpoWEtuRnpkcXIzZTVmNU1SejlCazZOYkdDUW1qekQ2VGNZeVp2Z0d1Y1BHclRpZmh5NGRLci1IZTNidFdKWmhPVndWeHhGNHd2NXZK0gHLAUFVX3lxTE1GS0JYanZDQkhtWVo0bTRyNHY1VERTckdwczVNdjdsRUQ4R0dVQWZqbFN2MTBjMnlQQzdrajh1eVJGZllrX2xjWGlaVWx3SnBTblc5SlRWdVA4cXlEeDAtTW1DbXdPUk1ERmNHVUNsRDZxaVFYal9JbEU0VWlSODBJYmswbGZlWFlTTzJOdzh4UGlTZFllemhqX1l1SkFwNkY5bGJJaW9PcVFRby1WNHdLaWdYam5Ja19GaVZyOWpNTVB2MHYwVDZyQWdJ?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">Suara Surabaya</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Keparprov Jatim 2026 Mulai Terapkan Batas Usia Para Atletik, Perkuat Regenerasi Atlet</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMiyAFBVV95cUxOajM2eV9GQkFiZnl3YWRSVkZrNktHSkc2MFRWYUIwNW1VUkE2ck9JVzg1NVJ5RHJMQTJMOHlwUWl5QnBzVEJva05XOGl5czFZZ1o5Zmd3bnJTakZJd0FnUnVVQmdBaGJwc1N0czlEc1dMY2lEYVpuTjJVcHpUblRkMUo0c0ltSGgzMmhEYk1iVXlLQ3hzTnVmWW9PUUZVeVpxd3NBZHFiSVE3VkJBX1F4S2JMR1FzZXBKcmJlWVVSRTk1SHNsZE5IWNIBzgFBVV95cUxPRmhvRm5nbWJpdUlBY3hiNnl4TTg0Vm1wWGFFc1ZOZURzYmxja3pnVFhVV3dpNDN1cUUwVWt1OHQ4bVdSb2xEMUdnOGhxRFdya0l4RzdsRVVZRTZrdEVxMFMxUzZTdGYyX3VOVG90djBfM0trdGRnSDlueVNhRG5vNE1ndzFvNEI4cUNDdkotR093aUdiSm5vbnQ4SVphcE9Lc2pBRTlRMnVkQi1yQUs5Njdqd3FuLVREQS0zb3hMNUpGeXYxTXNTMG5RRWpsdw?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">Tribunjatim.com</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Riset & Inovasi
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Unesa Bantu Gadisku Kenalkan Potensi Penyandang Disabilitas, dari Karya hingga Peluang Kerja</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMi0gFBVV95cUxOYVdGVUQ5bTVNV0NnTU9yY3hhMi1Jb3czdXg2SDdJcFUzdXVqV2VJVmxIdkYyN05RZ2tMZEpDb2VFRXUtbDNwSzlLODJWYS1tWFNPWjhEV25HMUpfaFd5cjBYdFFlVzBLSl9naVpOTlBDSzRYOTViSV9HaVRpRDc4LXJTM19iUjRqRnltVTY0dmIzWkcxeExQY3RuTGdkZ0ZNWElBUVVCV2tQcm5FWDEzZlRzcXkzOHRQazl2U3VMeHZNVy1zSzdCNEh0NVVldEl5aGc?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">HARIAN DISWAY</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Bukan Sekadar Permainan, Orado Jatim Kenalkan Domino sebagai Olahraga di PetraNesian Fair 2026 - harian.disway.id</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMiygFBVV95cUxOdUtyQ2drYWV4N3A2LXN3b3FwUEZsRlFnakYtSlk4OFAwNWNUYUk2ZmN5dzByeGswUDlxWDZidHRsS3FhbzJ2V1FSZDlJb213RkJpSFBDRVh5OFVXR2pNVXRnUm9Vd2F0VTZOMkN3d2xJc2c2S18xT25GazVOc1V2UV9hSzFYUEZ5dDcwSm5DMTFGOXEwZXJicHB2MFpTX21namhtcmVqX0F3Z3pQU05HV2cyR3FDZk9hZnVFdFFCNnpwV01aZER3Sm530gHIAUFVX3lxTE84bnFwUHNPMXJkUnFfcEtHZzFuNUZLQjFoRldGRjhOMUdLVlBrQ195ZjlKdXNSOTV4LUpEWHBlUWxCOXBUek9HWm00OUgydTJuWE9SN2pmaGhXdkozUE53OEFLRzdzQkxLdE9TUXBMYWx2dFdKNHlEMDZTVDhXV21rRFRySUNtNk9xZzB2ZzJsb0o0aFdqOTdCc2cyZ3dzNVNBNW5nYmotVGhnMzZIX2JCSWJXU2hIejR1NzJBY2cyYmFqZVk5SzJz?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">RRI.co.id</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Keparprov Jatim 2026 Petakan Regenerasi Atlet Disabilitas Melalui Kelompok Usia</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxOTlhibW9CcDlUYzV3WFVfZWFzc2o2T1hjWENMNTlhM09SM2NvVWpObFdrWjB2YjY5TXVKQUV3ckhmbUtZOTB2MGdTRDFScWJ3d0dUSk5UOG8xY3FWX0JDUTVCQ2xWZm11cHRYbUxka3FfaEJFS1hhNnEyZUd2OVZhaW9RMzJNVWRKWHFxZUdwN053ZTJ1dXZ1RWt6WUpQb2plbzRLcXFGLS11TW1kandXck1KVXJnTkI5THMtYjlNdw?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">Surya.co.id</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Unesa Dampingi Gadisku, Perkuat Jejak Digital Talenta Disabilitas Makin Dikenal</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQTEZoQ1MxYlpoN3JJdHFBRXVyU0ZRNnRqclB6aTVObDNsUHZqOGJwVkItTl9rTno0UUVUb3BDY1gxbzlhZk5BaWN4bHpaMHMxMk9qZG5QcmVPTDJUS0JwMEo1ekRHN0VHaVpOY0pHdTQxbER1aWpEREtFeE1qS2JoUHZ3MmsydFctNHFZd3pjUXYyOG9WYjhyRzBueS1XMlgxaE1kTDRZUGxGVU1PbUZPRWZ1QmZmUWJUcHQzREJoNA?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">olkim.sibiti.co.id</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Email Reset Password</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9yR3RpaHk4MTZvNFlMNl9waXhDbjljQl9yRjNmYUJxeWFQV3pyd3NZSk5xRzJpQ0JTVV9QS05YcGwwWTdaZjZKaXhsd2RObFVGdmlUZg?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">iNews.ID</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">610 Perenang Turun ke Kolam Unesa, Persaingan Fun Swimming 2026 Makin Sengit</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxNeFQyRlN6bGZMZ0tpMzlRSGtLOEVlU2c3bTBRbWxianlhaVhvcUhRd0F6WkRiTV9zdW16cVB4aDBrcndESFZfRWFMVU9oUndRU1Q5Y3lqWXcyMDQzUnA2NDV6cXQ3V0tVdTJadGZfSUctd0lQSUhMR0pJc1VGM2JfMnlTX0s5VEdsaThRMGZ3a25zOEZVQndHTnk2Z3Z2X1ItR3ZiaTEyMlVVTHhuaVVPZ3BINNIBsgFBVV95cUxOSVlCZEdINEFiTHJQaGFzZHV3VERqUW9ZaENzaUlabWFtMlJMXzRRTjFsTGN0LUdtZ0ZOeFlZbmlVUUxSRmpaU0lDZFVESTQyRS00SUNkM1JtZDZRTkJBN01RbFZnZmdkYnhIUVVlN3NDdEFMRkp0a2JSSkFqUWQ4Tng5R25qN3JiOEhUX2hidEZNZkNTS3AycWdwQTJ0ZUlNTTR1blZETWJuWFJSWUhWXzNn?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">RRI.co.id</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Satu Abad Gontor Teguhkan Pendidikan Islam Modern Berkarakter</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxNM25xcE9YZGNSbGs3QUd4elU3OWdneFVhSkw1UGFUd21udTdnaTh2R1hyWjNnVVlSM1FPcGlIQ3BQZDlfRnpCNjdFVjd6d0FhM3RSbDlKem9yZnZ4OVF4dXFFQkNVRjQ1TGtVRmd2dWFhQldXTElSX2tsTUdtbU9vRVZHcTlMX3c5YV9wU3lxYTAzSHVDYjViOExhbVh3NjVkUk9CVA?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">Kompasiana.com</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Mendedah Konsep ADDIE: Asal-Usul Mitos, Status Hakiki, dan Silsilah Turunan</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMi1wFBVV95cUxQN3RwVXhBZVpva2RsUEdXWlBDTGt2cDVTTEVHLUZpMzRMM0JMR1BiUVF1Zk1aRGQxSXNuVFdld1FCaHY4WVpsWWlRemJ6cFNtbWZnUDVGS1RsbmNCa0pnSm1wN1NpZEhacTFyMktDRzk0a1dBNVRzRGtKWThfdEstdFFsdHRDNmpJU2t1MTRuS0UwdGZzUUU0LTN0cWpxdEFJQW5aVmNGaHR4bHVOX0J6T3A4Z0tfem5vc1JsSFBJRUNsZHNpWnJRVFFCQ1JNRVo4SVRhTmxWWQ?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">Kompasiana.com</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Menumbuhkan Kebiasaan Literasi Kelas 3A UPTD SDN Torjun 1</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxPZ1hCd1RYSjBFSkNhV3ZTTmhrVDgzYVJjdUl6cU1rVWR3bXFXMVNxUml6dlZmQkFJZkxzQTZ1MWNMWEpTdnhvRDAyblEzN21OQ0hoaXNQek1LbE5JaTMyNEdiNEpGb2p2cDJTZnhqZFdGSTU1SHRyX2NZZU9QaFlrcEEtS3JjYWp3eS1rUzlBNngyS25zVDhaOWZrQmZrSjZaMVhiSUh4MkJXWHdHeTBpbDN3?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">olkim.sibiti.co.id</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Login | OLKIM Unesa 2026</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMiQEFVX3lxTE5XaFJtWW0wX1hzRVgxcXdfRTV6QnIyaUI5WnBoemtDNFZwQ3ZFeDgxTHRzTmpWTnBGdVJqRlVqQVc?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">Kompasiana.com</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Asistensi Mengajar Tak Hanya di Kelas, tetapi Juga di Lapangan</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMizAFBVV95cUxPZEsyd2hmc1hnTzIwUEswUHRWVVp2S0xzS2lmdU1qTGs2cFVFVlp0bGN5ZjlkUUlaUTNVLVNCTlhaSjdBU3QzSTBvbWNhUHJxWVpfWXdGRDV3ZGNRX2cycklvQ3BuRUlFNkRMMTFwWEd6ZXNOcTlyejZEejl5SzZaMjd4SU9uYXdnREFuQ3g0SjFUejVfd3Bmc3lYM2hzYmNEVHV4VzlzVDRLdVNPYmpHLWRDaVRsQ2JsQ3h1RGk0d0pWbHNSSTROX2NZWl8?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 whitespace-nowrap text-slate-400 font-semibold">20 September 2026</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap max-w-[160px] truncate">memorandum.disway.id</td>
-                            <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px]">
-                                    Akademik & Umum
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800 max-w-md truncate">Taekwondo Piala Panglima TNI 2026 Lahirkan Atlet Berprestasi di Surabaya - memorandum.disway.id</td>
-                            <td class="py-3.5 px-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-lg text-[11px]">Netral</span></td>
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxNQ1pkVmdEUmVaQjJwdXU1Nkw1NXhBb01SWU5VN09xTXhaR0FjSENreWcyNU5aTlZSeXhUXzRCTFhaT2FPLU5kY1gyVUFRT0hzSWl0SnRreDRvQk5tX01sYnZHdXY5bEJsRXNCeGNFUm43VzFZcGh2ZWxpcFVOUmg2dGFpNXQ2VlBqbFZYVnZ4TFhfZkRYOHd0TEhpSGtBN2hob0ZsUUFETG1ON1hrYnUxTC1nSjdmeXU3NlhJalpSTdIBsgFBVV95cUxPMjhBVElUekQ0QldjTTdYN3g2MHJLS3Fmc3VHVHVYdWFzZm1KQ0g1bld6bl8zcjYxLU9HSlVKem1YYzdVNXZ4cG1aUGF6V1JjbkNNdkJrcDhHVDctMElzc0tMZ3hTZE5hQzVXNXpUSkw0SGx0aDRmenZlQkFjVGNpdTl1MW5GTW5PRWJ1czJHOVY2ZEhNMEdWOGh0QUxES3paSVhWQzN4TlVzc1diWkxwM2NR?oc=5" target="_blank" class="text-blue-600 hover:underline font-semibold">Buka ↗</a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                    <tbody class="divide-y divide-slate-100">
+                        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">01 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">TK LABSCHOOL UNESA 2</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">02 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">KPU Sidoarjo melaksanakan kegiatan pelepasan mahasiswa magang dari Universitas Pembangunan Nasional (UPN) Veteran Jawa Timur dan Universitas Negeri Surabaya (UNESA)</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">10 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Sumbang 54 Medali SEA Games, Atlet dan Pelatih Unesa Terima Bonus dari Presiden Prabowo</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">03 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Riset & Inovasi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Inovasi Mahasiswa Kimia Unesa Bersama P3GI dalam Menjaga Mutu Tebu Panen Terbakar</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">14 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Pesan Gubernur Khofifah Saat Lepas Wisudawan Perdana AMN Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Menumbuhkan Kebiasaan Literasi Kelas 3A UPTD SDN Torjun 1</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">17 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Acer dorong sekolah di Jatim terapkan "coding" dan AI</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">15 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">ArtSubs 2026 dalam Batas, Ambang, dan Seberang Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">14 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Admisi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">20 PTN Paling Diminati di SNBP 2026, Referensi Daftar Tahun 2027</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Keparprov Jatim 2026 Mulai Terapkan Batas Usia Para Atletik, Perkuat Regenerasi Atlet</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Kalender Jawa 21-27 September 2026: Cek Weton, Pasaran, dan Neptu Lengkap</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">14 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Profil Achmad Hidayat, Kader PDIP yang Dipecat usai Bertemu Jokowi, Pernah Nyaris Bakar Diri</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">16 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">50 Kampus Paling Berkelanjutan di Indonesia Versi UI GreenMetric 2026</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">18 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">6 Aktivitas Fisik Sederhana Agar Tubuh Tetap Bergerak di Tengah Kesibukan</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">19 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Tak Sekadar Website, Gadisku Buka Jalan Penyandang Disabilitas Tembus Dunia Kerja</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">610 Perenang Turun ke Kolam Unesa, Persaingan Fun Swimming 2026 Makin Sengit</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">15 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">25 Kampus Negeri yang Berstatus PTN-BH dan Akreditasinya, Terbaru Unud</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">18 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Daftar Lengkap Pemenang KKI 2026, ITS Surabaya Juara Umum</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Riset & Inovasi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Unesa Bantu Gadisku Kenalkan Potensi Penyandang Disabilitas, dari Karya hingga Peluang Kerja</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">18 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Ketika Satwa Liar Tak Punya Suara</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">16 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Acer Edu Tech 2026, Dorong Transformasi Sekolah melalui Implementasi Coding dan AI Menuju Pembelajaran Berkualitas</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">14 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Siapa Achmad Hidayat yang Dipecat PDIP Usai Sowan Jokowi?</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">14 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Habiskan uangmu di Jogja karena kalau mau cari uang dan hidup mending pindah ke Malang atau Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">02 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Universitas Negeri Surabaya — Akreditasi Unggul & Profil</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">15 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Universitas Negeri Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">12 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Berita Universitas Negeri Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">04 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Profil REINJA CAESAR PALUIN - Universitas Negeri Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">01 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Universitas Negeri Surabaya Arsip</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">12 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">UNESA CHESS TOURNAMENT 2026 KATEGORI U 25</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">17 May 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Universitas Negeri Surabaya - Program Studi S1 Sains Aktuaria in Surabaya, East Java Indonesia</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">02 May 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Kaprodi PPKn UMS Menjadi Narasumber Utama Kuliah Umum di Universitas Negeri Surabaya, Pertegas Kualitas Pendidik Berstandar Global – Pendidikan Pancasila dan Kewarganegaraan</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">22 February 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Implementasi Pemerataan Akses Pendidikan Tinggi melalui Program Beasiswa Adik Papua di Universitas Negeri Surabaya | PANDITA: Interdisciplinary Journal of Public Affairs</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">23 July 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">SMP Negeri 24 Surabaya Sambut Mahasiswa PPL 2 PPG Prajab Universitas Negeri Surabaya (UNESA)</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">15 March 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Universitas Negeri Surabaya - Kampus Ketintang in Surabaya East Java Indonesia</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">01 April 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Biaya Kuliah Kelas Karyawan Universitas Negeri Surabaya 2026</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">31 July 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Ini dia maskot Universitas Negeri Surabaya (Unesa), Si Prio, akronim dari Progresif, Responsif, Inovatif, dan Optimis.</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">25 March 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Beasiswa Kuliah Universitas Negeri Surabaya 2026 / 2027</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">09 February 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Penerimaan Mahasiswa PLP dari Universitas Negeri Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">17 June 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Informasi dan Profil Universitas Negeri Surabaya (UNESA)</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">18 May 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Mahasiswa Universitas Negeri Surabaya Pelajari Visi dan Misi MK</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">29 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">UNIVERSITAS NEGERI SURABAYA</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">13 June 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">loker guru,dosen,staff (@loker_guru_dosen) on Threads</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">19 June 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">[Lowongan Kerja] Tenaga Kependidikan Waktu Tertentu – Universitas Negeri Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 July 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Isu Hukum & PPKS</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">26 Anggota Sivitas Akademika Universitas Negeri Surabaya Jadi Korban Kejahatan Seksual 6 Mahasiswa</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-red-100 text-red-700 font-semibold">Negatif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">01 April 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Kuliah Kelas Karyawan Universitas Negeri Surabaya 2026</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">11 February 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Penerimaan, Mahasiswa PPL, PPG dari Universitas Negeri Surabaya dan Universitas Muhammadiyah Gresik</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">22 June 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Pertemuan Forum Dekan AFKNI 2026 di Universitas Negeri Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">12 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Universitas negeri jawa timur🏆 Universitas Negeri Surabaya atau UNESA menjadi penutup dari</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">08 August 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Islamic Community of Economic – Unit Kegiatan Mahasiswa Fakultas Ekonomi Universitas Negeri Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">10 March 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Admisi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">50 Jurusan Sepi Peminat Unair, UB, Unesa, UM dan ITS buat UTBK SNBT 2026</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">01 April 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Kuliah Online Universitas Negeri Surabaya 2026</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">01 April 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Admisi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Persaingan Ketat Menembus Kampus Negeri di Surabaya lewat SNBP</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 February 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Hubungan Antara Self-Compassion dengan Loneliness pada Mahasiswa Rantau di Universitas Negeri Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">06 February 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Biodata Dosen</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">25 February 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Benchmarking Program Studi S1 Kebidanan Fakultas Kedokteran Universitas Negeri Surabaya ke Departemen Kebidanan FK Universitas Brawijaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">08 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">REPOSITORY DETAIL</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">30 August 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Science and Technology Index</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">07 March 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">BERBAGI TAKJIL, BERBUKA PUASA BERSAMA DAN PEMBERIAN SANTUNAN ANAK YATIM DI KAMPUS UNESA 5 MAGETAN</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">13 April 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Bappenas: UNESA Cetak Guru Berkualitas, Kunci Wujudkan SDM Unggul</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">21 June 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Unesa Pecahkan Rekor MURI Yoga Bersama 3.000 Peserta, Libatkan Penyandang Disabilitas Terbanyak</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">16 June 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Loker Solo (@lokersolo.web.id)</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">23 May 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Analisis Fasilitas Pembelajaran dalam Mendukung Kualitas Pendidikan Mahasiswa Program Studi Ilmu Administrasi Negara Universitas Negeri Surabaya | JURNAL JENDELA PENDIDIKAN</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">26 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Benchmarking FH Universitas negeri Surabaya ke FH Universitas Udayana</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">10 April 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Admisi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Unesa Buka Pendaftaran Golden Ticket hingga 8 Mei 2026, Tanpa Tes dan Bebas UKT</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">09 April 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Tel-U Menyambut Kedatangan Universitas Negeri Surabaya Dalam Rangka Studi Banding “Implementasi Pelaksanaan Audit TI”</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Admisi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Golden Ticket SNBP UNESA 2026 Dibuka! Ini Syarat dan Cara Daftarnya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">26 May 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Studi Banding Pendirian Fakultas Kedokteran Hewan UNESA: Perkuat Sinergi Pengembangan Pendidikan Veteriner</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">16 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Golden Ticket Unesa 2026 Dibuka, Gratis Biaya Kuliah atau UKT</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">09 July 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">100 Universitas Terbaik di Indonesia 2026 versi Webometrics</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">09 September 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Rs graha medika wiyung🏆 Kost Putri Dekat UNESA Universitas Negeri Surabaya, Pakuwon</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">07 February 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Ini 10 PTN Terbaik di Jawa Timur Versi EduRank</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">12 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Syarat Golden Ticket PTN 2026: Unair, ITS, UM, dan Unesa Buka Jalur Prestasi Tanpa Tes</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">23 February 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Posts Tagged: unesa</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 February 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">LIHTR Memperkuat Jejaring melalui Kunjungan Kerja ke UNESA</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">14 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Unesa Kuliah Malam</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">18 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Pikiran Pakar</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Pelajaran IPS Harusnya Diubah, Pakar Unesa Sebut Jangan Hanya Hafalan</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">ANGKATAN LAUT</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">18 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Dijual Rumah Kos–Kosan dengan Penghuni Penuh Area Unesa, Surabaya Barat</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">18 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Terima 21.821 Mahasiswa Baru di SNPMB 2026, Cek 20 Prodi dengan Kuota Terbesar Unesa</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">13 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Cerdas Cermat Kelas 3 SD Labschool Unesa</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Kisah Yosi Ariel Firnanda, Mahasiswa Unesa Sabet Medali Emas Voli Pantai di SEA Games 2025 Thailand</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">19 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Pikiran Pakar</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Pakar Unesa: Pembelajaran IPS Perlu Dirombak, Jangan Terjebak Hafalan!</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Mahasiswa Unesa Peraih Emas SEA Games Bercerita, Ini Proses Hobi Jadi Prestasi</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">17 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Tim Jaguwar Unesa dan S1 SMAK St Louis 1 Juarai iForte NDC Surabaya - Suara Merdeka Surabaya</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">18 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Rayakan Dies Natalis ke-1, Prodi Akuakultur Unesa Membedah Prospek Sarjana Perikanan dalam Aquaculture Fest - harian.disway.id</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">19 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Admisi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Mau Lolos SNBP 2026? Ini 20 Prodi dengan Kuota Terbesar Jalur SNBP 2026 di Unesa</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">12 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Brosur - Unesa 2026 v2</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">19 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Laskar Santri Mbeling Langsung Bidik Kemenangan di Laga Perdana Lawan Unesa FC, Mampukah Pertahankan Clean Sheet?</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">15 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Admisi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Resmi! Daya Tampung UNESA 2026 Tembus 21.821 Kuota di Jalur SNBP, SNBT, dan Mandiri</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">19 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Pasuruan United Bekuk Unesa FC di Laga Perdana Babak 16 Besar meski Gawang Tak Lagi Perawan</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">13 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Kemahasiswaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Buka Pendaftaran Mahasiswa Baru 2026, Intip Kuota untuk Pelajar Magetan di Kampus UNESA.</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Sosok Siswa SMP Berprestasi dari Sekolah Rakyat Unesa Surabaya, Pernah Dapat Piala UNESCO</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">18 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Revitalisasi Stadion R Soedrasono Pogar Selesai, Pasuruan United Siap Ladeni Unesa FC Besok Sore</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">16 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Admisi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Daya Tampung SNBP 2026 di Unesa Per Prodi, Ada S1 Kecerdasan Artifisial</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">19 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Umum</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Pasuruan United VS UNESA FC</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">16 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Admisi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Syarat Dapat Golden Ticket SNBP Unesa 2026, Gratis Biaya UKT hingga Semester 8</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">17 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Strategi Tembus Kampus Rumah Para Juara: Unesa Siapkan 6.690 Kursi Jalur SNBP 2026, Ada Prodi Kecerdasan Artifisial! - VisiNews.net</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Admisi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Unesa Buka Golden SNBP 2026, Kuliah Bebas UKT Selama 8 Semester!</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">13 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Prestasi & Penghargaan</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Mahasiswi UNESA Asal Madiun Raih Juara Duta Pemuda dan Olahraga Kampus UNESA 5 Tahun 2024</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-green-100 text-green-700 font-semibold">Positif</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+        <tr class="hover:bg-gray-50 border-b border-gray-100 text-sm">
+            <td class="py-3 px-4 whitespace-nowrap text-gray-500">20 January 2026</td>
+            <td class="py-3 px-4 font-medium text-gray-800">-</td>
+            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-medium">Akademik & Admisi</span></td>
+            <td class="py-3 px-4 text-gray-900 font-medium">Kesempatan Emas! Unesa Resmi Buka Golden SNBP 2026, Bebas UKT Hingga 8 Semester</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Netral</span></td>
+            <td class="py-3 px-4 text-right"><a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs font-semibold">Buka ↗</a></td>
+        </tr>
+        
+                    </tbody>
+                </table>
             </div>
         </div>
 
-    </div>
+    </main>
 
-    <!-- CHARTS JS -->
     <script>
-        const ctxBar = document.getElementById('barChart').getContext('2d');
-        new Chart(ctxBar, {
+        // Tren Chart
+        const ctxTrend = document.getElementById('trendChart').getContext('2d');
+        new Chart(ctxTrend, {
             type: 'bar',
             data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep"],
+                labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
                 datasets: [{
-                    data: [96, 127, 150, 223, 191, 192, 253, 210, 280],
-                    backgroundColor: ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#a855f7', '#6366f1', '#14b8a6'],
-                    borderRadius: 6,
-                    barThickness: 28
+                    label: 'Jumlah Berita',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    backgroundColor: '#2563eb',
+                    borderRadius: 6
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
-                    x: { grid: { display: false } }
-                }
+                scales: { y: { beginAtZero: true } }
             }
         });
 
-        const ctxDonut = document.getElementById('donutChart').getContext('2d');
-        new Chart(ctxDonut, {
+        // Sentimen Chart
+        const ctxSent = document.getElementById('sentimentChart').getContext('2d');
+        new Chart(ctxSent, {
             type: 'doughnut',
             data: {
-                labels: ['Media Massa / Pers', 'Portal Kampus / Akademik'],
+                labels: ['Positif', 'Netral', 'Negatif'],
                 datasets: [{
-                    data: [1570, 152],
-                    backgroundColor: ['#10b981', '#3b82f6'],
-                    borderWidth: 2,
-                    borderColor: '#ffffff'
+                    data: [365, 1288, 85],
+                    backgroundColor: ['#10b981', '#cbd5e1', '#f43f5e']
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } },
-                cutout: '70%'
+                plugins: { legend: { position: 'bottom' } }
             }
         });
     </script>
