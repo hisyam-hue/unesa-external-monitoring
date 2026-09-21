@@ -1,59 +1,68 @@
 import os
-import requests
 import pandas as pd
+import requests
 
-def send_wa_notification():
-    # Ambil token dari GitHub Secrets
-    token = os.environ.get('FONNTE_TOKEN')
-    
-    # Target dikirim langsung ke Grup WA "Monitoring Publikasi Unesa"
-    target_number = '120363430947326532@g.us' 
-    
-    if not token:
-        print("FONNTE_TOKEN tidak ditemukan di environment!")
+CSV_FILE = "rekap_berita_eksternal.csv"
+FONNTE_TOKEN = os.environ.get("FONNTE_TOKEN")
+TARGET_PHONE = "081234567890" # Ganti dengan nomor tujuan WhatsApp Anda
+
+def send_whatsapp_notification():
+    if not FONNTE_TOKEN:
+        print("Error: FONNTE_TOKEN tidak ditemukan di environment variables.")
         return
 
-    csv_file = 'rekap_berita_eksternal.csv'
-    if not os.path.exists(csv_file):
-        print(f"File {csv_file} tidak ditemukan!")
+    try:
+        df = pd.read_csv(CSV_FILE)
+    except Exception as e:
+        print(f"Error loading CSV: {e}")
         return
 
-    df = pd.read_csv(csv_file)
-    df.fillna('', inplace=True)
+    total_berita = len(df)
+    latest_news = df.head(3)
     
-    col_judul = 'judul' if 'judul' in df.columns else df.columns[2]
-    col_media = 'media' if 'media' in df.columns else ('sumber' if 'sumber' in df.columns else df.columns[1])
-    col_url = 'url' if 'url' in df.columns else ('link' if 'link' in df.columns else '#')
+    message_lines = [
+        "📢 *MONITORING PEMBERITAAN EKSTERNAL UNESA*",
+        "----------------------------------------",
+        f"📊 *Total Terdeteksi:* {total_berita} Berita Eksternal",
+        "",
+        "📰 *3 Pemberitaan Terbaru Hari Ini:*",
+        ""
+    ]
 
-    # Ambil 3 berita paling baru untuk ringkasan
-    top_news = df.head(3)
-    
-    pesan = "📢 *MONITORING PEMBERITAAN EKSTERNAL UNESA*\n"
-    pesan += "----------------------------------------\n\n"
-    pesan += f"📊 *Total Terdeteksi:* {len(df)} Berita Eksternal\n\n"
-    pesan += "📰 *3 Pemberitaan Terbaru Hari Ini:*\n"
-    
-    for idx, row in top_news.iterrows():
-        jdl = row.get(col_judul, '-')
-        med = row.get(col_media, 'Media Pers')
-        link = row.get(col_url, '#')
-        pesan += f"\n▫️ *[{med}]* {jdl}\n🔗 {link}\n"
+    for idx, row in latest_news.iterrows():
+        judul = str(row.get('judul', 'Tanpa Judul')).strip()
+        media = str(row.get('nama_media', row.get('sumber', 'Media Eksternal'))).strip()
+        link = str(row.get('link', '#')).strip()
         
-    pesan += "\n🌐 *Lihat Dashboard Selengkapnya:*\n"
-    pesan += "https://hisyam-hue.github.io/unesa-external-monitoring/"
+        # Format WhatsApp agar judul bisa diklik langsung tanpa memunculkan link panjang
+        news_item = f"• *{media}*\n  <{link}|{judul}>"
+        message_lines.append(news_item)
 
-    # Kirim via API Fonnte
-    url = 'https://api.fonnte.com/send'
+    message_lines.extend([
+        "",
+        "----------------------------------------",
+        "🌐 *Akses Dashboard Lengkap (4 Tab):*",
+        "https://hisyam-hue.github.io/unesa-external-monitoring/"
+    ])
+
+    full_message = "\n".join(message_lines)
+
+    payload = {
+        'target': TARGET_PHONE,
+        'message': full_message,
+        'countryCode': '62',
+    }
+    
     headers = {
-        'Authorization': token
-    }
-    data = {
-        'target': target_number,
-        'message': pesan,
+        'Authorization': FONNTE_TOKEN
     }
 
-    response = requests.post(url, headers=headers, data=data)
-    print("Respon Fonnte:", response.text)
+    try:
+        response = requests.post('https://api.fonnte.com/send', data=payload, headers=headers)
+        res_data = response.json()
+        print("Fonnte Response:", res_data)
+    except Exception as e:
+        print(f"Gagal mengirim WhatsApp: {e}")
 
-if __name__ == '__main__':
-    send_wa_notification()
+if __name__ == "__main__":
+    send_whatsapp_notification()
