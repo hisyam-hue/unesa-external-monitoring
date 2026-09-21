@@ -34,11 +34,11 @@ def send_whatsapp_notification():
         raw_media = str(row.get('nama_media', row.get('sumber', 'Media Eksternal'))).strip()
         link = str(row.get('link', '#')).strip()
         
-        # Membersihkan nama media dari ekstensi domain agar tidak salah klik ke homepage
+        # Membersihkan nama media agar tampil sebagai teks biasa tanpa terdeteksi sebagai link
         clean_media = raw_media.split('.')[0].replace('https://', '').replace('http://', '').replace('www.', '').title()
         
-        # Format berita dengan nama media bersih, judul, dan link langsung ke artikel
-        news_item = f"• *{clean_media}*\n  {judul}\n  🔗 {link}"
+        # Format Fonnte: <URL|Teks Judul> membuat judul bisa diklik langsung TANPA menampilkan URL panjang di teks pesan
+        news_item = f"• *{clean_media}*\n  <{link}|{judul}>"
         message_lines.append(news_item)
 
     message_lines.extend([
