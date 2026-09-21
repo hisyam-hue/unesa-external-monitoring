@@ -20,7 +20,10 @@ def send_whatsapp_notification():
     total_berita = len(df)
     latest_news = df.head(3)
     
+    # Menambahkan karakter tak terlihat atau spasi khusus di baris pertama 
+    # untuk memutus otomatisasi pratinjau (preview) Google News dari Fonnte/WhatsApp
     message_lines = [
+        "_",
         "📢 *MONITORING PEMBERITAAN EKSTERNAL UNESA*",
         "----------------------------------------",
         f"📊 *Total Terdeteksi:* {total_berita} Berita Eksternal",
