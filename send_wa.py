@@ -4,7 +4,7 @@ import requests
 
 CSV_FILE = "rekap_berita_eksternal.csv"
 FONNTE_TOKEN = os.environ.get("FONNTE_TOKEN")
-TARGET_PHONE = "081234567890" # Ganti dengan nomor tujuan WhatsApp Anda
+TARGET_PHONE = "082333029803" # Ganti dengan nomor tujuan WhatsApp Anda
 
 def send_whatsapp_notification():
     if not FONNTE_TOKEN:
