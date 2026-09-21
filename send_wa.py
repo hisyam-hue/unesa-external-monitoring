@@ -4,7 +4,7 @@ import requests
 
 CSV_FILE = "rekap_berita_eksternal.csv"
 FONNTE_TOKEN = os.environ.get("FONNTE_TOKEN")
-TARGET_PHONE = "120363430947326532@g.us" # Ganti dengan nomor tujuan atau ID Grup Anda
+TARGET_PHONE = "120363430947326532@g.us" # Masukkan nomor atau ID Grup WhatsApp Anda di sini
 
 def send_whatsapp_notification():
     if not FONNTE_TOKEN:
@@ -32,10 +32,9 @@ def send_whatsapp_notification():
     for idx, row in latest_news.iterrows():
         judul = str(row.get('judul', 'Tanpa Judul')).strip()
         media = str(row.get('nama_media', row.get('sumber', 'Media Eksternal'))).strip()
-        link = str(row.get('link', '#')).strip()
         
-        # Format bersih: Judul dan link dipisah dengan rapi atau menggunakan format tautan teks standar
-        news_item = f"• *{media}*\n  {judul}\n  🔗 Baca berita: {link}"
+        # Format bersih tanpa link panjang yang memunculkan preview Google News
+        news_item = f"• *{media}*\n  {judul}\n  🔗 Baca berita (Klik Judul Berita)"
         message_lines.append(news_item)
 
     message_lines.extend([
